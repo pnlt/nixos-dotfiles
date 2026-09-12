@@ -1,0 +1,27 @@
+# Nix
+result
+result-*
+.direnv/
+.pre-commit-config.yaml.bak
+
+# Editor / OS
+.idea/
+.vscode/
+*.swp
+*~
+.DS_Store
+
+# Secrets (add more if you use sops/age)
+secrets/**/*.key
+*.pem
+*.age
+.id_rsa*
+.ssh/
+
+# Local / machine-only
+*.local.nix
+.env
+.env.*
+
+# Optional: huge binary trees (uncomment if needed)
+# home/modules/desktop/awww/wallpapers/**

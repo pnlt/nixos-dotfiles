@@ -1,0 +1,57 @@
+# Fonts
+font-family = "Fira Code"
+font-family-bold = "Fira Code"
+font-family-italic = "Maple Mono NF"
+font-family-bold-italic = "Maple Mono NF"
+# font-family = "Symbols Nerd Font Mono"
+font-size = 14
+adjust-underline-position = 4
+
+# Mouse
+mouse-hide-while-typing = true
+mouse-scroll-multiplier = 1
+
+# Theme
+theme = /home/pnlt/projects/tokyonight.nvim/extras/ghostty/tokyonight_night
+cursor-invert-fg-bg = true
+background-opacity = 0.8
+window-theme = ghostty
+
+# keybindings
+keybind = clear
+keybind = ctrl+shift+h=goto_split:left
+keybind = ctrl+shift+j=goto_split:bottom
+keybind = ctrl+shift+k=goto_split:top
+keybind = ctrl+shift+l=goto_split:right
+keybind = super+shift+t=new_tab
+keybind = super+shift+h=previous_tab
+keybind = super+shift+l=next_tab
+keybind = super+shift+comma=move_tab:-1
+keybind = super+shift+period=move_tab:1
+keybind = super+shift+c=copy_to_clipboard
+keybind = super+shift+v=paste_from_clipboard
+keybind = super+shift+enter=new_split:auto
+keybind = super+shift+minus=new_split:down
+keybind = super+shift+backslash=new_split:right
+keybind = super+shift+i=inspector:toggle
+keybind = super+shift+m=toggle_split_zoom
+keybind = super+shift+r=reload_config
+keybind = super+shift+s=write_screen_file:open
+keybind = super+shift+w=close_surface
+# fix for shift+enter in claude-code
+keybind = shift+enter=text:\x1b\r
+
+# Window
+gtk-single-instance = true
+gtk-tabs-location = bottom
+gtk-wide-tabs = false
+gtk-toolbar-style = flat
+window-padding-y = 2,0
+window-padding-balance = true
+window-decoration = false
+
+# Other
+copy-on-select = clipboard
+shell-integration-features = cursor,sudo,no-title,ssh-env
+app-notifications = no-clipboard-copy
+# command = zsh

@@ -1,0 +1,38 @@
+#!/usr/bin/env zsh
+
+set -l floating_windows
+
+niri msg --json event-stream \
+    | jq -rc --unbuffered '
+        select(.WindowOpenedOrChanged)
+        | .WindowOpenedOrChanged.window
+        | [.id, .app_id, .title]
+        | @tsv
+    ' \
+    | while read -l id app title
+
+        if test "$app" != "zen-beta"
+            continue
+        end
+
+        if string match -rq '^Sign in.*' "$title"
+            if not contains $id $floating_windows
+                set -a floating_windows $id
+
+                echo "✅ Floating Zen sign-in: $id — $title"
+
+                niri msg action move-window-to-floating --id $id
+                niri msg action set-window-width "30%" --id $id
+                niri msg action set-window-height "60%" --id $id
+                niri msg action center-window --id $id
+            end
+
+        else if contains $id $floating_windows
+            echo "↩️ Returning Zen window to tiling: $id — $title"
+
+            niri msg action move-window-to-tiling --id $id
+
+            set -e floating_windows[(contains -i $id $floating_windows)]
+        end
+
+    end

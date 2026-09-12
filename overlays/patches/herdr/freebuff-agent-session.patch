@@ -1,0 +1,219 @@
+--- a/src/agent_resume.rs
++++ b/src/agent_resume.rs
+@@ -140,6 +140,16 @@
+         ("herdr:droid", "droid", AgentSessionRefKind::Id) => {
+             vec!["droid".into(), "--resume".into(), session_ref.value.clone()]
+         }
++        ("herdr:freebuff", "freebuff", AgentSessionRefKind::Id) => {
++            // freebuff names a chat by the ISO timestamp of its first turn, not
++            // a uuid, and `--continue` with no value silently falls back to the
++            // most recently touched chat in the project. Always pass the value.
++            vec![
++                "freebuff".into(),
++                "--continue".into(),
++                session_ref.value.clone(),
++            ]
++        }
+         ("herdr:kimi", "kimi", AgentSessionRefKind::Id) => {
+             vec!["kimi".into(), "--session".into(), session_ref.value.clone()]
+         }
+@@ -232,6 +242,7 @@
+             | ("herdr:copilot", "copilot")
+             | ("herdr:devin", "devin")
+             | ("herdr:droid", "droid")
++            | ("herdr:freebuff", "freebuff")
+             | ("herdr:kimi", "kimi")
+             | ("herdr:omp", "omp")
+             | ("herdr:mastracode", "mastracode")
+@@ -338,6 +349,16 @@
+         );
+         assert_eq!(
+             plan(
++                "herdr:freebuff",
++                "freebuff",
++                &AgentSessionRef::id("2026-08-27T18-50-27.123Z").unwrap()
++            )
++            .unwrap()
++            .argv,
++            vec!["freebuff", "--continue", "2026-08-27T18-50-27.123Z"]
++        );
++        assert_eq!(
++            plan(
+                 "herdr:kimi",
+                 "kimi",
+                 &AgentSessionRef::id("kimi-session").unwrap()
+--- a/src/config/sound.rs
++++ b/src/config/sound.rs
+@@ -142,6 +142,7 @@
+             Some(Agent::Qodercli) => self.qodercli,
+             Some(Agent::Qwen) => self.qwen,
+             Some(Agent::Maki) => self.maki,
++            Some(Agent::Freebuff) => AgentSoundSetting::Default,
+             None => AgentSoundSetting::Default,
+         }
+     }
+--- a/src/detect/manifest.rs
++++ b/src/detect/manifest.rs
+@@ -257,6 +257,7 @@
+     ("qodercli", include_str!("manifests/qodercli.toml")),
+     ("qwen", include_str!("manifests/qwen.toml")),
+     ("copilot", include_str!("manifests/github-copilot.toml")),
++    ("freebuff", include_str!("manifests/freebuff.toml")),
+ ];
+
+ static MANIFEST_CACHE: OnceLock<RwLock<ManifestCache>> = OnceLock::new();
+--- /dev/null
++++ b/src/detect/manifests/freebuff.toml
+@@ -0,0 +1,71 @@
++id = "freebuff"
++version = "2026.08.27.1"
++min_engine_version = 2
++updated_at = "2026-08-27T00:00:00Z"
++aliases = ["codebuff"]
++
++# freebuff never emits a state-bearing OSC title: `setTerminalTitle` writes
++# `Freebuff: <first words of the prompt>` once per submit and leaves it there.
++# Everything below reads the status bar and the input box, which render in that
++# order directly above the bottom of the screen.
++
++[[rules]]
++id = "ask_user_form_blocked"
++state = "blocked"
++priority = 1000
++region = "bottom_non_empty_lines(16)"
++visible_blocker = true
++# The ask_user form replaces the whole input box, so its hints cannot coexist
++# with the composer placeholder below.
++all = [
++  { contains = ["navigate"] },
++  { contains = ["enter select"] },
++]
++
++[[rules]]
++id = "gate_banner_blocked"
++state = "blocked"
++priority = 950
++region = "bottom_non_empty_lines(16)"
++visible_blocker = true
++any = [
++  { contains = ["press enter to continue"] },
++  { contains = ["press enter to buy more credits"] },
++  { contains = ["credit spending is disabled"] },
++  { contains = ["press enter to login"] },
++  { contains = ["open this url", "to login:"] },
++]
++
++[[rules]]
++id = "status_bar_working"
++state = "working"
++priority = 900
++region = "bottom_non_empty_lines(12)"
++visible_working = true
++any = [
++  { line_regex = ['(?i)(?:^|\s)thinking\.\.\.\s*$'] },
++  { line_regex = ['(?i)(?:^|\s)working\.\.\.\s*$'] },
++  { line_regex = ['(?i)(?:^|\s)connecting\.\.\.\s*$'] },
++  { line_regex = ['(?i)(?:^|\s)retrying\.\.\.\s*$'] },
++  { contains = ["in line, starting soon"] },
++]
++
++[[rules]]
++id = "stop_button_working"
++state = "working"
++priority = 880
++region = "bottom_non_empty_lines(12)"
++visible_working = true
++# The status bar only mounts this button while waiting or streaming.
++contains = ["■ esc"]
++
++[[rules]]
++id = "composer_idle"
++state = "idle"
++priority = 100
++region = "bottom_non_empty_lines(8)"
++visible_idle = true
++any = [
++  { contains = ["enter a coding task"] },
++  { contains = ["ctrl-c to cancel queued messages"] },
++]
+--- a/src/detect/mod.rs
++++ b/src/detect/mod.rs
+@@ -63,10 +63,11 @@
+     Qodercli,
+     Qwen,
+     Maki,
++    Freebuff,
+ }
+
+ impl Agent {
+-    pub const ALL: [Self; 22] = [
++    pub const ALL: [Self; 23] = [
+         Self::Pi,
+         Self::Claude,
+         Self::Codex,
+@@ -89,9 +90,10 @@
+         Self::Qodercli,
+         Self::Qwen,
+         Self::Maki,
++        Self::Freebuff,
+     ];
+
+-    pub const SCREEN_MANIFEST_AGENTS: [Self; 20] = [
++    pub const SCREEN_MANIFEST_AGENTS: [Self; 21] = [
+         Self::Pi,
+         Self::Claude,
+         Self::Codex,
+@@ -112,6 +114,7 @@
+         Self::Qodercli,
+         Self::Qwen,
+         Self::Maki,
++        Self::Freebuff,
+     ];
+ }
+
+@@ -139,6 +142,7 @@
+         Agent::Qodercli => "qodercli",
+         Agent::Qwen => "qwen",
+         Agent::Maki => "maki",
++        Agent::Freebuff => "freebuff",
+     }
+ }
+
+@@ -172,6 +176,7 @@
+         Agent::Qodercli => "qodercli",
+         Agent::Qwen => "qwen",
+         Agent::Maki => "maki",
++        Agent::Freebuff => "freebuff",
+     }
+ }
+
+@@ -209,6 +214,7 @@
+         "qodercli" | "qoderclicn" | "qoder" | "qodercn" => Some(Agent::Qodercli),
+         "qwen" | "qwen-code" | "qwen code" => Some(Agent::Qwen),
+         "maki" => Some(Agent::Maki),
++        "freebuff" | "codebuff" => Some(Agent::Freebuff),
+         _ => None,
+     }
+ }
+@@ -307,7 +313,10 @@
+ pub(crate) fn session_identity_only_integration(source: &str, agent_label: &str) -> bool {
+     matches!(
+         (source, agent_label),
+-        ("herdr:hermes", "hermes") | ("herdr:qwen", "qwen") | ("herdr:antigravity_cli", "agy")
++        ("herdr:hermes", "hermes")
++            | ("herdr:qwen", "qwen")
++            | ("herdr:antigravity_cli", "agy")
++            | ("herdr:freebuff", "freebuff")
+     )
+ }
+
+--- a/src/terminal/state.rs
++++ b/src/terminal/state.rs
+@@ -1327,6 +1327,7 @@
+                 Some("startup" | "clear" | "resume" | "compact")
+             ) | ("herdr:mastracode", "mastracode", Some("startup"))
+                 | ("herdr:hermes", "hermes", Some("startup" | "new" | "resume"))
++                | ("herdr:freebuff", "freebuff", Some("startup" | "new" | "resume"))
+                 | ("herdr:opencode", "opencode", Some("select"))
+                 | ("herdr:pi", "pi", Some("new" | "resume" | "fork"))
+                 | (
