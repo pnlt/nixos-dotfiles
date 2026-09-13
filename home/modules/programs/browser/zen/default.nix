@@ -26,6 +26,19 @@
         "zen.welcome-screen.seen" = true;
         "zen.urlbar.behavior" = "float";
         "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+
+        # marionette sets this to true and only clears it on a clean shutdown;
+        # left on, gecko fakes window focus and dead keys stop composing (á, ñ)
+        "focusmanager.testmode" = false;
+
+        "dom.webmidi.enabled" = false;
+
+        # "<site> wants to access other apps and services on this device" is the
+        # local network access prompt (loopback-network/local-network), not WebMIDI;
+        # shops like aliexpress port-scan 127.0.0.1 to fingerprint. 2 = BLOCK, and
+        # PermissionUI cancels the request instead of drawing a doorhanger.
+        "permissions.default.loopback-network" = 2;
+        "permissions.default.local-network" = 2;
       };
 
       presets.betterfox.enable = true;
@@ -48,8 +61,11 @@
           statisticsStatus = true;
         };
       };
+      extensionButtons = {
+        "nav-bar" = ["uBlock0@raymondhill.net"];
+      };
 
-      # bookmarks = import ./bookmarks-config.nix {inherit libx lib;};
+      bookmarks = import ./bookmarks-config.nix {inherit libx lib;};
       search = import ./search-config.nix {inherit pkgs;};
       userContent = import ./user-content-config.nix {inherit pkgs lib;};
 

@@ -196,6 +196,17 @@
           ./patches/browsers/larger-picker-window.patch
           ./patches/browsers/fix-url-argument-injection.patch
         ];
+
+      postPatch =
+        (old.postPatch or "")
+        + ''
+          if [ -f src/gui/ui_theme.rs ]; then
+            substituteInPlace src/gui/ui_theme.rs \
+              --replace-fail 'browser_label_size: 12.0' 'browser_label_size: 15.0' \
+              --replace-fail 'profile_label_size: 11.0' 'profile_label_size: 14.0' \
+              || true
+          fi
+        '';
     });
   })
   (_final: prev: {

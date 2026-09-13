@@ -10,7 +10,7 @@
     (import ./cursor.nix {})
     (import ./output.nix {})
     (import ./layout.nix {})
-    (import ./misc.nix {})
+    (import ./misc.nix {inherit pkgs;})
     (import ./startup.nix {inherit config pkgs lib;})
     (import ./window-rules.nix {})
     (import ./binds.nix {inherit config pkgs lib;})
