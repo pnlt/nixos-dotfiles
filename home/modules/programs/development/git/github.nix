@@ -3,6 +3,6 @@
     enable = true;
     act = true;
     cli = true; # gh
-    tui = false; # ght
+    tui = true; # ght
   };
 }

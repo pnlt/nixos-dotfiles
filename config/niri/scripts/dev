@@ -1,20 +1,27 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
+set -euo pipefail
 
-set -l class "dev.terminal"
+CLASS="dev.terminal"
+DIR="${HOME}/nixos-dotfiles"
+GHOSTTY="$(command -v ghostty)"
 
-# Toggle workspace "dev"
 niri msg action focus-workspace dev
+sleep 0.1
 
-# Get info about the "dev" workspace and the terminal window
-niri msg --json workspaces \
-    | jq -r '.[] | select(.name=="dev") | "\(.id) \(.is_focused)"' \
-    | read -l dev_id dev_is_focused
-niri msg --json windows \
-    | jq -r --arg class "$class" --argjson dev_id "$dev_id" \
-    '.[] | select(.app_id==$class and .workspace_id==$dev_id) | .id' \
-    | read -l t_id
+dev_id=$(niri msg --json workspaces | jq -r '.[] | select(.name == "dev") | .id')
+if [[ -z "$dev_id" || "$dev_id" == "null" ]]; then
+  echo "dev workspace not found" >&2
+  exit 1
+fi
 
-# If the "dev" workspace is focused and the terminal is not present, spawn it
-test "$dev_is_focused" = true
-and test -z "$t_id"
-and niri msg action spawn -- ghostty --class="$class" --working-directory="$HOME/nixos-dotfiles/" 
+t_id=$(niri msg --json windows \
+  | jq -r --arg c "$CLASS" --argjson id "$dev_id" \
+    '.[] | select(.app_id == $c and .workspace_id == $id) | .id' \
+  | head -n1)
+
+if [[ -n "${t_id:-}" ]]; then
+  niri msg action focus-window --id "$t_id" || true
+  exit 0
+fi
+
+niri msg action spawn -- "$GHOSTTY" --class="$CLASS" --working-directory="$DIR"

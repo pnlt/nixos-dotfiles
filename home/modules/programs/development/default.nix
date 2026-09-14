@@ -3,9 +3,9 @@
     # ./agents
     # ./database
     # ./docker
-    # ./editors
+    ./editors
     ./git
-    # ./go
+    ./go
     # ./mobile
     # ./ops
     ./pwn
@@ -15,5 +15,7 @@
     ./python.nix
     ./rust.nix
     ./zig.nix
+    ./etc.nix
+    ./burning.nix
   ];
 }
