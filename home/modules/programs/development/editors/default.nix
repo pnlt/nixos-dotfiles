@@ -1,6 +1,6 @@
 {
   imports = [
-    ./vscode-like
+    # ./vscode-like
     ./nano
     ./orca
     ./spice-edit.nix

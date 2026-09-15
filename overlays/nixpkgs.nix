@@ -35,6 +35,15 @@
       });
     }
   )
+  (_final: prev: {
+    bat = prev.bat.overrideAttrs (old: {
+      patches =
+        (old.patches or [])
+        ++ [
+          ./patches/bat/idempotent-cache-build.patch
+        ];
+    });
+  })
   (final: _prev: {
     rtk = final.llm-agents.rtk.overrideAttrs (_oldAttrs: {
       postInstall = ''
@@ -145,6 +154,7 @@
           ./patches/lazygit/hide-personal-authors.patch
           ./patches/lazygit/shift-delete-in-text-inputs.patch
           ./patches/lazygit/submodules-dashboard.patch
+          ./patches/lazygit/show-worktree-path.patch
         ];
     });
   })
@@ -196,7 +206,6 @@
           ./patches/browsers/larger-picker-window.patch
           ./patches/browsers/fix-url-argument-injection.patch
         ];
-
       postPatch =
         (old.postPatch or "")
         + ''
@@ -226,7 +235,6 @@
   (_final: prev: {
     # Must stay after hyprdysmorphic, which replaces `hyprland` outright.
     # The grep turns a moved banner into a build failure instead of a no-op.
-    # hyprland override removed
   })
   (_final: prev: {
     # The sidebar collapse toggle is a one-cell icon in the bottom-right corner:
@@ -284,11 +292,8 @@
         ];
     });
   })
-  # Everything ./pkgs defines — first-party and packaged upstreams alike —
-  # lands on `pkgs.<name>`, so no module has to be wired its own way.
-  (final: _prev: import ../pkgs final)
   (_final: prev: {
-    # Must stay after the ./pkgs import, which is what defines `linear-tui`.
+    # Must be applied after the package overlay, which defines `linear-tui`.
     # Upstream drops image links on the floor; the first patch resolves them
     # against the Kitty graphics protocol, which ghostty speaks. The second
     # trades the issue table's empty planning columns for the title and an

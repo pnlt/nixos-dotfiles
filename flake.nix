@@ -23,6 +23,10 @@
       url = "github:numtide/flake-utils";
       inputs.systems.follows = "systems";
     };
+    encore = {
+      url = "github:encoredev/encore-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake/beta";
       inputs = {
@@ -64,7 +68,7 @@
       };
     };
     # roborev = {
-    #   url = "github:roborev-dev/roborev";
+    #   url = "github:kenn-io/roborev";
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
     hermes-agent = {
@@ -80,6 +84,10 @@
         nixpkgs.follows = "nixpkgs";
         utils.follows = "flake-utils";
       };
+    };
+    techdebt-cli = {
+      url = "github:0xc000022070/techdebt-cli";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     nyx-terminal = {
       url = "path:/home/pnlt/projects/nyx-terminal";
@@ -114,6 +122,9 @@
           import ./overlays/inputs.nix {
             inherit inputs system;
           }
+          ++ [
+            (final: _prev: import ./pkgs final)
+          ]
           ++ import ./overlays/nixpkgs.nix {
             inherit inputs system;
             inherit (metadata) host;
@@ -153,10 +164,11 @@
             imports = [
               inputs.nyx-terminal.homeModules.default
               inputs.agentic-flake.homeModules.default
+              inputs.encore.homeModules.default
+              inputs.techdebt-cli.homeModules.default
 
               # First-party package HM modules
               ./pkgs/hm-modules
-
               ./home/options
               ./home/profiles/${metadata.user.alias}
             ];

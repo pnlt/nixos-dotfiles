@@ -31,8 +31,7 @@ with inputs; [
         })
       ];
   })
-  # no hyprdysmorphic (Hyprland)
-  # no nixpkgs-extra unless you add that flake input
+  # hyprdysmorphic.overlays.default
   nixpkgs-extra.overlays.default
   agentic-flake.overlays.default
   hermes-agent.overlays.default
