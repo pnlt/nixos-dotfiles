@@ -1,6 +1,6 @@
 {pkgs, ...}: {
   security.rtkit.enable = true;
-  programs.noisetorch.enable = true;
+  # programs.noisetorch.enable = true;
 
   services = {
     pulseaudio.enable = 0 != 0;
@@ -20,5 +20,6 @@
   environment.systemPackages = with pkgs; [
     pulseaudio
     alsa-utils
+    easyeffects
   ];
 }

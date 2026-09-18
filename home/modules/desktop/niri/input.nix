@@ -3,6 +3,9 @@
 
   input {
       workspace-auto-back-and-forth
+      mouse {
+        accel-profile "flat"
+      }
       keyboard {
           repeat-delay 200
           repeat-rate 25
