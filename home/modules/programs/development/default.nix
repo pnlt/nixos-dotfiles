@@ -10,12 +10,13 @@
     # ./ops
     ./pwn
 
+    ./burning.nix
+    ./encore.nix
+    ./etc.nix
     ./node.nix
     ./processors.nix
     ./python.nix
     ./rust.nix
     ./zig.nix
-    ./etc.nix
-    ./burning.nix
   ];
 }
