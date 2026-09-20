@@ -1,5 +1,4 @@
 {
-  config,
   lib,
   pkgs,
   host,
@@ -13,6 +12,7 @@
     ./hardware-configuration.nix
     ./hostcmd.nix
   ];
+  home-manager.useGlobalPkgs = true;
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;

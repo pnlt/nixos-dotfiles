@@ -1,7 +1,6 @@
 {
   config,
   pkgs,
-  inputs,
   user,
   nix,
   ...
@@ -34,9 +33,8 @@ in {
     username = "${user.alias}";
 
     packages = with pkgs; [
+      home-manager
       neovim
-      ripgrep
-      gcc
     ];
 
     sessionVariables = {
@@ -47,4 +45,5 @@ in {
   };
 
   news.display = "silent";
+  programs.home-manager.enable = false;
 }

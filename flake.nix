@@ -95,9 +95,8 @@
   };
 
   outputs = inputs @ {
-    self,
-    nixpkgs,
     home-manager,
+    nixpkgs,
     ...
   }: let
     defaultSystem = "x86_64-linux";
@@ -139,61 +138,66 @@
 
     specialArgs = {
       inherit inputs libx;
-      inherit (metadata) host user nix;
       system = defaultSystem;
       # isTiling = true;
       isWayland = true;
     };
+    configArgs =
+      specialArgs
+      // {
+        inherit (metadata) host user nix;
+      };
+
     # NixOS module list (system-wide)
     nixosModules = [
       inputs.flake-programs-sqlite.nixosModules.programs-sqlite
       inputs.nyx-terminal.nixosModules.default
-
-      # First-party package NixOS modules (auto-discovers pkgs/*/nixos-modules)
+      inputs.home-manager.nixosModules.default
       ./pkgs/nixos-modules
-
       (./system/hosts + "/${metadata.host.name}")
+    ];
 
-      home-manager.nixosModules.home-manager
-      {
-        home-manager = {
-          useGlobalPkgs = true;
-          useUserPackages = true;
-          extraSpecialArgs = specialArgs;
-          users.${metadata.user.alias} = {
-            imports = [
-              inputs.nyx-terminal.homeModules.default
-              inputs.agentic-flake.homeModules.default
-              inputs.encore.homeModules.default
-              inputs.techdebt-cli.homeModules.default
-
-              # First-party package HM modules
-              ./pkgs/hm-modules
-              ./home/options
-              ./home/profiles/${metadata.user.alias}
-            ];
-          };
-          backupFileExtension = "backup";
-        };
-      }
+    homeModules = [
+      inputs.nyx-terminal.homeModules.default
+      inputs.agentic-flake.homeModules.default
+      inputs.encore.homeModules.default
+      inputs.techdebt-cli.homeModules.default
+      ./pkgs/hm-modules
+      ./home/options
+      (./home/profiles + "/${metadata.user.alias}")
     ];
   in
     inputs.flake-parts.lib.mkFlake {inherit inputs;} {
       inherit systems;
 
       perSystem = {system, ...}: let
-        pkgs' = mkPkgs system;
+        pkgs = mkPkgs system;
       in {
-        # Expose first-party packages: nix build .#cliphizt etc.
-        packages = import ./pkgs pkgs';
+        packages = import ./pkgs pkgs;
       };
 
-      flake = {
-        nixosConfigurations.${metadata.host.name} = nixpkgs.lib.nixosSystem {
+      flake = rec {
+        nixosConfigurations."${metadata.host.name}" = nixpkgs.lib.nixosSystem {
           inherit pkgs;
-          system = defaultSystem;
+
           modules = nixosModules;
-          specialArgs = specialArgs;
+          specialArgs =
+            configArgs
+            // {
+              hmConfig = homeConfigurations."${metadata.user.alias}".config;
+            };
+        };
+
+        homeConfigurations."${metadata.user.alias}" = home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+
+          modules = homeModules;
+          extraSpecialArgs =
+            configArgs
+            // {
+              system = defaultSystem;
+              nixosConfig = nixosConfigurations."${metadata.host.name}".config;
+            };
         };
       };
     };
