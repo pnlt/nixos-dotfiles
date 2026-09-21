@@ -2,13 +2,11 @@
   imports = [
     ./niri
     ./awww
-    ./waybar
-    ./eww
+    ./shell
 
     ./gtk.nix
     ./mouse.nix
     ./xdg.nix
-    ./clipboard.nix
     ./mako.nix
     ./notifications.nix
     ./fuzzel.nix

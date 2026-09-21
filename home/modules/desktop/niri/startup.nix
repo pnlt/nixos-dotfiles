@@ -10,6 +10,7 @@
   dynamicRules = "${home}/.config/niri/scripts/dynamic-rules";
 in ''
   // --- startup (dms removed) ---
+  spawn-at-startup "${lib.getExe config.programs.waybar.package}"
   spawn-at-startup "awww-daemon"
   spawn-at-startup "awww" "img" "${config.home.homeDirectory}/nixos-dotfiles/home/modules/desktop/awww/wallpapers/cba.png"
   spawn-at-startup "${pkgs.wl-clipboard}/bin/wl-paste" "--watch" "${pkgs.cliphist}/bin/cliphist" "store"

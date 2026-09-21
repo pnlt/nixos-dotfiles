@@ -13,6 +13,12 @@
   playerctl = lib.getExe pkgs.playerctl;
   devScript = "${home}/nixos-dotfiles/config/niri/scripts/dev";
 
+  waybarRestart = pkgs.writeShellScript "niri-waybar-restart" ''
+    pkill waybar 2>/dev/null || true
+    sleep 0.1
+    exec ${lib.getExe config.programs.waybar.package}
+  '';
+
   clipMenu = pkgs.writeShellScript "niri-cliphist-fuzzel" ''
     set -euo pipefail
     ${pkgs.cliphist}/bin/cliphist list \
@@ -36,6 +42,7 @@ in ''
   binds {
       Mod+Return     { spawn "${ghostty}"; }
       Mod+Alt+Return { spawn "${devScript}"; }
+      Mod+Shift+B { spawn "${waybarRestart}"; }
 
       // was dms clipboard
       Mod+Alt+V { spawn "${clipMenu}"; }

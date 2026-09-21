@@ -3,15 +3,12 @@
 # vendored in-tree; ./third-party holds derivations over fetched upstreams.
 pkgs:
 {
-  cliphizt = pkgs.callPackage ./clipz/cliphizt {};
-  cliplenz = pkgs.callPackage ./clipz/cliplenz {};
   hark = pkgs.callPackage ./hark {};
   heft = pkgs.callPackage ./heft {};
   herdr-autoname = pkgs.callPackage ./herdr-autoname {};
   herdr-recall = pkgs.callPackage ./herdr-recall {};
   mcp-gateway = pkgs.callPackage ./mcp-gateway {};
-  # pinentry-gate = pkgs.callPackage ./pinentry-gate {};
-  waytools = pkgs.callPackage ./waytools {};
+  barfeed = pkgs.callPackage ./barfeed {};
   ttygate = pkgs.callPackage ./ttygate {};
 }
 // import ./third-party pkgs
