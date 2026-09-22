@@ -1,4 +1,4 @@
-{host, ...}: [
+{...}: [
   (
     _self: super: {
       waybar = super.waybar.overrideAttrs (_oldAttrs: let
@@ -206,16 +206,6 @@
           ./patches/browsers/larger-picker-window.patch
           ./patches/browsers/fix-url-argument-injection.patch
         ];
-      postPatch =
-        (old.postPatch or "")
-        + ''
-          if [ -f src/gui/ui_theme.rs ]; then
-            substituteInPlace src/gui/ui_theme.rs \
-              --replace-fail 'browser_label_size: 12.0' 'browser_label_size: 15.0' \
-              --replace-fail 'profile_label_size: 11.0' 'profile_label_size: 14.0' \
-              || true
-          fi
-        '';
     });
   })
   (_final: prev: {
@@ -231,10 +221,6 @@
           ./patches/tmux/window-tree-per-session-group-check.patch
         ];
     });
-  })
-  (_final: prev: {
-    # Must stay after hyprdysmorphic, which replaces `hyprland` outright.
-    # The grep turns a moved banner into a build failure instead of a no-op.
   })
   (_final: prev: {
     # The sidebar collapse toggle is a one-cell icon in the bottom-right corner:
