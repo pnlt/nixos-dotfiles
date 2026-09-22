@@ -11,7 +11,7 @@
   makoctl = "${pkgs.mako}/bin/makoctl";
   playerctl = lib.getExe pkgs.playerctl;
   devScript = "${home}/nixos-dotfiles/config/niri/scripts/dev";
-  vicinaeCmd = lib.getExe config.programs.vicinae.package "vicinae";
+  vicinaeCmd = lib.getExe' config.programs.vicinae.package "vicinae";
 
   waybarRestart = pkgs.writeShellScript "niri-waybar-restart" ''
     pkill waybar 2>/dev/null || true
