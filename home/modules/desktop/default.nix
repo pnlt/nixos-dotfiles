@@ -1,19 +1,16 @@
 {
   imports = [
     ./niri
-    ./awww
     ./shell
-
-    ./gtk.nix
-    ./mouse.nix
-    ./xdg.nix
-    ./mako.nix
-    ./notifications.nix
-    ./fuzzel.nix
-    ./color-picker.nix
     ./heft.nix
-    ./raffi.nix
+    ./awww
+    ./vicinae.nix
 
-    # ./herdr.nix
+    ./color-picker.nix
+    ./gtk.nix
+    ./mako.nix
+    ./mouse.nix
+    ./notifications.nix
+    ./xdg.nix
   ];
 }

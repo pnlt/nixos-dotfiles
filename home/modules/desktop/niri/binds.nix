@@ -6,12 +6,12 @@
 }: let
   home = config.home.homeDirectory;
   ghostty = lib.getExe config.programs.ghostty.package;
-  fuzzel = lib.getExe pkgs.fuzzel;
   nautilus = lib.getExe pkgs.nautilus;
   wpctl = "${pkgs.wireplumber}/bin/wpctl";
   makoctl = "${pkgs.mako}/bin/makoctl";
   playerctl = lib.getExe pkgs.playerctl;
   devScript = "${home}/nixos-dotfiles/config/niri/scripts/dev";
+  vicinaeCmd = lib.getExe config.programs.vicinae.package "vicinae";
 
   waybarRestart = pkgs.writeShellScript "niri-waybar-restart" ''
     pkill waybar 2>/dev/null || true
@@ -19,24 +19,11 @@
     exec ${lib.getExe config.programs.waybar.package}
   '';
 
-  clipMenu = pkgs.writeShellScript "niri-cliphist-fuzzel" ''
-    set -euo pipefail
-    ${pkgs.cliphist}/bin/cliphist list \
-      | ${fuzzel} --dmenu \
-      | ${pkgs.cliphist}/bin/cliphist decode \
-      | ${pkgs.wl-clipboard}/bin/wl-copy
-  '';
-
-  powerMenu = pkgs.writeShellScript "niri-power-menu" ''
-    set -euo pipefail
-    entry=$(printf 'Lock\nLogout\nSuspend\nReboot\nShutdown' | ${fuzzel} --dmenu -p 'Power: ')
-    case "$entry" in
-      Lock) loginctl lock-session ;;
-      Logout) niri msg action quit --skip-confirmation ;;
-      Suspend) systemctl suspend ;;
-      Reboot) systemctl reboot ;;
-      Shutdown) systemctl poweroff ;;
-    esac
+  vicinaeApps = pkgs.writeShellScript "vicinae-apps-toggle" ''
+    if ${vicinaeCmd} state open; then
+      exec ${vicinaeCmd} close
+    fi
+    exec ${vicinaeCmd} deeplink vicinae://launch/applications
   '';
 in ''
   binds {
@@ -44,18 +31,11 @@ in ''
       Mod+Alt+Return { spawn "${devScript}"; }
       Mod+Shift+B { spawn "${waybarRestart}"; }
 
-      // was dms clipboard
-      Mod+Alt+V { spawn "${clipMenu}"; }
+      Mod+Space { spawn "${vicinaeApps}"; }
+      Mod+Alt+V { spawn "${vicinaeCmd}" "deeplink" "vicinae://launch/clipboard/history"; }
 
-      // was dms notifications — focus/show mako history
+      // focus/show mako history
       Mod+N { spawn "${makoctl}" "history"; }
-
-      // was dms spotlight → fuzzel
-      Mod+D { spawn "${lib.getExe pkgs.fuzzel}"; }
-      Mod+Space { spawn "${lib.getExe pkgs.raffi}"; }
-
-      // was dms powermenu
-      Mod+X { spawn "${powerMenu}"; }
 
       Mod+Shift+S { screenshot show-pointer=false; }
       Print       { screenshot show-pointer=false; }
