@@ -3,6 +3,7 @@ mod ascii_animation;
 mod config;
 mod greetd;
 mod logs;
+mod sound;
 mod theme;
 mod ui;
 
@@ -16,6 +17,7 @@ use ratatui::layout::{Alignment, Constraint, Layout};
 use ratatui::style::{Modifier, Style};
 use ratatui::widgets::{Block, Paragraph};
 use ratatui::Frame;
+use ttycanvas::audio::Sound;
 
 use crate::app::{Action, AppState, Effect};
 use crate::config::{Cli, Config};
@@ -37,9 +39,13 @@ async fn main() -> Result<()> {
     // Standalone showcase: full-screen animation, no config auth, no greetd.
     if cli.ascii_demo {
         let theme = Theme::resolve(cfg.accent, &cfg.overrides);
+        let sound = sound::open(&cfg.sound);
         let mut terminal = ratatui::init();
-        let result = ascii_demo_loop(&mut terminal, &theme).await;
+        let result = ascii_demo_loop(&mut terminal, &theme, sound.as_ref()).await;
         ratatui::restore();
+        if let Some(sound) = sound {
+            sound.finish();
+        }
         return result;
     }
 
@@ -77,9 +83,21 @@ async fn run(cli: &Cli, cfg: Config) -> Result<()> {
         show_help: cfg.show_help,
     };
 
+    let sound = sound::open(&cfg.sound);
     let mut terminal = ratatui::init();
-    let outcome = event_loop(&mut terminal, app, channels, log_rx, &chrome).await;
+    let outcome = event_loop(
+        &mut terminal,
+        app,
+        channels,
+        log_rx,
+        &chrome,
+        sound.as_ref(),
+    )
+    .await;
     ratatui::restore();
+    if let Some(sound) = sound {
+        sound.finish();
+    }
 
     match outcome? {
         Outcome::Launch => {
@@ -102,32 +120,41 @@ async fn event_loop<B: ratatui::backend::Backend>(
     greetd: Channels,
     mut log_rx: tokio::sync::mpsc::Receiver<String>,
     chrome: &Chrome<'_>,
+    sound: Option<&Sound>,
 ) -> Result<Outcome> {
     let mut greetd = greetd;
     let mut logs = LogBuffer::new(500);
     let mut events = EventStream::new();
-    let mut ticker = tokio::time::interval(Duration::from_millis(120));
+    let mut ticker = tokio::time::interval(Duration::from_millis(sound::TICK_MS));
+    ticker.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Skip);
     // Foreign writers (kernel/systemd) can paint over our frame; ratatui only
     // repaints cells it knows changed, so force a full repaint on the tick after
     // any log activity — adaptive noise-healing that stays quiet once boot settles.
     let mut logs_dirty = false;
     let mut force_clear = false;
+    let mut dirty = true;
 
     loop {
-        if std::mem::take(&mut force_clear) {
-            terminal.clear()?;
+        if std::mem::take(&mut dirty) {
+            if std::mem::take(&mut force_clear) {
+                terminal.clear()?;
+            }
+            let mut scroll = app.log_scroll;
+            terminal.draw(|f| scroll = ui::draw(f, &app, &logs, chrome))?;
+            app.log_scroll = scroll;
         }
-        let mut scroll = app.log_scroll;
-        terminal.draw(|f| scroll = ui::draw(f, &app, &logs, chrome))?;
-        app.log_scroll = scroll;
 
         tokio::select! {
             _ = ticker.tick() => {
                 app.update(Action::Tick);
+                if let Some(sound) = sound {
+                    sound.tick(app.tick);
+                }
                 if logs_dirty {
                     force_clear = true;
                     logs_dirty = false;
                 }
+                dirty = true;
             }
             maybe_event = events.next() => {
                 match maybe_event {
@@ -145,7 +172,8 @@ async fn event_loop<B: ratatui::backend::Backend>(
                             continue;
                         }
                         if let Some(action) = map_key(key.code, app.logs_open) {
-                            let effects = app.update(action);
+                            let effects = step(&mut app, action, sound);
+                            dirty = true;
                             if let Some(outcome) = apply(effects, &greetd).await {
                                 return Ok(outcome);
                             }
@@ -157,7 +185,8 @@ async fn event_loop<B: ratatui::backend::Backend>(
             }
             maybe_resp = greetd.resp_rx.recv() => {
                 if let Some(resp) = maybe_resp {
-                    let effects = app.update(Action::Greetd(resp));
+                    let effects = step(&mut app, Action::Greetd(resp), sound);
+                    dirty = true;
                     if let Some(outcome) = apply(effects, &greetd).await {
                         return Ok(outcome);
                     }
@@ -171,6 +200,17 @@ async fn event_loop<B: ratatui::backend::Backend>(
             }
         }
     }
+}
+
+fn step(app: &mut AppState, action: Action, sound: Option<&Sound>) -> Vec<Effect> {
+    let before = sound::snapshot(app);
+    let effects = app.update(action);
+    if let Some(sound) = sound {
+        for cue in sound::cues(&before, app) {
+            sound.cue(cue);
+        }
+    }
+    effects
 }
 
 fn map_key(code: KeyCode, logs_open: bool) -> Option<Action> {
@@ -204,16 +244,23 @@ fn map_key(code: KeyCode, logs_open: bool) -> Option<Action> {
 async fn ascii_demo_loop<B: ratatui::backend::Backend>(
     terminal: &mut ratatui::Terminal<B>,
     theme: &Theme,
+    sound: Option<&Sound>,
 ) -> Result<()> {
     let mut events = EventStream::new();
-    let mut ticker = tokio::time::interval(Duration::from_millis(120));
+    let mut ticker = tokio::time::interval(Duration::from_millis(sound::TICK_MS));
+    ticker.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Skip);
     let mut tick: u64 = 0;
 
     loop {
         terminal.draw(|f| ascii_demo_draw(f, tick, theme))?;
 
         tokio::select! {
-            _ = ticker.tick() => tick = tick.wrapping_add(1),
+            _ = ticker.tick() => {
+                tick = tick.wrapping_add(1);
+                if let Some(sound) = sound {
+                    sound.tick(tick);
+                }
+            }
             ev = events.next() => match ev {
                 Some(Ok(Event::Key(k))) => {
                     if k.kind == KeyEventKind::Release {
@@ -243,9 +290,12 @@ fn ascii_demo_draw(f: &mut Frame, tick: u64, theme: &Theme) {
     f.render_widget(Paragraph::new(sprite), body);
 
     f.render_widget(
-        Paragraph::new("ascii demo   ·   q / ESC quit")
-            .alignment(Alignment::Center)
-            .style(Style::default().fg(theme.dim).add_modifier(Modifier::BOLD)),
+        Paragraph::new(format!(
+            "ascii demo   ·   {}   ·   q / ESC quit",
+            ascii_animation::current_name(tick)
+        ))
+        .alignment(Alignment::Center)
+        .style(Style::default().fg(theme.dim).add_modifier(Modifier::BOLD)),
         foot,
     );
 }

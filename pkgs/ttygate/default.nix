@@ -1,19 +1,28 @@
 {
   lib,
   rustPlatform,
+  pkg-config,
+  alsa-lib,
 }:
 rustPlatform.buildRustPackage {
   pname = "ttygate";
   version = "0.1.0";
 
+  nativeBuildInputs = [pkg-config];
+  buildInputs = [alsa-lib];
+
   src = lib.fileset.toSource {
-    root = ./.;
+    root = ../.;
     fileset = lib.fileset.unions [
       ./Cargo.toml
       ./Cargo.lock
       ./src
+      ../ttycanvas/Cargo.toml
+      ../ttycanvas/src
     ];
   };
+
+  sourceRoot = "source/ttygate";
 
   cargoLock.lockFile = ./Cargo.lock;
 
