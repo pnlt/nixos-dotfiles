@@ -26,7 +26,6 @@
 
   environment.systemPackages = with pkgs; [
     vim
-    wget
     pavucontrol
     swaylock
     networkmanagerapplet

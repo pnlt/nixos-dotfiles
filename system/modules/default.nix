@@ -6,14 +6,12 @@
     ./fs
     ./programs/browser/chromium.nix
     ./programs/compression.nix
-    # ./programs/development
     # ./programs/network
     ./programs/pms
-    # ./programs/peripherals
     ./programs/security
     ./programs/shell
     # ./programs/vm
     # ./boot
-    # ./core
+    ./core
   ];
 }
