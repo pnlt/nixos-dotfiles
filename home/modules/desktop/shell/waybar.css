@@ -1,5 +1,5 @@
 * {
-    font-family: "IoskeleyMono Nerd Font", "Symbols Nerd Font", monospace;
+    font-family: "IoskeleyMono Nerd Font Mono", "Symbols Nerd Font", monospace;
     font-size: 10pt;
     font-weight: 600;
     border-radius: 8px;
@@ -54,8 +54,6 @@ window > box {
 #custom-ssh-out,
 #cpu,
 #memory,
-#battery,
-#custom-battery,
 #network,
 #custom-wall,
 #temperature,
@@ -128,8 +126,6 @@ window > box {
 #custom-tailscale,
 #cpu,
 #memory,
-#battery,
-#custom-battery,
 #network {
     padding-left: 6px;
     padding-right: 6px;
@@ -243,31 +239,6 @@ window > box {
     color: rgb(181, 232, 224);
 }
 
-#battery {
-    color: #ffffff;
-}
-
-#custom-battery {
-    color: rgb(181, 232, 224);
-    font-family: "IoskeleyMono Nerd Font", "Symbols Nerd Font", monospace;
-    font-size: 10pt;
-}
-
-#battery.warning {
-    color: rgb(248, 189, 150);
-}
-
-#battery.critical {
-    color: rgb(242, 143, 173);
-}
-
-#custom-battery.warning {
-    color: rgb(248, 189, 150);
-}
-
-#custom-battery.critical {
-    color: rgb(242, 143, 173);
-}
 
 #network {
     color: #facaf4;
@@ -321,15 +292,11 @@ window > box {
 #tray:hover,
 #custom-heft:hover,
 #custom-tailscale:hover,
-#battery:hover,
 #network:hover,
 #sysmon:hover {
     background-color: rgba(255, 255, 255, 0.045);
 }
 
-#custom-battery:hover {
-    background-color: rgba(255, 255, 255, 0.045);
-}
 
 /* Passive status modules: no hover container */
 #ssh:hover,
