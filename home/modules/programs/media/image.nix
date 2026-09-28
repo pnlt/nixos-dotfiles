@@ -20,33 +20,39 @@
   feh = mkWithDesktopItemWrapper {
     package = pkgs.feh;
     desktopName = "feh";
-    exec = "feh %f";
+    exec = "feh --bg-scale %f";
     genericName = "Image Viewer";
   };
 
   sxiv = mkWithDesktopItemWrapper {
     package = pkgs.sxiv;
-    desktopName = "sxiv";
-    name = "sxiv";
+    desktopName = "svix";
+    name = "sxiv (gif)";
     exec = "sxiv -a %f";
     genericName = "Gif Viewer";
   };
 in {
   home.packages = [
     pkgs.imagemagick
-    feh.new
     sxiv.new
+    feh.new
   ];
 
-  xdg.mimeApps = {
-    enable = true;
-    defaultApplications = {
-      "image/svg+xml" = ["feh.desktop"];
-      "image/png" = ["feh.desktop"];
-      "image/jpeg" = ["feh.desktop"];
-      "image/jpg" = ["feh.desktop"];
-      "image/gif" = ["sxiv.desktop"];
-      "image/webp" = ["feh.desktop"];
+  xdg.mimeApps = let
+    chromiumDesktop = "chromium-browser.desktop";
+
+    defaultApps = {
+      "image/*" = [feh.desktopFile];
+      "image/gif" = [sxiv.desktopFile];
+    };
+
+    unsetChromium = builtins.mapAttrs (_: _: [chromiumDesktop]) defaultApps;
+  in {
+    defaultApplications = defaultApps;
+
+    associations = {
+      added = defaultApps;
+      removed = unsetChromium;
     };
   };
 }
