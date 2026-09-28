@@ -67,10 +67,6 @@
         home-manager.follows = "home-manager";
       };
     };
-    # roborev = {
-    #   url = "github:kenn-io/roborev";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
     hermes-agent = {
       url = "github:NousResearch/hermes-agent";
       inputs = {
