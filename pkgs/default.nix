@@ -1,6 +1,3 @@
-# Everything this repo defines itself, reachable as `pkgs.<name>` through the
-# overlay in overlays/nixpkgs.nix. First-party packages keep their source
-# vendored in-tree; ./third-party holds derivations over fetched upstreams.
 pkgs:
 {
   hark = pkgs.callPackage ./hark {};

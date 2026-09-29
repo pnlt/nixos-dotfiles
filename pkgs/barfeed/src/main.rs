@@ -62,10 +62,6 @@ fn main() -> ExitCode {
     }
 }
 
-// Three modules cover two layouts. A single direction is a sibling of the
-// stacked column rather than its lone survivor: GTK packs an only child at the
-// top of a vertical box, so it would never sit on the bar's centre line.
-// Whichever layout is not in use prints nothing and hide-empty-text drops it.
 fn ssh_solo() {
     let scan = Scan::take();
     let inbound = scan.inbound();
