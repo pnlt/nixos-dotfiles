@@ -86,7 +86,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nyx-terminal = {
-      url = "path:/home/pnlt/projects/nyx-terminal";
+      url = "github:pnlt/nyx-terminal";
     };
   };
 
