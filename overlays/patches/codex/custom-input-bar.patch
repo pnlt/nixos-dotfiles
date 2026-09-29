@@ -1,10 +1,9 @@
 diff --git a/tui/src/bottom_pane/chat_composer.rs b/tui/src/bottom_pane/chat_composer.rs
-index 2423647b38..8c60b1c6f8 100644
 --- a/tui/src/bottom_pane/chat_composer.rs
 +++ b/tui/src/bottom_pane/chat_composer.rs
-@@ -427,6 +427,21 @@ fn plan_mode_nudge_line() -> Line<'static> {
-     ])
- }
+@@ -606,6 +606,21 @@
+ 
+ const FOOTER_SPACING_HEIGHT: u16 = 0;
  
 +fn render_custom_input_bar(area: Rect, buf: &mut Buffer) {
 +    if area.width == 0 || area.height == 0 {
@@ -24,7 +23,8 @@ index 2423647b38..8c60b1c6f8 100644
  impl ChatComposer {
      fn slash_input(&self) -> SlashInput<'_> {
          SlashInput::new(
-@@ -4386,6 +4401,6 @@ impl ChatComposer {
+@@ -4946,7 +4961,7 @@
+             }
          }
          let style = user_message_style();
 -        Block::default().style(style).render(composer_rect, buf);
@@ -32,9 +32,9 @@ index 2423647b38..8c60b1c6f8 100644
          if !remote_images_rect.is_empty() {
              Paragraph::new(self.attachments.remote_image_lines())
                  .style(style)
-@@ -4396,10 +4412,10 @@ impl ChatComposer {
-                 if self.draft.is_bash_mode {
-                     Span::from("!").light_red().bold()
+@@ -4969,10 +4984,10 @@
+                         .unwrap_or(1.0);
+                     tier.prompt(charge)
                  } else {
 -                    "›".bold()
 +                    Span::from("λ").light_cyan().bold()
@@ -46,11 +46,10 @@ index 2423647b38..8c60b1c6f8 100644
              buf.set_span(
                  textarea_rect.x - LIVE_PREFIX_COLS,
 diff --git a/tui/src/history_cell/messages.rs b/tui/src/history_cell/messages.rs
-index 3945d06f05..8d522ebed2 100644
 --- a/tui/src/history_cell/messages.rs
 +++ b/tui/src/history_cell/messages.rs
-@@ -76,6 +76,10 @@ fn trim_trailing_blank_lines(mut lines: Vec<Line<'static>>) -> Vec<Line<'static>
-     lines
+@@ -175,6 +175,10 @@
+     }
  }
  
 +fn custom_input_bar_line(width: u16) -> Line<'static> {
@@ -59,39 +58,43 @@ index 3945d06f05..8d522ebed2 100644
 +
  impl HistoryCell for UserHistoryCell {
      fn display_lines(&self, width: u16) -> Vec<Line<'static>> {
-         let wrap_width = width
-@@ -99,8 +103,8 @@ impl HistoryCell for UserHistoryCell {
+         visible_lines(self.display_hyperlink_lines(width))
+@@ -199,8 +203,8 @@
              )
-             .max(1);
+             .max(/*other*/ 1);
  
--        let style = user_message_style();
--        let element_style = style.fg(Color::Cyan);
+-        let style = history_prompt_style();
+-        let element_style = style.fg(accent_color_on(style.bg));
 +        let style = Style::default();
 +        let element_style = Style::default().fg(Color::Cyan);
  
-         let wrapped_remote_images = if self.remote_image_urls.is_empty() {
-             None
-@@ -249,7 +253,7 @@ impl HistoryCell for UserHistoryCell {
+         let wrapped_images = plain_hyperlink_lines(adaptive_wrap_lines(
+             self.image_labels_not_in_message()
+@@ -215,7 +219,7 @@
              return Vec::new();
          }
  
 -        let mut lines = vec![HyperlinkLine::new(Line::from("").style(style))];
 +        let mut lines = vec![HyperlinkLine::new(custom_input_bar_line(width))];
  
-         if let Some(wrapped_remote_images) = wrapped_remote_images {
+         if !wrapped_images.is_empty() {
              lines.extend(prefix_hyperlink_lines(
-@@ -262,12 +266,12 @@ impl HistoryCell for UserHistoryCell {
-         if let Some(wrapped_message) = wrapped_message {
+@@ -231,16 +235,16 @@
              lines.extend(prefix_hyperlink_lines(
                  wrapped_message,
--                "› ".bold().dim(),
-+                Span::from("λ ").light_cyan().bold(),
+                 if self.spoken {
+-                    "› ".red().bold()
++                    Span::from("λ ").red().bold()
+                 } else {
+-                    "› ".bold().dim()
++                    Span::from("λ ").light_cyan().bold()
+                 },
                  "  ".into(),
              ));
          }
  
 -        lines.push(HyperlinkLine::new(Line::from("").style(style)));
 +        lines.push(HyperlinkLine::new(custom_input_bar_line(width)));
-         lines
-     }
- 
+         for source in lines.iter_mut().filter_map(|line| line.source.as_mut()) {
+             source.right_reserve = 1;
+         }
