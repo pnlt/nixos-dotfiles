@@ -98,6 +98,11 @@ in ''
       Mod+Alt+8 { move-column-to-workspace 8; }
       Mod+Alt+9 { move-column-to-workspace 9; }
 
+      Mod+Shift+H { focus-monitor-left; }
+      Mod+Shift+L { focus-monitor-right; }
+      Mod+Ctrl+H { move-window-to-monitor-left; }
+      Mod+Ctrl+L { move-window-to-monitor-right; }
+
       Mod+Comma  { consume-or-expel-window-left; }
       Mod+Period { consume-or-expel-window-right; }
 

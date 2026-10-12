@@ -16,7 +16,7 @@
           "position" = "top";
           "layer" = "top";
 
-          "output" = ["HDMI-A-1"];
+          "output" = ["DP-2"];
 
           modules-left = [
             "custom/launcher"
