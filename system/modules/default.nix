@@ -11,7 +11,7 @@
     ./programs/security
     ./programs/shell
     # ./programs/vm
-    # ./boot
+    ./boot
     ./core
   ];
 }

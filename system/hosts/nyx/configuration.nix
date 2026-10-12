@@ -14,9 +14,6 @@
   ];
   home-manager.useGlobalPkgs = true;
 
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
   networking.hostName = host.name;
   networking.networkmanager.enable = true;
 

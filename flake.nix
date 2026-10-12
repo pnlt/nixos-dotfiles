@@ -23,6 +23,13 @@
       url = "github:numtide/flake-utils";
       inputs.systems.follows = "systems";
     };
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        rust-overlay.follows = "rust-overlay";
+      };
+    };
     encore = {
       url = "github:encoredev/encore-flake";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -42,6 +49,10 @@
         systems.follows = "systems";
         nixpkgs.follows = "nixpkgs";
       };
+    };
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     bun2nix = {
       url = "github:nix-community/bun2nix";
@@ -147,6 +158,7 @@
     # NixOS module list (system-wide)
     nixosModules = [
       inputs.flake-programs-sqlite.nixosModules.programs-sqlite
+      inputs.lanzaboote.nixosModules.lanzaboote
       inputs.nyx-terminal.nixosModules.default
       inputs.home-manager.nixosModules.default
       ./pkgs/nixos-modules
