@@ -11,6 +11,11 @@
   ];
 
   programs.dconf.enable = true;
+  console = {
+    earlySetup = true;
+    font = "${pkgs.terminus_font}/share/consolefonts/ter-v24n.psf.gz";
+    packages = [pkgs.terminus_font];
+  };
 
   programs.ttygate = {
     enable = true;
@@ -29,6 +34,7 @@
 
     greetd = {
       enable = true;
+      useTextGreeter = true;
       settings = {
         default_session = {
           command = lib.getExe config.programs.ttygate.package;

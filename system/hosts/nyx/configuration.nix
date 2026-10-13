@@ -15,7 +15,6 @@
   home-manager.useGlobalPkgs = true;
 
   networking.hostName = host.name;
-  networking.networkmanager.enable = true;
 
   time.timeZone = host.timeZone;
   i18n.defaultLocale = host.i18nLocale;
