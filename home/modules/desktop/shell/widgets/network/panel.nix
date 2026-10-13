@@ -8,7 +8,7 @@
 }: let
   nmtuiCmd = "${lib.getExe config.programs.ghostty.package} --class=eww.nmtui -e ${pkgs.networkmanager}/bin/nmtui connect";
 
-  scanCmd = "${lib.getExe pkgs.scripts.nmcli-wifi-scan-waybar} --scan";
+  scanCmd = "${lib.getExe pkgs.myScripts.nmcli-wifi-scan-waybar} --scan";
 
   netInfo = pkgs.writeShellApplication {
     name = "eww-network-info";

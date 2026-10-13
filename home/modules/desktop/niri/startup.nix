@@ -11,8 +11,7 @@
 in ''
   // --- startup (dms removed) ---
   spawn-at-startup "${lib.getExe config.programs.waybar.package}"
-  spawn-at-startup "awww-daemon"
-  spawn-at-startup "awww" "img" "${config.home.homeDirectory}/nixos-dotfiles/home/modules/desktop/awww/wallpapers/cba.png"
+
   spawn-at-startup "${xclipScript}"
   spawn-at-startup "${pkgs.udiskie}/bin/udiskie"
   spawn-at-startup "${pkgs.easyeffects}/bin/easyeffects" "--gapplication-service"

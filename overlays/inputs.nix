@@ -29,7 +29,11 @@ with inputs; [
         })
       ];
   })
-  nixpkgs-extra.overlays.default
+  (final: prev: let
+    extra = nixpkgs-extra.overlays.default final prev;
+  in
+    builtins.removeAttrs extra ["scripts"]
+    // {myScripts = extra.scripts;})
   agentic-flake.overlays.default
   hermes-agent.overlays.default
 ]
