@@ -35,5 +35,4 @@ with inputs; [
     builtins.removeAttrs extra ["scripts"]
     // {myScripts = extra.scripts;})
   agentic-flake.overlays.default
-  hermes-agent.overlays.default
 ]
