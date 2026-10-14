@@ -6,6 +6,7 @@
 }: let
   magick = lib.getExe' pkgs.imagemagick "magick";
   rsvgConvert = lib.getExe' pkgs.librsvg "rsvg-convert";
+  svgPreviewCss = pkgs.writeText "svg-preview.css" "svg { color: #e0e0e0; }";
   pdftoppm = lib.getExe' pkgs.poppler-utils "pdftoppm";
   ffmpegthumbnailer = lib.getExe pkgs.ffmpegthumbnailer;
   ffmpeg = lib.getExe' pkgs.ffmpeg "ffmpeg";
@@ -24,10 +25,6 @@ in {
       preview_script = "${config.home.homeDirectory}/.config/ranger/scope.sh";
 
       preview_images = true;
-      # ueberzug draws an override-redirect X window, which lands in XWayland
-      # space and never over a native-Wayland ghostty surface. Ghostty speaks
-      # the kitty graphics protocol, and ranger's kitty displayer falls back to
-      # unicode placeholders under tmux (allow-passthrough is on).
       preview_images_method = "kitty";
     };
 
@@ -48,10 +45,10 @@ in {
         condition = "ext avi|m4v|mkv|mov|mp4|webm";
         command = "${lib.getExe pkgs.vlc} \"$@\"";
       }
-      # {
-      #   condition = "ext csv|doc|docm|docx|dotx|odp|ods|odt|pps|ppsx|ppt|pptm|pptx|rtf|xls|xlsb|xlsm|xlsx";
-      #   command = "${lib.getExe zaread} \"$@\"";
-      # }
+      {
+        condition = "else";
+        command = "${lib.getExe pkgs.nano} -- \"$@\"";
+      }
     ];
   };
 
@@ -350,7 +347,7 @@ in {
       }
 
       thumb_svg () {
-        ${rsvgConvert} --width=1200 --keep-aspect-ratio \
+        ${rsvgConvert} --width=1200 --keep-aspect-ratio --stylesheet=${svgPreviewCss} \
           --output="$IMAGE_CACHE_PATH" "$1" 2>/dev/null
         thumb_ok
       }
