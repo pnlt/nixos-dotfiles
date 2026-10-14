@@ -3,7 +3,7 @@
     ./man.nix
     # ./nao.nix
     ./translate.nix
-    # ./tty.nix
+    ./tty.nix
   ];
 
   programs.zsh.initContent = builtins.readFile ./.zshrc;
@@ -32,7 +32,7 @@
           enable = true;
           hideOnRemoteSsh = true;
         };
-        gitmux.enable = true;
+        git.enable = true;
       };
     };
     zoxide.enable = true;
