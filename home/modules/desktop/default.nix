@@ -3,7 +3,6 @@
     ./niri
     ./shell
     ./heft.nix
-    ./awww
     ./vicinae.nix
 
     ./color-picker.nix
