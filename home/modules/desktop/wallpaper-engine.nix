@@ -18,4 +18,15 @@
       }
     ];
   };
+  systemd.user.services.linux-wallpaperengine = {
+    Unit.After = [
+      "pipewire.service"
+      "pipewire-pulse.service"
+      "wireplumber.service"
+    ];
+    Service = {
+      KillSignal = "SIGINT";
+      TimeoutStopSec = "3s";
+    };
+  };
 }
