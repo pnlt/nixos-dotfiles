@@ -25,6 +25,7 @@
         "zen.view.compact.animate-sidebar" = false;
         "zen.welcome-screen.seen" = true;
         "zen.urlbar.behavior" = "float";
+        "zen.theme.hide-unified-extensions-button" = true;
         "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
 
         # marionette sets this to true and only clears it on a clean shutdown;
@@ -250,7 +251,7 @@
         };
       };
 
-      keyboardShortcutsVersion = 20;
+      keyboardShortcutsVersion = 21;
       keyboardShortcuts = [
         {
           id = "zen-compact-mode-toggle";
