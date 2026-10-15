@@ -7,5 +7,6 @@
     lsof
     wget
     eza
+    fd
   ];
 }
