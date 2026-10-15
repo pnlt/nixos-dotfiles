@@ -28,6 +28,7 @@
       font-size = "14.8";
       gtk-titlebar = "false";
       window-show-tab-bar = "never";
+      custom-shader = "/home/pnlt/nixos-dotfiles/config/ghostty/shaders/cursor.glsl";
     };
   };
 }
