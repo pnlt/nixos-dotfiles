@@ -26,6 +26,7 @@ in {
       inconsolata
       fira-code
       roboto
+      nerd-fonts.fantasque-sans-mono
     ];
 
     fontDir.enable = true;

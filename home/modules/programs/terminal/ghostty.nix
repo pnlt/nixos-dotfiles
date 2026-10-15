@@ -25,7 +25,8 @@
         '';
     });
     settings = {
-      font-size = "14.8";
+      font-family = "FantasqueSansM Nerd Font Mono";
+      font-size = "18";
       gtk-titlebar = "false";
       window-show-tab-bar = "never";
       custom-shader = "/home/pnlt/nixos-dotfiles/config/ghostty/shaders/cursor.glsl";
