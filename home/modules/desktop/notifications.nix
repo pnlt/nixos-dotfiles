@@ -3,11 +3,6 @@
     pkgs.libnotify
   ];
 
-  services.kdeconnect = {
-    enable = true;
-    indicator = true;
-  };
-
   services.hark = {
     enable = true;
 
@@ -33,16 +28,6 @@
             appName = "(?i)notify-send";
             summary = "(?i)\\b(claude|codex|gemini|opencode|aider)\\b";
           }
-        ];
-      };
-
-      phone = {
-        label = "Phone";
-        icon = "󰄜";
-        priority = 20;
-        match = [
-          {appName = "(?i)(kdeconnect|phone)";}
-          {desktopEntry = "(?i)kdeconnect";}
         ];
       };
 
