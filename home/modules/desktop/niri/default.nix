@@ -6,7 +6,6 @@
 }: let
   kdl = lib.concatStringsSep "\n\n" [
     (import ./input.nix {})
-    (import ./environment.nix {})
     (import ./cursor.nix {})
     (import ./output.nix {})
     (import ./layout.nix {})
@@ -22,7 +21,9 @@ in {
   };
 
   home.sessionVariables = {
-    NIXOS_OZONE_WL = "1";
     ELECTRON_OZONE_PLATFORM_HINT = "auto";
+    QT_QPA_PLATFORM = "wayland;xcb";
+    QT_QPA_PLATFORMTHEME = "gtk3";
+    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
   };
 }

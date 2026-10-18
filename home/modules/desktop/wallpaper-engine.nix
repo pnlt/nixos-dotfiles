@@ -14,7 +14,8 @@
 
       {
         monitor = "HDMI-A-1";
-        wallpaper = "3613238253";
+        # wallpaper = "3613238253";
+        wallpaper = "3299228616";
         scaling = "fill";
       }
     ];

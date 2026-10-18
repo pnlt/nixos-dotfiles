@@ -119,7 +119,6 @@ in ''
       Mod+T { toggle-window-floating; }
       Mod+Alt+T { switch-focus-between-floating-and-tiling; }
       Mod+W { toggle-column-tabbed-display; }
-      Mod+Shift+W { spawn "wallpaper-next"; }
 
       Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
   }
