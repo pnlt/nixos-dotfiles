@@ -8,7 +8,8 @@
     wallpapers = [
       {
         monitor = "DP-2";
-        wallpaper = "3450329622";
+        # wallpaper = "3450329622";
+        wallpaper = "3551182863";
       }
 
       {
