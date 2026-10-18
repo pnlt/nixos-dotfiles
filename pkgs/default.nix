@@ -6,6 +6,5 @@ pkgs:
   herdr-recall = pkgs.callPackage ./herdr-recall {};
   mcp-gateway = pkgs.callPackage ./mcp-gateway {};
   barfeed = pkgs.callPackage ./barfeed {};
-  ttygate = pkgs.callPackage ./ttygate {};
 }
 // import ./third-party pkgs
