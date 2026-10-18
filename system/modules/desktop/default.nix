@@ -16,6 +16,18 @@
     # graphical-desktop.nix turns speechd on by mkDefault for any desktop. no
     # screen reader here, and its module probes leave unreaped children behind.
     speechd.enable = false;
-    getty.autologinUser = "pnlt";
+    greetd = {
+      enable = true;
+      settings = {
+        initial_session = {
+          command = "${pkgs.niri}/bin/niri-session";
+          user = "pnlt";
+        };
+        default_session = {
+          command = "${pkgs.niri}/bin/niri-session";
+          user = "pnlt";
+        };
+      };
+    };
   };
 }
