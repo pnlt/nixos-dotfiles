@@ -74,8 +74,8 @@
     ];
 
     shellAliases = {
-      nix-shell = "cached-nix-shell";
-      ns = "nix-shell";
+      nix-shell = "cached-nix-shell --command zsh";
+      ns = "cached-nix-shell --command zsh";
     };
 
     variables.NIXPKGS_ALLOW_UNFREE = "1";
