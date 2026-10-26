@@ -24,5 +24,6 @@
 
     tree-sitter
     efm-langserver
+    copilot-language-server
   ];
 }
