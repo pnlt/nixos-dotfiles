@@ -1,19 +1,28 @@
 {pkgs, ...}: {
   home.packages = with pkgs; [
     lua-language-server
-    bash-language-server
-    typescript
-    clang-tools
-    efm-langserver
     stylua
     luaPackages.luacheck
-    ruff
+
+    bash-language-server
+    shellcheck
+
+    typescript
     prettierd
     eslint_d
-    fixjson
-    shellcheck
+    tailwindcss-language-server
+    vtsls
     cpplint
+
+    clang-tools
+
+    ruff
+
+    fixjson
+
     revive
+
     tree-sitter
+    efm-langserver
   ];
 }
