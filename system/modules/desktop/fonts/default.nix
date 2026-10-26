@@ -27,6 +27,7 @@ in {
       fira-code
       roboto
       nerd-fonts.fantasque-sans-mono
+      plemoljp-nf
     ];
 
     fontDir.enable = true;

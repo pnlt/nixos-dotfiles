@@ -25,7 +25,8 @@
         '';
     });
     settings = {
-      font-family = "FantasqueSansM Nerd Font Mono";
+      # font-family = "FantasqueSansM Nerd Font Mono";
+      font-family = "PlemolJP Console NF";
       font-size = "18";
       gtk-titlebar = "false";
       window-show-tab-bar = "never";
