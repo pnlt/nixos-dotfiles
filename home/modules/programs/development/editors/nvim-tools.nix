@@ -8,12 +8,14 @@
     shellcheck
 
     typescript
+    typescript-language-server
     prettierd
     eslint_d
     tailwindcss-language-server
     vtsls
-    cpplint
+    vscode-langservers-extracted
 
+    cpplint
     clang-tools
 
     ruff
