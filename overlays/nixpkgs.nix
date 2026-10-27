@@ -197,7 +197,7 @@
     # llm-agents' shared-nixpkgs overlay builds it with this flake's default
     # `zig`, which nixos-unstable moved to 0.17. Drop the override once herdr
     # accepts 0.17 (or llm-agents pins it upstream).
-    herdr = (prev.llm-agents.herdr.override {zig = prev.zig_0_16;}).overrideAttrs (old: {
+    herdr = prev.llm-agents.herdr.overrideAttrs (old: {
       patches =
         (old.patches or [])
         ++ [
