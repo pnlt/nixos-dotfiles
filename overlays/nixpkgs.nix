@@ -172,13 +172,19 @@
     });
   })
   (_final: prev: {
-    tmux = prev.tmux.overrideAttrs (old: {
-      patches =
-        (old.patches or [])
-        ++ [
-          ./patches/tmux/window-tree-per-session-group-check.patch
-        ];
-    });
+    pythonPackagesExtensions =
+      prev.pythonPackagesExtensions
+      ++ [
+        (_pythonFinal: pythonPrev: {
+          libtmux = pythonPrev.libtmux.overridePythonAttrs (old: {
+            patches =
+              (old.patches or [])
+              ++ [
+                ./patches/libtmux/pin-attached-server-socket.patch
+              ];
+          });
+        })
+      ];
   })
   (_final: prev: {
     herdr = prev.llm-agents.herdr.overrideAttrs (old: {
