@@ -5,6 +5,7 @@
 }: {
   imports = [
     ./ghostty.nix
+    ./herdr.nix
   ];
 
   home.packages = [pkgs.tmuxp];

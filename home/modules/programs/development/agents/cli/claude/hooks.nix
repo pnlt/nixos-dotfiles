@@ -1,0 +1,141 @@
+{
+  mkAgentKit,
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
+  kit = mkAgentKit {};
+  cbm = lib.getExe pkgs.codebase-memory-mcp;
+  redactSecrets = lib.getExe pkgs.redact-secrets;
+  herdrSession = kit.mkHerdrSessionCmd "claude";
+  diffReview = pkgs.writeShellApplication {
+    name = "agent-diff-review";
+    runtimeInputs = [pkgs.git pkgs.jq pkgs.coreutils pkgs.gawk pkgs.gnugrep];
+    text = builtins.readFile ../../hooks/diff-review.sh;
+  };
+  # Not ported from luisquin:
+  # - `strikedddd hook claude` on every event (private `striked` input)
+  # - `phone hook --harness claude` on Bash (his Android/iOS driver)
+in {
+  programs.claude-code.settings.hooks = {
+    Notification = [
+      (kit.mkCmdEntry {
+        matcher = "idle_prompt";
+        commands = [
+          (kit.mkTerminalStatusCmd "waiting" "claude · input")
+          (kit.mkNotificationCmd kit.images.claude "Claude Code" "Awaiting your input" {
+            context = true;
+            ntfy = {
+              delay = "10s";
+              sequenceId = "claude-awaiting-input";
+            };
+          })
+          (kit.mkAudioCmd [kit.sounds.buzact])
+        ];
+      })
+    ];
+    SessionStart = [
+      (kit.mkCmdEntry {
+        commands = [
+          (kit.mkTerminalStatusCmd "clear" "claude")
+          (kit.mkAudioCmd [kit.sounds.ifarm])
+          herdrSession
+        ];
+      })
+    ];
+    Elicitation = [
+      (kit.mkCmdEntry {
+        commands = [
+          (kit.mkTerminalStatusCmd "waiting" "claude · input")
+          (kit.mkAudioCmd [kit.sounds.ifrtho])
+        ];
+      })
+    ];
+    ElicitationResult = [
+      (kit.mkCmdEntry {
+        commands = [
+          (kit.mkTerminalStatusCmd "working" "claude · working")
+          (kit.mkCancelNotificationCmd {sequenceId = "claude-awaiting-input";})
+          (kit.mkAudioCmd [kit.sounds.ifrtfy])
+        ];
+      })
+    ];
+    PostToolUse = [
+      (kit.mkCmdEntry {
+        matcher = "Edit|Write|MultiEdit|NotebookEdit";
+        commands = ["${lib.getExe diffReview} 2>/dev/null || true"];
+      })
+    ];
+    PostToolUseFailure = [
+      (kit.mkCmdEntry {
+        commands = [(kit.mkAudioCmd [kit.sounds.ifvfrs])];
+      })
+    ];
+    UserPromptSubmit = [
+      (kit.mkCmdEntry {
+        commands = [
+          (kit.mkTerminalStatusCmd "working" "claude · working")
+          (kit.mkCancelNotificationCmd {sequenceId = "claude-awaiting-input";})
+          (kit.mkAudioCmd [kit.sounds.ifrsig])
+        ];
+      })
+    ];
+    TaskCompleted = [
+      (kit.mkCmdEntry {
+        commands = [(kit.mkAudioCmd [kit.sounds.ifrtho])];
+      })
+    ];
+    StopFailure = [
+      (kit.mkCmdEntry {
+        commands = [
+          (kit.mkTerminalStatusCmd "error" "claude · error")
+          (kit.mkAudioCmd [kit.sounds.ifdngr kit.sounds.ifrsis])
+        ];
+      })
+    ];
+    PermissionDenied = [
+      (kit.mkCmdEntry {
+        commands = [(kit.mkAudioCmd [kit.sounds.ifdngr kit.sounds.permission-denied])];
+      })
+    ];
+    PermissionRequest = [
+      (kit.mkCmdEntry {
+        commands = [
+          (kit.mkTerminalStatusCmd "waiting" "claude · permission")
+          (kit.mkNotificationCmd kit.images.claude "Claude Code" "Permission required" {context = true;})
+          (kit.mkAudioCmd [kit.sounds.ifdngr kit.sounds.permission-required])
+        ];
+      })
+    ];
+    PreToolUse = [
+      (kit.mkCmdEntry {
+        matcher = "Bash";
+        commands = [config.programs.claude-code.hooks."rtk-rewrite.sh"];
+      })
+      (kit.mkCmdEntry {
+        matcher = "Read";
+        commands = ["${redactSecrets} --read-hook"];
+      })
+      # Injects codebase-memory-mcp graph context into Grep/Glob calls.
+      # Never blocks: forced exit 0 even when the project is unindexed.
+      (kit.mkCmdEntry {
+        matcher = "Grep|Glob";
+        commands = ["${cbm} hook-augment 2>/dev/null || true"];
+      })
+    ];
+    SessionEnd = [
+      (kit.mkCmdEntry {
+        commands = [
+          (kit.mkTerminalStatusCmd "clear" "")
+          (kit.mkAudioCmd [kit.sounds.ifdarm])
+        ];
+      })
+    ];
+    Stop = [
+      (kit.mkCmdEntry {
+        commands = [(kit.mkTerminalStatusCmd "waiting" "claude · ready")];
+      })
+    ];
+  };
+}

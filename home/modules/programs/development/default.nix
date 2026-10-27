@@ -1,6 +1,6 @@
 {
   imports = [
-    # ./agents
+    ./agents
     # ./database
     # ./docker
     ./editors

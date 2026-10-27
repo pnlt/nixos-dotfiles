@@ -1,0 +1,326 @@
+{
+  nixosConfig,
+  config,
+  libx,
+  pkgs,
+  lib,
+}: {
+  mkAgentKit = {audioArgs ? "--volume=32768"}: let
+    allowedDomains = let
+      f = builtins.readFile ./.well-known/ai-allowed-domains.txt;
+    in
+      builtins.filter (s: s != "") (
+        lib.strings.splitString "\n" f
+      );
+
+    memories = builtins.readFile ./.well-known/memories.txt;
+    claudeMemories = builtins.readFile ./.well-known/claude-memories.txt;
+
+    permissionLines = let
+      f = builtins.readFile ./.well-known/ai-tool-permissions.txt;
+      lines = lib.strings.splitString "\n" f;
+
+      cleanLine = line: lib.strings.trim line;
+      isRule = line: line != "" && !(lib.hasPrefix "#" line);
+
+      baseLines = builtins.filter isRule (map cleanLine lines);
+      isBashRule = line:
+        builtins.match "[+?-][[:space:]]+Bash\\(.*\\)" line != null;
+      isBashPrefix = line:
+        builtins.match "@[[:space:]]+BashPrefix\\(.*\\)" line != null;
+
+      parseBashPrefix = line: let
+        match = builtins.match "@[[:space:]]+BashPrefix\\((.*)\\)" line;
+      in
+        if match != null
+        then builtins.elemAt match 0
+        else throw "Invalid agent Bash prefix line: ${line}";
+
+      bashPrefixes = map parseBashPrefix (
+        builtins.filter isBashPrefix baseLines
+      );
+
+      permissionSourceLines = builtins.filter (line: !(isBashPrefix line)) baseLines;
+
+      mkPrefixedBashRules = prefix: line: let
+        sign = builtins.substring 0 1 line;
+        body = lib.strings.trim (
+          builtins.substring 1 ((builtins.stringLength line) - 1) line
+        );
+
+        match = builtins.match "Bash\\((.*)\\)" body;
+        command = builtins.elemAt match 0;
+        colonStem = builtins.match "(.*):\\*" command;
+
+        # Claude treats `:*` as a literal prefix once the rule holds another `*`.
+        commands =
+          if lib.hasInfix "*" prefix && colonStem != null
+          then let
+            stem = builtins.elemAt colonStem 0;
+          in [stem "${stem} *"]
+          else [command];
+      in
+        map (c: "${sign} Bash(${prefix} ${c})") commands;
+
+      expandLine = line:
+        if isBashRule line
+        then [line] ++ map (prefix: mkPrefixedBashRules prefix line) bashPrefixes
+        else [line];
+    in
+      lib.unique (lib.flatten (map expandLine permissionSourceLines));
+
+    parsedPermissions = map (line: let
+      sign = builtins.substring 0 1 line;
+      rule = lib.strings.trim (
+        builtins.substring 1 ((builtins.stringLength line) - 1) line
+      );
+    in
+      if sign == "+"
+      then {
+        action = "allow";
+        inherit rule;
+      }
+      else if sign == "-"
+      then {
+        action = "deny";
+        inherit rule;
+      }
+      else if sign == "?"
+      then {
+        action = "ask";
+        inherit rule;
+      }
+      else throw "Invalid agent tool permission line: ${line}")
+    permissionLines;
+
+    toolPermissions = {
+      allow = map (entry: entry.rule) (
+        builtins.filter (entry: entry.action == "allow") parsedPermissions
+      );
+      deny = map (entry: entry.rule) (
+        builtins.filter (entry: entry.action == "deny") parsedPermissions
+      );
+      ask = map (entry: entry.rule) (
+        builtins.filter (entry: entry.action == "ask") parsedPermissions
+      );
+    };
+
+    # Only the "claude" target is ported. luisquin's lib.nix also renders
+    # "opencode", "codex" and "grok"; copy those branches back when you add
+    # those agents under ./cli.
+    mkAgentPermissions = target: extra: let
+      extraAllow = extra.allow or [];
+      extraAsk = extra.ask or [];
+      extraDeny = extra.deny or [];
+
+      isAutonomous = (config.agents.permissions.profile or "standard") == "autonomous";
+    in
+      if target == "claude"
+      then {
+        allow =
+          toolPermissions.allow
+          ++ builtins.map (d: "WebFetch(domain:${d})") allowedDomains
+          ++ extraAllow;
+
+        ask = toolPermissions.ask ++ extraAsk;
+        deny = toolPermissions.deny ++ extraDeny;
+
+        defaultMode =
+          if isAutonomous
+          then "acceptEdits"
+          else "default";
+      }
+      else throw "Unsupported agent permission target: ${target}";
+
+    audioArgsPart = lib.optionalString (audioArgs != "") "${audioArgs} ";
+
+    audioCommand = file: "${pkgs.pulseaudio}/bin/paplay ${audioArgsPart}${lib.escapeShellArg file}";
+
+    agentNotify = pkgs.writeShellApplication {
+      name = "agent-notify";
+      runtimeInputs = [pkgs.curl pkgs.systemd pkgs.libnotify pkgs.coreutils pkgs.jq];
+      text = builtins.readFile ./notify/agent-notify.sh;
+    };
+
+    agentTerminalStatus = pkgs.writeShellApplication {
+      name = "agent-terminal-status";
+      text = builtins.readFile ../../terminal/scripts/agent-terminal-status.sh;
+    };
+
+    # The scripts shell out to python3, which a hook's inherited PATH does not
+    # guarantee.
+    herdrSessionHook = agent:
+      pkgs.runCommandLocal "herdr-agent-state-${agent}" {
+        nativeBuildInputs = [pkgs.makeWrapper];
+      } ''
+        install -Dm755 \
+          ${pkgs.llm-agents.herdr.src}/src/integration/assets/${agent}/herdr-agent-state.sh \
+          $out/libexec/herdr-agent-state
+        makeWrapper $out/libexec/herdr-agent-state $out/bin/herdr-agent-state \
+          --prefix PATH : ${lib.makeBinPath [pkgs.python3]}
+      '';
+
+    # luisquin runs his own ntfy server (system/modules/programs/network/ntfy.nix).
+    # This repo has none, so remote push stays off until services.ntfy-sh is
+    # enabled on the NixOS side; desktop notifications work either way.
+    ntfyHost =
+      if nixosConfig.services.ntfy-sh.enable
+      then nixosConfig.services.ntfy-sh.settings.base-url
+      else "";
+  in {
+    inherit (import ./assets {inherit lib;}) sounds images;
+    inherit memories claudeMemories allowedDomains;
+    inherit mkAgentPermissions;
+
+    # Detached so the agent never waits on playback; the lock keeps sounds in
+    # order instead of overlapping, and drops one that waited too long to matter.
+    mkAudioCmd = files:
+      lib.concatStringsSep " " [
+        "${pkgs.util-linux}/bin/setsid -f"
+        "${pkgs.util-linux}/bin/flock -w 3 \"\${XDG_RUNTIME_DIR:-/tmp}/agent-sound.lock\""
+        "${pkgs.runtimeShell} -c"
+        (lib.escapeShellArg (builtins.concatStringsSep " && " (map audioCommand files)))
+        "</dev/null >/dev/null 2>&1"
+      ];
+
+    # A delay + sequenceId means the notification must be cancelable, so it is
+    # held in a local systemd timer via agent-notify. Without them it fires
+    # immediately through libx.notify (desktop + ntfy).
+    mkNotificationCmd = image: title: message: {
+      ntfy ? {},
+      context ? false,
+    }: let
+      isScheduled = (ntfy ? delay) && (ntfy ? sequenceId);
+
+      host = ntfyHost;
+      topic = ntfy.topic or "agents";
+      ntfyUrl =
+        if host == null || host == ""
+        then ""
+        else "${lib.removeSuffix "/" host}/${topic}";
+    in
+      if isScheduled || context
+      then
+        lib.concatStringsSep " " (
+          [(lib.getExe agentNotify)]
+          ++ (
+            if isScheduled
+            then [
+              "schedule"
+              "--id"
+              (lib.escapeShellArg ntfy.sequenceId)
+              "--delay"
+              (lib.escapeShellArg ntfy.delay)
+            ]
+            else ["fire"]
+          )
+          ++ [
+            "--title"
+            (lib.escapeShellArg title)
+            "--message"
+            (lib.escapeShellArg message)
+            "--image"
+            (lib.escapeShellArg image)
+          ]
+          ++ lib.optional context "--context"
+          ++ lib.optionals (ntfyUrl != "") [
+            "--ntfy-url"
+            (lib.escapeShellArg ntfyUrl)
+          ]
+        )
+      else
+        libx.notify.send {
+          desktop = {
+            inherit image title message;
+          };
+          ntfy =
+            {
+              inherit host topic;
+            }
+            // builtins.removeAttrs ntfy ["delay" "sequenceId"];
+        };
+
+    mkCancelNotificationCmd = {sequenceId, ...}:
+      lib.concatStringsSep " " [
+        (lib.getExe agentNotify)
+        "cancel"
+        "--id"
+        (lib.escapeShellArg sequenceId)
+      ];
+
+    mkTerminalStatusCmd = state: title:
+      lib.concatStringsSep " " [
+        (lib.getExe agentTerminalStatus)
+        (lib.escapeShellArg state)
+        (lib.escapeShellArg title)
+      ];
+
+    # herdr learns a pane's agent session id only from this script, and it
+    # installs the script by rewriting the agent's own settings file. Those
+    # files belong to home-manager, so every rebuild dropped herdr's entry and
+    # `session.resume_agents_on_restore` had nothing to resume. Ship the script
+    # from the flake input instead and wire it beside the other hooks.
+    mkHerdrSessionCmd = agent: "${herdrSessionHook agent}/bin/herdr-agent-state session";
+
+    mkCmdEntry = {
+      matcher ? null,
+      commands,
+    }:
+      {
+        hooks =
+          map (command: {
+            type = "command";
+            inherit command;
+          })
+          commands;
+      }
+      // lib.optionalAttrs (matcher != null) {
+        inherit matcher;
+      };
+
+    mkMcpServers = let
+      inherit (config.programs.mcp) servers;
+    in
+      {
+        excludeServers ? [],
+        excludeTools ? {},
+        snakeCase ? false,
+        normalizeServerUrl ? false,
+      }: let
+        applyToolExclusions = name: server: let
+          excluded = excludeTools.${name} or [];
+          disabledTools = server.disabledTools or [];
+          nextDisabledTools = lib.unique (disabledTools ++ excluded);
+        in
+          server
+          // lib.optionalAttrs (nextDisabledTools != []) {
+            disabledTools = nextDisabledTools;
+          };
+
+        applyMappings = server:
+          (
+            if snakeCase
+            then
+              builtins.removeAttrs server ["disabledTools"]
+              // lib.optionalAttrs (server ? disabledTools) {
+                disabled_tools = server.disabledTools;
+              }
+            else lib.hm.mcp.addType server
+          )
+          // lib.optionalAttrs normalizeServerUrl (
+            lib.optionalAttrs (server ? url && !(server ? serverUrl)) {
+              serverUrl = server.url;
+            }
+          );
+
+        cleanServer = server:
+          lib.filterAttrs (_: value: value != null && value != [] && value != {}) server;
+
+        transformServer = name: server:
+          cleanServer (applyMappings (applyToolExclusions name server));
+      in
+        lib.mapAttrs transformServer (
+          builtins.removeAttrs servers excludeServers
+        );
+  };
+}

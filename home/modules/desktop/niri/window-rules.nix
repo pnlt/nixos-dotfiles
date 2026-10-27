@@ -58,4 +58,11 @@
         open-maximized true
         open-on-workspace "dev"
     }
+
+    // herdr hub (agents) — toggled with Mod+A, see binds.nix
+    window-rule {
+        match app-id="ghostty.herdr"
+        open-maximized true
+        open-on-workspace "hub"
+    }
 ''

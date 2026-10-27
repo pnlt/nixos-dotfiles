@@ -12,6 +12,7 @@
 
   workspace "main"
   workspace "dev"
+  workspace "hub"
 
   screenshot-path null
 ''

@@ -13,6 +13,32 @@
   devScript = "${home}/nixos-dotfiles/config/niri/scripts/dev";
   vicinaeCmd = lib.getExe' config.programs.vicinae.package "vicinae";
 
+  # luisquin's SUPER+J Hyprland drop terminal, niri-style: herdr's persistent
+  # "hub" session lives on its own named workspace. Mod+A jumps to it (spawning
+  # it on first use); pressing Mod+A again from the hub jumps back.
+  # Ghostty's own keybinds are cleared there so herdr gets every key.
+  herdrHub = pkgs.writeShellApplication {
+    name = "niri-herdr-hub";
+    runtimeInputs = [pkgs.jq];
+    text = ''
+      class="ghostty.herdr"
+      focused=$(niri msg --json focused-window | jq -r '.app_id // empty')
+      if [ "$focused" = "$class" ]; then
+        exec niri msg action focus-workspace-previous
+      fi
+      id=$(niri msg --json windows | jq -r --arg c "$class" '.[] | select(.app_id == $c) | .id' | head -n1)
+      if [ -n "$id" ]; then
+        exec niri msg action focus-window --id "$id"
+      fi
+      exec niri msg action spawn -- ${ghostty} --class="$class" \
+        --keybind=clear \
+        --keybind=super+shift+c=copy_to_clipboard \
+        --keybind=super+shift+v=paste_from_clipboard \
+        '--keybind=shift+enter=text:\x1b\r' \
+        -e ${lib.getExe pkgs.herdr} --session hub
+    '';
+  };
+
   waybarRestart = pkgs.writeShellScript "niri-waybar-restart" ''
     pkill waybar 2>/dev/null || true
     sleep 0.1
@@ -29,6 +55,7 @@ in ''
   binds {
       Mod+Return     { spawn "${ghostty}"; }
       Mod+Alt+Return { spawn "${devScript}"; }
+      Mod+A          { spawn "${lib.getExe herdrHub}"; }
       Mod+Shift+B { spawn "${waybarRestart}"; }
 
       Mod+Space { spawn "${vicinaeApps}"; }
