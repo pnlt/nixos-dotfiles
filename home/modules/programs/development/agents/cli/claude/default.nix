@@ -97,7 +97,7 @@ in {
       # stretches the 5-hour/weekly limits much further. Switch per session
       # with `/model opus` or `/model opusplan` (plan with Opus, code with
       # Sonnet) when a task deserves it, or change the default here.
-      model = "sonnet";
+      model = "opus";
       effortLevel = "high";
       language = "english";
       cleanupPeriodDays = 90;
