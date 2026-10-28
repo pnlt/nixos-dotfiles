@@ -51,7 +51,7 @@
     window-rule {
         match app-id="com.mitchellh.ghostty" title="^btop$"
         open-floating true
-        default-column-width { proportion 0.75; }
+        default-column-width { proportion 0.95; }
         default-window-height { proportion 0.8; }
     }
 
