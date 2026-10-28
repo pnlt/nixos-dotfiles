@@ -20,6 +20,17 @@ in {
     force = true;
   };
 
+  # Shadows the packaged Terminal=true entry so launchers get the ghostty.btop app-id
+  # that the floating window rule matches.
+  xdg.desktopEntries.btop = {
+    name = "btop++";
+    comment = "Resource monitor";
+    icon = "btop";
+    exec = "${lib.getExe config.programs.ghostty.package} --class=ghostty.btop -e btop";
+    terminal = false;
+    categories = ["System" "Monitor"];
+  };
+
   home.sessionVariables = {
     ELECTRON_OZONE_PLATFORM_HINT = "auto";
     QT_QPA_PLATFORM = "wayland;xcb";

@@ -47,9 +47,9 @@
       // optional size — niri uses different sizing APIs than hypr
   }
 
-    // btop launched in its own terminal (vicinae, ghostty -e btop)
+    // btop via keybind or vicinae (btop.desktop override in default.nix)
     window-rule {
-        match app-id="com.mitchellh.ghostty" title="^btop$"
+        match app-id="ghostty.btop"
         open-floating true
         default-column-width { proportion 0.95; }
         default-window-height { proportion 0.8; }
