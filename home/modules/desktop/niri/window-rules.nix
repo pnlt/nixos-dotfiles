@@ -47,10 +47,13 @@
       // optional size — niri uses different sizing APIs than hypr
   }
 
-   window-rule {
-      match app-id="waybar.btop"
-      open-floating true
-  }
+    // btop launched in its own terminal (vicinae, ghostty -e btop)
+    window-rule {
+        match app-id="com.mitchellh.ghostty" title="^btop$"
+        open-floating true
+        default-column-width { proportion 0.75; }
+        default-window-height { proportion 0.8; }
+    }
 
     // Floating Terminal / dev workspace
     window-rule {

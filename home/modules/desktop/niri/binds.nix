@@ -57,6 +57,7 @@ in ''
       Mod+Alt+Return { spawn "${devScript}"; }
       Mod+A          { spawn "${lib.getExe herdrHub}"; }
       Mod+Shift+B { spawn "${waybarRestart}"; }
+      Ctrl+Shift+Escape { spawn "${ghostty}" "-e" "btop"; }
 
       Mod+Space { spawn "${vicinaeApps}"; }
       Mod+Alt+V { spawn "${vicinaeCmd}" "deeplink" "vicinae://launch/clipboard/history"; }
