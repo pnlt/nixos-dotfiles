@@ -436,11 +436,11 @@
     },
     "nyx-terminal": {
       "locked": {
-        "lastModified": 1793006948,
-        "narHash": "sha256-x4QGc0ONitpNwy1zOLHti8ANY8RbNu2uBxfKbGiMBlE=",
+        "lastModified": 1793209727,
+        "narHash": "sha256-KVJCqKi+vX0osgZeP3JPZtCAmBHBXiDuCN5eRLyx5T4=",
         "owner": "pnlt",
         "repo": "nyx-terminal",
-        "rev": "68b443628f02dacf888c08ee235da01a707fda82",
+        "rev": "33fc5a0bab2ca0638633fd718ea1e7762cfdd0f9",
         "type": "github"
       },
       "original": {
