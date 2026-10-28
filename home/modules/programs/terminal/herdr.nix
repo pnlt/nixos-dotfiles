@@ -107,6 +107,8 @@ in {
       };
 
       keys = {
+        prefix = "ctrl+w";
+
         split_vertical = ["prefix+v" "prefix+percent" "prefix+|" "prefix+backtick"];
         split_horizontal = ["prefix+s" "prefix+double_quote" "prefix+minus" "prefix+slash"];
         settings = "prefix+shift+s";
