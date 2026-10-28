@@ -3,6 +3,7 @@ stackoverflow.com
 npmjs.com
 wiki.hyprland.org
 wiki.hypr.land
+niri-wm.github.io
 raw.githubusercontent.com
 encore.dev
 opencode.ai
