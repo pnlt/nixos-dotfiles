@@ -1,4 +1,9 @@
 {pkgs, ...}: {
+  imports = [
+    ./ephemeral.nix
+    ./persistence.nix
+  ];
+
   boot.tmp.cleanOnBoot = true;
 
   services = {

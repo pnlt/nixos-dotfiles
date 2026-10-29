@@ -89,6 +89,7 @@
     nyx-terminal = {
       url = "github:pnlt/nyx-terminal";
     };
+    preservation.url = "github:nix-community/preservation";
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -156,6 +157,7 @@
       inputs.nyx-terminal.nixosModules.default
       inputs.home-manager.nixosModules.default
       inputs.sops-nix.nixosModules.sops
+      inputs.preservation.nixosModules.preservation
       ./pkgs/nixos-modules
       ./secrets
       (./system/hosts + "/${metadata.host.name}")

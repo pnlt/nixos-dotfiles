@@ -4,7 +4,6 @@
 {
   config,
   lib,
-  pkgs,
   modulesPath,
   ...
 }: {
@@ -17,9 +16,10 @@
   boot.kernelModules = [];
   boot.extraModulePackages = [];
 
-  fileSystems."/" = {
+  fileSystems."/persist" = {
     device = "/dev/disk/by-uuid/4f5d008f-4210-42ca-9c41-833f7ca8a9cf";
     fsType = "ext4";
+    neededForBoot = true;
   };
 
   fileSystems."/boot" = {
