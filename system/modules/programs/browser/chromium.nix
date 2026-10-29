@@ -1,4 +1,4 @@
-{libx, ...}: {
+{...}: {
   programs.chromium = {
     enable = true;
     extraOpts = {

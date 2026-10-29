@@ -1,8 +1,4 @@
-{
-  libx,
-  lib,
-  ...
-}: {
+{lib, ...}: {
   force = true;
   settings = let
     mkEntryWithKeywords = {
