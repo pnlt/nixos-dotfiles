@@ -230,4 +230,13 @@
         ];
     });
   })
+  (_final: prev: {
+    vicinae = prev.vicinae.overrideAttrs (old: {
+      patches =
+        (old.patches or [])
+        ++ [
+          ./patches/vicinae/write-clipboard-through-data-control-when-focused.patch
+        ];
+    });
+  })
 ]
