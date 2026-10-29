@@ -67,8 +67,10 @@ in {
       session.resume_agents_on_restore = true;
 
       ui = {
+        pane_gaps = false;
         sidebar_start_collapsed = true;
         sidebar_width = 20;
+        sidebar_collapsed_mode = "hidden";
         hide_tab_bar_when_single_tab = true;
         agent_panel_sort = "spaces";
         sound.enabled = true;
@@ -122,10 +124,15 @@ in {
         next_workspace = "prefix+tab";
         previous_workspace = "prefix+shift+tab";
 
-        resize_pane_left = "prefix+shift+h";
-        resize_pane_down = "prefix+shift+j";
-        resize_pane_up = "prefix+shift+k";
-        resize_pane_right = "prefix+shift+l";
+        # Direct chords, no prefix: hold alt+shift and tap or hold h/j/k/l to
+        # keep resizing. Keeps prefix+shift+h/j/k/l on the default pane swap.
+        resize_pane_left = "alt+shift+h";
+        resize_pane_down = "alt+shift+j";
+        resize_pane_up = "alt+shift+k";
+        resize_pane_right = "alt+shift+l";
+
+        # prefix+e runs the close-other-panes command below.
+        edit_scrollback = "";
 
         command = [
           {
