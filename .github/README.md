@@ -11,7 +11,7 @@ Flake-based NixOS and Home Manager configuration for `nyx`.
 
 </div>
 
-<!-- demo: replace with a recording, e.g. <video src="..."> or ![demo](./assets/demo.gif) -->
+https://github.com/user-attachments/assets/c77cc56e-e198-4824-b13f-f5d0bc2a6ba4
 
 ## Highlights
 
