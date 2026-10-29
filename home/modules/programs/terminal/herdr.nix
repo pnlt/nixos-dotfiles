@@ -1,8 +1,11 @@
 {
+  config,
   pkgs,
   lib,
   ...
 }: let
+  herdr = lib.getExe config.programs.herdr.package;
+
   # Stopgap: own plugins.json declaratively until the herdr module exposes a
   # native `plugins` option. importTOML reads each manifest at eval time (IFD).
   plugins = [
@@ -64,6 +67,8 @@ in {
       session.resume_agents_on_restore = true;
 
       ui = {
+        sidebar_start_collapsed = true;
+        sidebar_width = 20;
         hide_tab_bar_when_single_tab = true;
         agent_panel_sort = "spaces";
         sound.enabled = true;
@@ -117,6 +122,11 @@ in {
         next_workspace = "prefix+tab";
         previous_workspace = "prefix+shift+tab";
 
+        resize_pane_left = "prefix+shift+h";
+        resize_pane_down = "prefix+shift+j";
+        resize_pane_up = "prefix+shift+k";
+        resize_pane_right = "prefix+shift+l";
+
         command = [
           {
             key = "prefix+alt+g";
@@ -131,6 +141,12 @@ in {
             height = "60%";
             command = "${lib.getExe pkgs.herdr-recall} show | ${lib.getExe' pkgs.less "less"} -R";
             description = "what each pane was running";
+          }
+          {
+            key = "prefix+e";
+            type = "shell";
+            command = "${herdr} pane list | ${lib.getExe pkgs.jq} -r --arg t \"$HERDR_ACTIVE_TAB_ID\" --arg p \"$HERDR_ACTIVE_PANE_ID\" '.result.panes[] | select(.tab_id == $t and .pane_id != $p) | .pane_id' | ${pkgs.findutils}/bin/xargs -r -n1 ${herdr} pane close";
+            description = "close other panes in tab";
           }
         ];
       };
