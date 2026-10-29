@@ -13,6 +13,13 @@ Flake-based NixOS and Home Manager configuration for `nyx`.
 
 <img src="./assets/demo.avif" alt="nyx desktop demo" width="100%">
 
+> [!WARNING]
+> **Not beginner-friendly. Not friendly, period.**
+>
+> `/` forgets everything on every boot, secrets refuse to decrypt for strangers, every commit is signed, and the firmware checks the kernel's ID at the door. It works on my machine, and it is the only machine it will ever work on.
+>
+> If you came to copy a rice, close the tab. If you came to read Nix, welcome.
+
 ## Highlights
 
 - **Ephemeral root** - `/` is a tmpfs wiped on every boot; state that matters is declared and kept on `/persist` through [preservation](https://github.com/nix-community/preservation).
