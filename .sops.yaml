@@ -1,0 +1,10 @@
+keys:
+  - &pnlt age19rxtdn2wxt7efsjw4r5szzfh868qmwnmnthh0t4lk7yxjlxfppfql36s0a
+  - &nyx age1nq0sw9p4830yg5sa4qun2dan73awqxjf6qp9t3jfzpf7t2rwluvquq2u37
+
+creation_rules:
+  - path_regex: ^secrets/secrets\.yaml$
+    key_groups:
+      - age:
+          - *pnlt
+          - *nyx

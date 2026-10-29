@@ -89,6 +89,10 @@
     nyx-terminal = {
       url = "github:pnlt/nyx-terminal";
     };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {
@@ -151,7 +155,9 @@
       inputs.lanzaboote.nixosModules.lanzaboote
       inputs.nyx-terminal.nixosModules.default
       inputs.home-manager.nixosModules.default
+      inputs.sops-nix.nixosModules.sops
       ./pkgs/nixos-modules
+      ./secrets
       (./system/hosts + "/${metadata.host.name}")
     ];
 
