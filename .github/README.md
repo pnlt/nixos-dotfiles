@@ -11,7 +11,7 @@ Flake-based NixOS and Home Manager configuration for `nyx`.
 
 </div>
 
-<a href="https://github.com/user-attachments/assets/c77cc56e-e198-4824-b13f-f5d0bc2a6ba4"><img src="./assets/demo.avif" alt="nyx desktop demo" width="100%"></a>
+<img src="./assets/demo.avif" alt="nyx desktop demo" width="100%">
 
 ## Highlights
 
