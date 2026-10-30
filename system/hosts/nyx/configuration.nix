@@ -1,5 +1,4 @@
 {
-  lib,
   pkgs,
   host,
   nix,
@@ -32,19 +31,15 @@
       banner.text = ''
         if [ ! -f /run/nixos-banner-shown ]; then
           echo '    .              +   .                .   . .     .  .'
-          sleep 0.3
           echo '                    .                    .       .     *'
           echo '    .       *                        . . . .  .   .  + .'
-          sleep 0.2
           echo '              (You Are Here)            .   .  +  . . .'
           echo '  .                 |             .  .   .    .    . .'
           echo '                    |           .     .     . +.    +  .'
-          sleep 0.5
           echo '                    ↓            .       .   . .'
           echo '         . .       . * <- (chimera).    * . . .  .  +   .'
           echo '            +        ° <- (nyx)  *   .   .      +'
           echo '<==[{         ?             .       . +  .+. .'
-          sleep 0.3
           echo '    .                      .     . + .  . .     .      .'
           echo '            .      .    .     . .   . . .        ! /'
           echo '        *             .    . .  +    .  .       - O -  ←- (rose)'
@@ -53,15 +48,6 @@
           echo '  .  +   .  .  .  *   .  *  . +..  .            *'
           echo '  .      .   . .   .   .   . .  +   .    .            +'
           echo
-
-          ${lib.getExe pkgs.genact} -s=5 --exit-after-time=1s \
-            -m bootlog \
-            -m cryptomining \
-            -m docker_image_rm \
-            -m download \
-            -m kernel_compile \
-            -m memdump \
-            -m simcity
 
           touch /run/nixos-banner-shown
         fi
