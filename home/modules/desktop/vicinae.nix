@@ -40,7 +40,10 @@ in {
         layer = "overlay";
       };
 
-      providers.applications.entrypoints."zen-beta".alias = "zen";
+      providers.applications = {
+        entrypoints."zen-beta".alias = "zen";
+        preferences.launchPrefix = "systemd-run --user --scope --slice=app.slice --";
+      };
 
       providers.files.preferences.indexingPaths = [
         "${homeDirectory}/projects"
