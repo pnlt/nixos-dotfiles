@@ -7,6 +7,7 @@
 }: let
   kit = mkAgentKit {};
   cbm = lib.getExe pkgs.codebase-memory-mcp;
+  phone = lib.getExe pkgs.phone;
   redactSecrets = lib.getExe pkgs.redact-secrets;
   herdrSession = kit.mkHerdrSessionCmd "claude";
   diffReview = pkgs.writeShellApplication {
@@ -16,7 +17,6 @@
   };
   # Not ported from luisquin:
   # - `strikedddd hook claude` on every event (private `striked` input)
-  # - `phone hook --harness claude` on Bash (his Android/iOS driver)
 in {
   programs.claude-code.settings.hooks = {
     Notification = [
@@ -112,6 +112,10 @@ in {
       (kit.mkCmdEntry {
         matcher = "Bash";
         commands = [config.programs.claude-code.hooks."rtk-rewrite.sh"];
+      })
+      (kit.mkCmdEntry {
+        matcher = "Bash";
+        commands = ["${phone} hook --harness claude"];
       })
       (kit.mkCmdEntry {
         matcher = "Read";

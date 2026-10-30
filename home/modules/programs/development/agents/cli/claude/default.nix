@@ -16,7 +16,6 @@ in {
   # outside the plugin directory, which claude refuses. Copied, not linked:
   # claude reloads a mod whenever a watched file's ctime moves, and with
   # auto-optimise-store every dirty-tree flake copy hardlinks the same inodes.
-  # (luisquin also installs his `phone` mod here; phone is not ported.)
   home.activation.claudeMods = let
     skills = "${config.programs.claude-code.configDir}/skills";
     stamps = "${config.xdg.stateHome}/claude-mods";
@@ -32,6 +31,7 @@ in {
         [[ -v DRY_RUN ]] || printf '%s\n' "$2" > "$stamp"
       }
       run mkdir -p "${skills}" "${stamps}"
+      claudeMod phone ${pkgs.phone.claudePlugin}
       claudeMod chat-clean ${sources.chat-clean}
     '';
 

@@ -9,8 +9,7 @@ in {
   # ~/.claude/skills ("claude").
   #
   # Dropped from luisquin's list (tied to his hardware/accounts): ee-workbench,
-  # phone-skill, pen-design, linear-*, mobile-developer, android-firmware-lab,
-  # jetson-nixos, mobile-nixos-port.
+  # pen-design, linear-*, android-firmware-lab, jetson-nixos, mobile-nixos-port.
   programs.agents = {
     enable = true;
 
@@ -35,6 +34,15 @@ in {
         } {
           plugins = ["nixgrep"];
         })
+      (mkInlineSkill {
+          "phone-skill" = {
+            description = "Drive Android phones, emulators (AVDs) and iOS simulators, local or on a remote Mac, with the `phone` CLI instead of raw adb, emulator, avdmanager, xcrun simctl or ssh. Boot, pick a device, snapshot the screen, tap, swipe, type, wait, screenshot, record, install, launch, open deep links, reverse ports.";
+            tags = ["mobile"];
+            content = builtins.readFile "${inputs.luisquin-config}/home/modules/programs/development/agents/skills/phone.md";
+          };
+        } {
+          plugins = ["phone-skill"];
+        })
       (mkSkill {src = ./skills;} {
         plugins = ["nix-patch" "nix-triage" "squad" "dev-flow"];
       })
@@ -44,6 +52,11 @@ in {
           "pdf"
           "pptx"
           "frontend-design"
+        ];
+      })
+      (daffy0208.ai-dev-standards {
+        plugins = [
+          "mobile-developer"
         ];
       })
       (mkSkill {

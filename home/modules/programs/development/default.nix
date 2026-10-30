@@ -6,7 +6,7 @@
     ./editors
     ./git
     ./go
-    # ./mobile
+    ./mobile
     # ./ops
     ./pwn
 

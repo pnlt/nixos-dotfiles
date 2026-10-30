@@ -15,6 +15,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     systems.url = "github:nix-systems/default";
+    luisquin-config = {
+      url = "github:luisnquin/nixos-config";
+      flake = false;
+    };
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";
@@ -113,7 +117,7 @@
       config = {
         allowBroken = false;
         allowUnfree = true;
-        # android_sdk.accept_license = true;
+        android_sdk.accept_license = true;
       };
     in
       import nixpkgs {
@@ -169,6 +173,7 @@
       inputs.encore.homeModules.default
       inputs.techdebt-cli.homeModules.default
       ./pkgs/hm-modules
+      "${inputs.luisquin-config}/pkgs/phone/hm-modules"
       ./home/options
       (./home/profiles + "/${metadata.user.alias}")
     ];

@@ -342,6 +342,22 @@
         "type": "github"
       }
     },
+    "luisquin-config": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793377176,
+        "narHash": "sha256-44FLqHYIzK8vEhps+dwnXWRkHgcQw91P86Q+NbL5ZE4=",
+        "owner": "luisnquin",
+        "repo": "nixos-config",
+        "rev": "7b8e876c08df4c5486af66e9932a6aa4f136e0be",
+        "type": "github"
+      },
+      "original": {
+        "owner": "luisnquin",
+        "repo": "nixos-config",
+        "type": "github"
+      }
+    },
     "nix-scripts": {
       "inputs": {
         "nixpkgs": [
@@ -523,6 +539,7 @@
         "home-manager": "home-manager",
         "lanzaboote": "lanzaboote",
         "llm-agents": "llm-agents",
+        "luisquin-config": "luisquin-config",
         "nixpkgs": "nixpkgs",
         "nixpkgs-extra": "nixpkgs-extra",
         "nyx-terminal": "nyx-terminal",

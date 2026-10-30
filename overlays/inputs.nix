@@ -35,4 +35,7 @@ with inputs; [
     builtins.removeAttrs extra ["scripts"]
     // {myScripts = extra.scripts;})
   agentic-flake.overlays.default
+  (final: _prev: {
+    phone = final.callPackage "${luisquin-config}/pkgs/phone" {};
+  })
 ]
