@@ -136,37 +136,6 @@
     });
   })
   (_final: prev: {
-    codebase-memory-mcp = prev.codebase-memory-mcp.overrideAttrs (_old: rec {
-      version = "0.9.1-rc.1-unstable-2026-07-31";
-      src = prev.fetchFromGitHub {
-        owner = "DeusData";
-        repo = "codebase-memory-mcp";
-        rev = "d6be58ef9d43c574a2d1b0827ecc1e3c4846f0fe";
-        hash = "sha256-4Z3DjDXOM3XMMdzz1aZQIAO2qjhlNXiCpTw1faltH30=";
-      };
-      npmDeps = prev.fetchNpmDeps {
-        inherit src;
-        sourceRoot = "${src.name}/graph-ui";
-        hash = "sha256-6NUv6JCUAPHmq7RbgkgaQVrKgeL09QfUksz4uvh5UAA=";
-      };
-      patches = [
-        ./patches/codebase-memory-mcp/remove-install-update.patch
-        ./patches/codebase-memory-mcp/index-in-xdg-data-home.patch
-      ];
-      postPatch = ''
-        substituteInPlace Makefile.cbm \
-          --replace-fail "npm ci &&" ""
-
-        patchShebangs scripts/embed-frontend.sh
-      '';
-      buildPhase = ''
-        runHook preBuild
-        make -j$NIX_BUILD_CORES -f Makefile.cbm cbm CFLAGS_EXTRA='-DCBM_VERSION=\"${version}\"'
-        runHook postBuild
-      '';
-    });
-  })
-  (_final: prev: {
     browsers = prev.browsers.overrideAttrs (old: {
       patches =
         (old.patches or [])
