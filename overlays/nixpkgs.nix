@@ -197,6 +197,8 @@
     # llm-agents' shared-nixpkgs overlay builds it with this flake's default
     # `zig`, which nixos-unstable moved to 0.17. Drop the override once herdr
     # accepts 0.17 (or llm-agents pins it upstream).
+    #  Backports ghostty-org/ghostty#14832; drop once herdr vendors past
+    #  ghostty bcfe5775.
     herdr = prev.llm-agents.herdr.overrideAttrs (old: {
       patches =
         (old.patches or [])
@@ -206,6 +208,7 @@
           ./patches/herdr/stage-agent-resume-command.patch
           ./patches/herdr/claude-resume-skip-permissions.patch
           ./patches/herdr/default-bg-follows-child-ownership.patch
+          ./patches/herdr/drop-kitty-images-in-erased-history.patch
         ];
     });
   })
