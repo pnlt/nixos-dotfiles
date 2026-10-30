@@ -2,6 +2,7 @@
 # each one is a derivation over a fetched source, so a bump is a version and a
 # hash in a single file. First-party packages sit one level up.
 pkgs: {
+  chrome-devtools-mcp = pkgs.callPackage ./chrome-devtools-mcp {};
   herdr-pluck = pkgs.callPackage ./herdr-pluck {};
   herdr-sesh = pkgs.callPackage ./herdr-sesh {};
   knots = pkgs.callPackage ./knots {};

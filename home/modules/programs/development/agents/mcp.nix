@@ -42,6 +42,17 @@ in {
         package = pkgs.codebase-memory-mcp;
         scope = "workspace";
       }
+      {
+        name = "chrome-devtools";
+        package = pkgs.chrome-devtools-mcp;
+        args = [
+          "--executablePath"
+          (lib.getExe config.programs.chromium.package)
+          "--headless"
+          "--isolated"
+        ];
+        reapWhenIdle = true;
+      }
       # Not ported: davinci-resolve (needs DaVinci Resolve) and
       # firefox-devtools (needs his marionette-enabled browser profile).
     ];
