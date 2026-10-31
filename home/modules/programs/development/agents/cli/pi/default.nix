@@ -32,11 +32,11 @@ in {
 
     settings = {
       defaultProvider = "openai";
-      defaultModel = "gpt-6-sol";
+      defaultModel = "gpt-6.1-sol";
       defaultThinkingLevel = "medium";
 
       theme = "iceberg";
-      externalEditor = "nano";
+      externalEditor = "nvim";
       quietStartup = true;
       terminal.showTerminalProgress = true;
 

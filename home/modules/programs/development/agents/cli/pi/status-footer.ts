@@ -15,14 +15,16 @@ function formatWindow(window: UsageWindow | undefined, label: string): string {
 }
 
 async function getRateLimits(): Promise<string> {
-  const agentDir = process.env.PI_CODING_AGENT_DIR ?? join(homedir(), ".pi", "agent");
-  const auth = JSON.parse(await readFile(join(agentDir, "auth.json"), "utf8")) as {
-    openai?: { type?: string; access?: string };
+  // pi's "Sign in with ChatGPT" token is an API token the usage endpoint rejects;
+  // codex's login is the same ChatGPT account and limits.
+  const codexHome = process.env.CODEX_HOME ?? join(homedir(), ".codex");
+  const auth = JSON.parse(await readFile(join(codexHome, "auth.json"), "utf8")) as {
+    tokens?: { access_token?: string };
   };
-  if (auth.openai?.type !== "oauth" || !auth.openai.access) return "";
+  if (!auth.tokens?.access_token) return "";
 
   const response = await fetch("https://chatgpt.com/backend-api/wham/usage", {
-    headers: { Authorization: `Bearer ${auth.openai.access}` },
+    headers: { Authorization: `Bearer ${auth.tokens.access_token}` },
     signal: AbortSignal.timeout(5000),
   });
   if (!response.ok) throw new Error(`Usage request failed: ${response.status}`);
