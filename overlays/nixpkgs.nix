@@ -77,6 +77,7 @@
           ./patches/codex/rename-name-alias.patch
           ./patches/codex/thread-title-on-composer-rail.patch
           ./patches/codex/default-no-daemon.patch
+          ./patches/codex/redact-command-output.patch
         ];
 
       postPatch =

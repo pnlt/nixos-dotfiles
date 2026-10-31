@@ -13,6 +13,7 @@
     ./cli
     ./hooks
     ./mcp.nix
+    ./options
     ./shell.nix
     ./skills.nix
   ];

@@ -105,9 +105,6 @@
       );
     };
 
-    # Only the "claude" target is ported. luisquin's lib.nix also renders
-    # "opencode", "codex" and "grok"; copy those branches back when you add
-    # those agents under ./cli.
     mkAgentPermissions = target: extra: let
       extraAllow = extra.allow or [];
       extraAsk = extra.ask or [];
@@ -129,6 +126,48 @@
           if isAutonomous
           then "acceptEdits"
           else "default";
+      }
+      else if target == "opencode"
+      then let
+        mergedPermissions = {
+          allow = toolPermissions.allow ++ extraAllow;
+          ask = toolPermissions.ask ++ extraAsk;
+          deny = toolPermissions.deny ++ extraDeny;
+        };
+
+        status = tool:
+          if builtins.any (r: lib.hasPrefix "${tool}" r) mergedPermissions.allow
+          then "allow"
+          else if builtins.any (r: lib.hasPrefix "${tool}" r) mergedPermissions.ask
+          then "ask"
+          else "deny";
+      in {
+        read = status "Read";
+        glob = status "Glob";
+        grep = status "Grep";
+        list = status "LS";
+        edit = status "Edit";
+        write = status "Write";
+        bash = status "Bash";
+        webfetch = status "WebFetch";
+        websearch = status "Search";
+      }
+      else if target == "codex"
+      then {
+        approval_policy =
+          if isAutonomous
+          then "never"
+          else "untrusted";
+
+        sandbox_mode =
+          if isAutonomous
+          then "danger-full-access"
+          else "workspace-write";
+
+        web_search = {
+          context_size = "medium";
+          allowed_domains = allowedDomains;
+        };
       }
       else throw "Unsupported agent permission target: ${target}";
 
