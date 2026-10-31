@@ -32,7 +32,9 @@
       trusted-users = ["root"];
       allowed-users = ["root" "${user.alias}"];
       # Defines the maximum number of jobs that Nix will try to build in parallel.
-      max-jobs = 6;
+      max-jobs = 2;
+      # Threads per build; 0 (default) lets 6 rustc builds take all 12 threads each and OOM.
+      cores = 6;
       # When free disk space in /nix/store drops below min-free during a build, Nix performs a garbage-collection.
       min-free = 10000000000; # 10GB
       # Number of seconds between checking free disk space.

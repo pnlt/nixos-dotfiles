@@ -3,6 +3,7 @@
     ./cgroups.nix
     ./compat.nix
     ./kernel.nix
+    ./memory.nix
     ./systemd-journald.nix
     ./tools.nix
   ];

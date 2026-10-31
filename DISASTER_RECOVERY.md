@@ -7,9 +7,9 @@ Self-contained: paste this whole file into an AI chat when the PC is down.
 - Board: Gigabyte B650M GAMING PLUS WIFI (BIOS F41a). CPU: Ryzen 5 7500F (12 threads).
 - RAM: Teamgroup DDR5-6000 16GB, SK Hynix, CL38-38-38-78 1.25V. Adding a second
   Teamgroup DDR5-6000 16GB, Micron, CL38-46-46-84 1.35V.
-- Disks:
+- Disks (`nvme0`/`nvme1` names swap between boots; always use labels or by-id):
   - Kingston SNV2S 500G (`/dev/disk/by-id/nvme-KINGSTON_SNV2S500G_50026B76868A14B9`): NixOS.
-    `p1` vfat label `boot` (1G), `p2` swap label `swap` (4G), `p3` ext4 label `nixos`.
+    `p1` vfat label `boot` (1G), `p2` label `swap` (4G, unused: swap is zram), `p3` ext4 label `nixos`.
   - Kioxia Exceria Plus G3 1T: Windows. Never touch it.
 - NixOS flake: <https://github.com/pnlt/nixos-dotfiles> (public), host `nyx`, user `pnlt`.
 - `/` is tmpfs (wiped every boot). Only `/persist` (the `nixos` partition) survives;
@@ -114,6 +114,6 @@ Only what is pushed to GitHub comes back. `/home` files outside the repo do not.
 
 - `failed to open '/nix/store/*-source'` during rebuild: `sudo nix-store --repair --verify --check-contents`.
 - Build killed, `EXIT=137`, OOM in `journalctl -k`: too many parallel rustc jobs.
-  Rebuild with `--cores 4`; with 32GB RAM all 12 cores fit.
+  Rebuild with `--cores 4 --max-jobs 1`.
 - sops "no key could decrypt": host key missing at `/persist/etc/ssh/ssh_host_ed25519_key`
   or the user key at `~/.config/sops/age/keys.txt`; restore from `SECRET/`.
