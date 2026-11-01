@@ -3,6 +3,7 @@
     ./niri
     ./shell
     ./heft.nix
+    ./hex.nix
     ./vicinae.nix
 
     ./color-picker.nix

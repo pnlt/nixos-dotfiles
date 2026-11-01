@@ -239,6 +239,29 @@
         "type": "github"
       }
     },
+    "hex": {
+      "inputs": {
+        "home-manager": [
+          "home-manager"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1793512481,
+        "narHash": "sha256-CZsm6XQU+n7bXvvLK6GAPd2sU6b3QMn7OiUH8dac3Fo=",
+        "owner": "anomalyco",
+        "repo": "hex",
+        "rev": "61551be8af856067d2892ce16165c61538d783ec",
+        "type": "github"
+      },
+      "original": {
+        "owner": "anomalyco",
+        "repo": "hex",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -536,6 +559,7 @@
         "flake-programs-sqlite": "flake-programs-sqlite",
         "flake-utils": "flake-utils",
         "ghostty": "ghostty",
+        "hex": "hex",
         "home-manager": "home-manager",
         "lanzaboote": "lanzaboote",
         "llm-agents": "llm-agents",

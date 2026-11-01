@@ -93,6 +93,13 @@
     nyx-terminal = {
       url = "github:pnlt/nyx-terminal";
     };
+    hex = {
+      url = "github:anomalyco/hex";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        home-manager.follows = "home-manager";
+      };
+    };
     preservation.url = "github:nix-community/preservation";
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -172,6 +179,7 @@
       inputs.agentic-flake.homeModules.default
       inputs.encore.homeModules.default
       inputs.techdebt-cli.homeModules.default
+      inputs.hex.homeManagerModules.hex
       ./pkgs/hm-modules
       "${inputs.luisquin-config}/pkgs/phone/hm-modules"
       ./home/options

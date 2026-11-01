@@ -12,6 +12,7 @@
   playerctl = lib.getExe pkgs.playerctl;
   devScript = "${home}/nixos-dotfiles/config/niri/scripts/dev";
   vicinaeCmd = lib.getExe' config.programs.vicinae.package "vicinae";
+  hex = lib.getExe config.programs.hex.package;
 
   # luisquin's SUPER+J Hyprland drop terminal, niri-style: herdr's persistent
   # "hub" session lives on its own named workspace. Mod+A jumps to it (spawning
@@ -34,6 +35,7 @@
         --keybind=clear \
         --keybind=super+shift+c=copy_to_clipboard \
         --keybind=super+shift+v=paste_from_clipboard \
+        --keybind=ctrl+shift+v=paste_from_clipboard \
         '--keybind=shift+enter=text:\x1b\r' \
         -e ${lib.getExe pkgs.herdr} --session hub
     '';
@@ -61,6 +63,9 @@ in ''
 
       Mod+Space { spawn "${vicinaeApps}"; }
       Mod+Alt+V { spawn "${vicinaeCmd}" "deeplink" "vicinae://launch/clipboard/history"; }
+
+      // niri has no release binds, so dictation toggles instead of hold
+      Alt+Space { spawn "${hex}" "dictation" "toggle"; }
 
       // focus/show mako history
       Mod+N { spawn "${makoctl}" "history"; }
