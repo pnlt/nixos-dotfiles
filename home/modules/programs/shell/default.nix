@@ -8,6 +8,15 @@
 
   programs.zsh.initContent = builtins.readFile ./.zshrc;
 
+  programs.direnv-instant.enable = true;
+
+  programs.atuin = {
+    enable = true;
+    flags = ["--disable-up-arrow"];
+    settings.update_check = false;
+  };
+  programs.fzf.historyWidget.command = "";
+
   shared = {
     bat.enable = true;
     btop.enable = true;

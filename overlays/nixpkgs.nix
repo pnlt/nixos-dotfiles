@@ -163,10 +163,6 @@
       ];
   })
   (_final: prev: {
-    # herdr 0.9.4's vendored libghostty-vt hard-requires Zig 0.16, but
-    # llm-agents' shared-nixpkgs overlay builds it with this flake's default
-    # `zig`, which nixos-unstable moved to 0.17. Drop the override once herdr
-    # accepts 0.17 (or llm-agents pins it upstream).
     #  Backports ghostty-org/ghostty#14832; drop once herdr vendors past
     #  ghostty bcfe5775.
     herdr = prev.llm-agents.herdr.overrideAttrs (old: {

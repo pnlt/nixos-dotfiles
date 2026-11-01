@@ -23,10 +23,6 @@
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
-    flake-utils = {
-      url = "github:numtide/flake-utils";
-      inputs.systems.follows = "systems";
-    };
     lanzaboote = {
       url = "github:nix-community/lanzaboote";
       inputs = {
@@ -65,14 +61,12 @@
         flake-parts.follows = "flake-parts";
       };
     };
+    # Own nixpkgs and bun2nix so outputs match cache.numtide.com
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
       inputs = {
-        nixpkgs.follows = "nixpkgs";
         systems.follows = "systems";
         flake-parts.follows = "flake-parts";
-        bun2nix.follows = "bun2nix";
-        treefmt-nix.follows = "bun2nix/treefmt-nix";
       };
     };
     agentic-flake = {
@@ -82,9 +76,33 @@
         home-manager.follows = "home-manager";
       };
     };
-    flake-programs-sqlite = {
-      url = "github:wamserma/flake-programs-sqlite";
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nix-diff-rs = {
+      url = "github:Mic92/nix-diff-rs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+        treefmt-nix.follows = "bun2nix/treefmt-nix";
+      };
+    };
+    nix-tree-rs = {
+      url = "github:Mic92/nix-tree-rs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+        treefmt-nix.follows = "bun2nix/treefmt-nix";
+      };
+    };
+    direnv-instant = {
+      url = "github:Mic92/direnv-instant";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+        treefmt-nix.follows = "bun2nix/treefmt-nix";
+      };
     };
     techdebt-cli = {
       url = "github:0xc000022070/techdebt-cli";
@@ -163,7 +181,7 @@
 
     # NixOS module list (system-wide)
     nixosModules = [
-      inputs.flake-programs-sqlite.nixosModules.programs-sqlite
+      inputs.nix-index-database.nixosModules.nix-index
       inputs.lanzaboote.nixosModules.lanzaboote
       inputs.nyx-terminal.nixosModules.default
       inputs.home-manager.nixosModules.default
@@ -180,6 +198,7 @@
       inputs.encore.homeModules.default
       inputs.techdebt-cli.homeModules.default
       inputs.hex.homeManagerModules.hex
+      inputs.direnv-instant.homeModules.default
       ./pkgs/hm-modules
       "${inputs.luisquin-config}/pkgs/phone/hm-modules"
       ./home/options

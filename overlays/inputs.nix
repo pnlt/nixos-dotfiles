@@ -14,7 +14,8 @@ with inputs; [
         '';
     });
   })
-  llm-agents.overlays.shared-nixpkgs
+  # Flake outputs, not overlays.shared-nixpkgs: only these hit cache.numtide.com
+  (_final: _prev: {llm-agents = llm-agents.packages.${system};})
   bun2nix.overlays.default
   (_final: prev: {
     pythonPackagesExtensions =

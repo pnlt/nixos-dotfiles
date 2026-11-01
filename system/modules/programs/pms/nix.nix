@@ -3,16 +3,17 @@
   system,
   pkgs,
   user,
-  lib,
   ...
 }: {
-  nix = {
-    gc = {
-      automatic = true;
-      dates = "daily";
-      options = "--delete-older-than 3d";
-    };
+  services.harmonia.gc = {
+    enable = true;
+    automatic = true;
+    dates = ["daily"];
+    deleteOlderThan = "3d";
+    keepRecent = "1d";
+  };
 
+  nix = {
     # Nix store
     optimise = {
       automatic = true;
@@ -21,10 +22,6 @@
 
     # https://nixos.org/manual/nix/stable/command-ref/conf-file.html
     settings = rec {
-      nix-path = [
-        "nixpkgs=${inputs.nixpkgs}"
-      ];
-
       keep-outputs = true;
       warn-dirty = false;
       download-attempts = 3;
@@ -40,20 +37,34 @@
       # Number of seconds between checking free disk space.
       min-free-check-interval = 30;
       # https://nix.dev/recipes/faq#what-to-do-if-a-binary-cache-is-down-or-unreachable
+      fallback = true;
 
-      trusted-substituters = [
-        "https://cache.nixos.org"
-      ];
       substituters = [
         "https://cache.nixos.org"
+        "https://cache.numtide.com"
+      ];
+      trusted-public-keys = [
+        "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
+      ];
+    };
+
+    nixPath = ["nixpkgs=flake:nixpkgs"];
+  };
+
+  systemd.services.nix-cleanup-gcroots = {
+    startAt = "weekly";
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = [
+        "${pkgs.findutils}/bin/find /nix/var/nix/gcroots/auto /nix/var/nix/gcroots/per-user -type l -mtime +30 -delete"
+        "${pkgs.findutils}/bin/find /nix/var/nix/temproots -type f -mtime +10 -delete"
+        "${pkgs.findutils}/bin/find /nix/var/nix/gcroots -xtype l -delete"
       ];
     };
   };
+  systemd.timers.nix-cleanup-gcroots.timerConfig.Persistent = true;
 
-  programs.command-not-found = {
-    enable = true;
-    dbPath = lib.mkForce inputs.flake-programs-sqlite.packages.${system}.programs-sqlite;
-  };
+  programs.nix-index-database.comma.enable = true;
 
   environment = {
     systemPackages = with pkgs; [
@@ -65,6 +76,10 @@
       nurl
       nil # lsp
       nvd # package diff
+      nix-update
+      nix-fast-build
+      inputs.nix-diff-rs.packages.${system}.default
+      inputs.nix-tree-rs.packages.${system}.default
       # nixgrep
 
       nixpkgs-review
