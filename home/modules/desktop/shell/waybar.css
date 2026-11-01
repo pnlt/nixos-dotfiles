@@ -1,43 +1,43 @@
 * {
-    font-family: "IoskeleyMono Nerd Font Mono", "Symbols Nerd Font", monospace;
-    font-size: 10pt;
-    font-weight: 600;
-    border-radius: 8px;
-    transition-property: background-color, color;
-    transition-duration: 0.12s;
+  font-family: "IoskeleyMono Nerd Font Mono", "Symbols Nerd Font", monospace;
+  font-size: 10pt;
+  font-weight: 600;
+  border-radius: 8px;
+  transition-property: background-color, color;
+  transition-duration: 0.12s;
 }
 
 @keyframes blink_red {
-    to {
-        background-color: rgb(242, 143, 173);
-        color: rgb(26, 24, 38);
-    }
+  to {
+    background-color: rgb(242, 143, 173);
+    color: rgb(26, 24, 38);
+  }
 }
 
 .warning,
 .critical,
 .urgent {
-    animation-name: blink_red;
-    animation-duration: 1s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
+  animation-name: blink_red;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
 }
 
 /* Bar shell */
 
 window#waybar {
-    background-color: transparent;
+  background-color: transparent;
 }
 
 window > box {
-    margin-left: 5px;
-    margin-right: 5px;
-    margin-top: 5px;
-    padding: 3px 8px;
-    background-color: rgba(41, 20, 84, 0.42);
-    border: 1px solid rgba(181, 232, 224, 0.08);
-    box-shadow: inset 0 1px rgba(255, 255, 255, 0.05);
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 5px;
+  padding: 3px 8px;
+  background-color: rgba(41, 20, 84, 0.42);
+  border: 1px solid rgba(181, 232, 224, 0.08);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.05);
 }
 
 /* Common modules: no bags, just spacing */
@@ -62,63 +62,62 @@ window > box {
 #user,
 #mode,
 #mpd {
-    background-color: transparent;
-    border: 0;
-    box-shadow: none;
-    min-height: 24px;
+  background-color: transparent;
+  border: 0;
+  box-shadow: none;
+  min-height: 24px;
 }
 
 /* Left */
 
 #custom-launcher {
-    font-size: 20px;
-    padding-left: 8px;
-    padding-right: 9px;
-    color: #7ebae4;
-    background-color: transparent;
+  font-size: 25px;
+  padding-left: 8px;
+  padding-right: 9px;
+  color: #7ebae4;
+  background-color: transparent;
 }
 
 #custom-launcher:hover {
-    color: #7ebae4;
-    background-color: transparent;
+  color: #7ebae4;
+  background-color: transparent;
 }
 
 #tray {
-    padding-left: 10px;
-    padding-right: 8px;
+  padding-left: 10px;
+  padding-right: 8px;
 }
 
 /* Workspaces */
 
 #workspaces {
-    padding-left: 0;
-    padding-right: 4px;
+  padding-left: 0;
+  padding-right: 4px;
 }
 
 #workspaces button {
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-left: 6px;
-    padding-right: 6px;
-    color: rgba(255, 255, 255, 0.72);
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 6px;
+  padding-right: 6px;
+  color: rgba(255, 255, 255, 0.72);
 }
 
 #workspaces button.active {
-    background-color: rgb(181, 232, 224);
-    color: rgba(26, 24, 38, 0.8);
+  background-color: rgb(181, 232, 224);
+  color: rgba(26, 24, 38, 0.8);
 }
 
 #workspaces button.urgent {
-    color: rgba(26, 24, 38, 0.6);
+  color: rgba(26, 24, 38, 0.6);
 }
 
 #workspaces button:hover {
-    background-color: rgba(26, 24, 38, 0.1);
-    color: rgb(181, 232, 224);
+  background-color: rgba(26, 24, 38, 0.1);
+  color: rgb(181, 232, 224);
 }
 
 /* Center */
-
 
 /* Right side */
 
@@ -127,164 +126,163 @@ window > box {
 #cpu,
 #memory,
 #network {
-    padding-left: 6px;
-    padding-right: 6px;
+  padding-left: 6px;
+  padding-right: 6px;
 }
 
 /* Disk headroom */
 
 #custom-heft {
-    color: rgba(181, 232, 224, 0.55);
-    padding-left: 7px;
-    padding-right: 7px;
+  color: rgba(181, 232, 224, 0.55);
+  padding-left: 7px;
+  padding-right: 7px;
 }
 
 #custom-heft.tight {
-    color: #f8bd96;
+  color: #f8bd96;
 }
 
 /* Steady colour, no blink: the disk sits near its limit for weeks. */
 #custom-heft.cramped {
-    color: #f28fad;
+  color: #f28fad;
 }
 
 /* Tailscale */
 
 #custom-tailscale {
-    color: #aac194;
+  color: #aac194;
 }
 
 #custom-tailscale.disconnected {
-    color: rgba(156, 152, 148, 0.70);
+  color: rgba(156, 152, 148, 0.7);
 }
 
 /* SSH */
 
 #ssh {
-    padding-left: 6px;
-    padding-right: 6px;
-    min-height: 24px;
+  padding-left: 6px;
+  padding-right: 6px;
+  min-height: 24px;
 }
 
 #ssh #custom-ssh-icon {
-    color: #cba6f7;
-    font-size: 15pt;
-    padding: 0;
-    margin-right: 5px;
-    min-height: 24px;
+  color: #cba6f7;
+  font-size: 15pt;
+  padding: 0;
+  margin-right: 5px;
+  min-height: 24px;
 }
 
 /* A lone direction is a plain module, so it centres like #custom-heft does */
 #ssh #custom-ssh-solo {
-    padding: 0;
-    margin: 0;
-    min-height: 24px;
+  padding: 0;
+  margin: 0;
+  min-height: 24px;
 }
 
 #ssh #ssh-sessions {
-    padding: 0;
-    margin: 0;
+  padding: 0;
+  margin: 0;
 }
 
 /* Two stacked rows plus a top offset fill the 24px other modules claim alone */
 #ssh-sessions #custom-ssh-in,
 #ssh-sessions #custom-ssh-out {
-    font-size: 7.5pt;
-    min-height: 10px;
-    padding: 0;
-    margin: 0;
+  font-size: 7.5pt;
+  min-height: 10px;
+  padding: 0;
+  margin: 0;
 }
 
 #ssh-sessions #custom-ssh-in {
-    margin-top: 4px;
+  margin-top: 4px;
 }
 
 /* System metrics */
 
 #clock {
-    color: #e8cef5;
-    padding-left: 12px;
-    padding-right: 12px;
-    font-feature-settings: "tnum";
+  color: #e8cef5;
+  padding-left: 12px;
+  padding-right: 12px;
+  font-feature-settings: "tnum";
 }
 
 #clock:hover {
-    background-color: rgba(232, 206, 245, 0.10);
+  background-color: rgba(232, 206, 245, 0.1);
 }
 
 #sysmon {
-    padding-left: 6px;
-    padding-right: 6px;
-    min-height: 24px;
+  padding-left: 6px;
+  padding-right: 6px;
+  min-height: 24px;
 }
 
 /* Two stacked rows plus a top offset fill the 24px other modules claim alone */
 #sysmon #cpu,
 #sysmon #memory {
-    font-size: 7.5pt;
-    min-height: 10px;
-    padding: 0;
-    margin: 0;
+  font-size: 7.5pt;
+  min-height: 10px;
+  padding: 0;
+  margin: 0;
 }
 
 #sysmon #cpu {
-    margin-top: 4px;
+  margin-top: 4px;
 }
 
 #cpu {
-    color: rgb(245, 194, 231);
+  color: rgb(245, 194, 231);
 }
 
 #memory {
-    color: rgb(181, 232, 224);
+  color: rgb(181, 232, 224);
 }
 
-
 #network {
-    color: #facaf4;
-    font-family: "Symbols Nerd Font Mono";
-    font-size: 18px;
-    padding-right: 4px;
+  color: #facaf4;
+  font-family: "Symbols Nerd Font Mono";
+  font-size: 18px;
+  padding-right: 4px;
 }
 
 #network.disconnected {
-    color: rgba(255, 255, 255, 0.62);
+  color: rgba(255, 255, 255, 0.62);
 }
 
 /* Other modules from your original CSS */
 
 #custom-wall {
-    color: #33ccff;
-    padding: 0 8px;
+  color: #33ccff;
+  padding: 0 8px;
 }
 
 #temperature {
-    color: rgb(150, 205, 251);
-    padding: 0 8px;
+  color: rgb(150, 205, 251);
+  padding: 0 8px;
 }
 
 #backlight {
-    color: rgb(248, 189, 150);
+  color: rgb(248, 189, 150);
 }
 
 #pulseaudio {
-    color: rgb(245, 224, 220);
-    padding: 0 8px;
+  color: rgb(245, 224, 220);
+  padding: 0 8px;
 }
 
 #custom-power {
-    color: rgb(242, 143, 173);
-    padding-left: 8px;
-    padding-right: 15px;
+  color: rgb(242, 143, 173);
+  padding-left: 8px;
+  padding-right: 15px;
 }
 
 #bluetooth {
-    color: rgba(119, 119, 119, 0.69);
-    padding: 0 15px;
+  color: rgba(119, 119, 119, 0.69);
+  padding: 0 15px;
 }
 
 #bluetooth.connected {
-    color: rgba(154, 68, 235, 0.61);
+  color: rgba(154, 68, 235, 0.61);
 }
 
 /* Hover only for actually actionable modules */
@@ -294,9 +292,8 @@ window > box {
 #custom-tailscale:hover,
 #network:hover,
 #sysmon:hover {
-    background-color: rgba(255, 255, 255, 0.045);
+  background-color: rgba(255, 255, 255, 0.045);
 }
-
 
 /* Passive status modules: no hover container */
 #ssh:hover,
@@ -305,18 +302,18 @@ window > box {
 #custom-ssh-solo:hover,
 #custom-ssh-in:hover,
 #custom-ssh-out:hover {
-    background-color: transparent;
-    box-shadow: none;
-    border: 0;
+  background-color: transparent;
+  box-shadow: none;
+  border: 0;
 }
 
 /* Tooltip */
 
 tooltip {
-    background: rgba(48, 45, 65, 0.96);
-    border: 1px solid rgba(181, 232, 224, 0.14);
+  background: rgba(48, 45, 65, 0.96);
+  border: 1px solid rgba(181, 232, 224, 0.14);
 }
 
 tooltip label {
-    color: rgb(217, 224, 238);
+  color: rgb(217, 224, 238);
 }
