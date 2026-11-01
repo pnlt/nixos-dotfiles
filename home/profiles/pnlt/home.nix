@@ -36,5 +36,12 @@ in {
   };
 
   news.display = "silent";
+
+  # Faster home-manager eval
+  manual = {
+    html.enable = false;
+    manpages.enable = false;
+    json.enable = false;
+  };
   programs.home-manager.enable = false;
 }
