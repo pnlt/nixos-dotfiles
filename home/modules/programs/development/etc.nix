@@ -18,5 +18,7 @@
     # csvkit
     shfmt
     scc
+    ast-grep
+    jjui
   ];
 }

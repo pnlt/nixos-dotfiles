@@ -8,5 +8,10 @@
     wget
     eza
     fd
+    dust
+    procs
+    xcp
+    hexyl
+    bandwhich
   ];
 }
