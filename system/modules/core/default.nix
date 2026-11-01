@@ -2,6 +2,7 @@
   imports = [
     ./cgroups.nix
     ./compat.nix
+    ./fhs-compat.nix
     ./kernel.nix
     ./memory.nix
     ./systemd-journald.nix
