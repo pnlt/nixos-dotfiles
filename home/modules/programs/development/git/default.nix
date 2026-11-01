@@ -11,7 +11,7 @@
     ./etc.nix
   ];
 
-  home.packages = [pkgs.knots];
+  home.packages = with pkgs; [knots git-absorb mergiraf];
 
   shared = {
     git = {
@@ -22,6 +22,13 @@
       };
     };
     lazygit.enable = true;
+  };
+
+  # mergiraf falls back to line-based merging for languages it does not parse
+  programs.git.attributes = ["* merge=mergiraf"];
+  programs.git.settings.merge.mergiraf = {
+    name = "mergiraf";
+    driver = "${lib.getExe pkgs.mergiraf} merge --git %O %A %B -s %S -x %X -y %Y -p %P -l %L";
   };
 
   programs.git.settings.hook.knots = {
