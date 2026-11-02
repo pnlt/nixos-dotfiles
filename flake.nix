@@ -41,6 +41,10 @@
         nixpkgs.follows = "nixpkgs";
       };
     };
+    helium = {
+      url = "github:oxcl/nix-flake-helium-browser";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     ghostty = {
       url = "github:ghostty-org/ghostty/tip";
       inputs = {

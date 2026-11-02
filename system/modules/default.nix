@@ -4,7 +4,7 @@
     ./hardware
     ./input
     ./fs
-    ./programs/browser/chromium.nix
+    ./programs/browser/helium.nix
     ./programs/compression.nix
     ./programs/development
     ./programs/gaming

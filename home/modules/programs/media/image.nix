@@ -39,20 +39,20 @@ in {
   ];
 
   xdg.mimeApps = let
-    chromiumDesktop = "chromium-browser.desktop";
+    heliumDesktop = "helium.desktop";
 
     defaultApps = {
       "image/*" = [feh.desktopFile];
       "image/gif" = [sxiv.desktopFile];
     };
 
-    unsetChromium = builtins.mapAttrs (_: _: [chromiumDesktop]) defaultApps;
+    unsetHelium = builtins.mapAttrs (_: _: [heliumDesktop]) defaultApps;
   in {
     defaultApplications = defaultApps;
 
     associations = {
       added = defaultApps;
-      removed = unsetChromium;
+      removed = unsetHelium;
     };
   };
 }

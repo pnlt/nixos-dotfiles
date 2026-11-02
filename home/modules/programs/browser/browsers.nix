@@ -12,7 +12,7 @@
   programs.browsers = {
     enable = true;
     settings = {
-      profile_order = ["zen-beta#default" "chromium#Default"];
+      profile_order = ["zen-beta#default" "helium#Default"];
       hidden_profiles = ["zen-beta#"]; # private
 
       rules =

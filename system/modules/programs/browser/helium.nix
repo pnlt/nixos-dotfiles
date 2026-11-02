@@ -1,11 +1,40 @@
-{...}: {
-  programs.chromium = {
+{
+  inputs,
+  pkgs,
+  lib,
+  ...
+}: {
+  imports = [
+    inputs.helium.nixosModules.default
+  ];
+
+  programs.helium = {
     enable = true;
-    extraOpts = {
+
+    # makeBinaryWrapper passes the NIXOS_OZONE_WL expansion as a literal URL;
+    # wrapQtAppsHook is unused (dontWrapQtApps)
+    package =
+      (pkgs.callPackage "${inputs.helium}/helium.nix" {
+        wrapGAppsHook3 = pkgs.wrapGAppsHook3.override {makeWrapper = pkgs.makeShellWrapper;};
+      })
+      .overrideAttrs (old: {
+        nativeBuildInputs = lib.remove pkgs.qt6.wrapQtAppsHook old.nativeBuildInputs;
+      });
+
+    flags = [
+      "--enable-zero-copy"
+      "--ignore-gpu-blocklist"
+      # Chromium honours only the last --enable-features, keep them in one
+      "--enable-features=AcceleratedVideoDecodeLinuxGL,AcceleratedVideoDecodeLinuxZeroCopyGL,AcceleratedVideoEncoder,ParallelDownloading"
+      "--extension-mime-request-handling=always-prompt-for-install"
+    ];
+
+    policies = {
       "BackgroundModeEnabled" = false;
       "BrowserSignin" = 0;
       "SyncDisabled" = true;
-      "LidCloseAction" = 1;
+      "DefaultBrowserSettingEnabled" = false;
+      "HighEfficiencyModeEnabled" = true;
 
       "SpellcheckEnabled" = true;
       "SpellcheckLanguage" = [
@@ -13,7 +42,6 @@
       ];
 
       "PasswordManagerEnabled" = false;
-      "ThirdPartyPasswordManagersAllowed" = false;
       "PasswordLeakDetectionEnabled" = false;
 
       "DefaultSearchProviderEnabled" = true;
@@ -23,14 +51,7 @@
       "AutofillAddressEnabled" = false;
       "AutofillCreditCardEnabled" = false;
 
-      "VirtualKeyboardEnabled" = false;
-      "StickyKeysEnabled" = false;
-      "DeviceAllowNewUsers" = false;
-
       "RestoreOnStartup" = 5;
-      # "RestoreOnStartupURLs" = [
-      #   "https://protect-ue.ismartlife.me/playback"
-      # ];
 
       "BrowsingDataLifetime" = [
         {
@@ -53,14 +74,16 @@
 
       "BlockThirdPartyCookies" = true;
       "DefaultCookiesSetting" = 4;
-      # "CookiesAllowedForUrls" = [
-      #   (libx.base64.decode "aHR0cHM6Ly9wcm90ZWN0LXVlLmlzbWFydGxpZmUubWUK")
-      #   "https://grapheneos.org"
-      #   "https://releases.grapheneos.org"
-      # ];
 
       "DnsOverHttpsMode" = "secure";
       "DnsOverHttpsTemplates" = "https://cloudflare-dns.com/dns-query";
+
+      "ExtensionInstallForcelist" = [
+        "ficfmibkjjnpogdcfhfokmihanoldbfe"
+        "dffbjiomnajbmlhjelpipfldgkijdemn"
+        "ldpochfccmkkmhdbclfhpagapcfdljkj"
+        "mefhakmgclhhfbdadeojlkbllmecialg"
+      ];
 
       "ManagedBookmarks" = [
         {
@@ -78,15 +101,6 @@
           "name" = "Betaflight Configurator";
           "url" = "app.betaflight.com";
         }
-        # less waste of time
-        # {
-        #   "name" = "Declaraciones SUNAT";
-        #   "url" = "https://api-seguridad.sunat.gob.pe/v1/clientessol/03590141-c69c-438c-a36a-8ee2a3ad9747/oauth2/login";
-        # }
-        # {
-        #   "name" = "Aduanas";
-        #   "url" = "https://api-seguridad.sunat.gob.pe/v1/clientessol/59d39217-c025-4de5-b342-393b0f4630ab/oauth2/loginMenuSol";
-        # }
       ];
     };
   };

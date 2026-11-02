@@ -1,5 +1,6 @@
 {
   config,
+  nixosConfig,
   pkgs,
   lib,
   inputs,
@@ -47,7 +48,7 @@ in {
         package = pkgs.chrome-devtools-mcp;
         args = [
           "--executablePath"
-          (lib.getExe config.programs.chromium.package)
+          (lib.getExe nixosConfig.programs.helium.package)
           "--headless"
           "--isolated"
         ];
