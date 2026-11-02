@@ -257,56 +257,114 @@
       };
 
       keyboardShortcutsVersion = 21;
-      keyboardShortcuts = [
-        {
-          id = "zen-compact-mode-toggle";
-          key = "e";
+      keyboardShortcuts =
+        [
+          {
+            id = "zen-compact-mode-toggle";
+            key = "e";
+            modifiers.control = true;
+          }
+        ]
+        ++ map (n: {
+          id = "zen-workspace-switch-${n}";
+          key = n;
           modifiers.control = true;
-        }
-        {
-          id = "zen-compact-mode-show-sidebar";
+        }) ["1" "2" "3"]
+        ++ map (id: {
+          inherit id;
           disabled = true;
-        }
-        {
-          id = "goBackKb";
-          key = "h";
-          modifiers.alt = true;
-        }
-        {
-          id = "goForwardKb";
-          key = "l";
-          modifiers.alt = true;
-        }
-        {
-          id = "key_savePage";
-          disabled = true;
-        }
-        {
-          id = "key_quitApplication";
-          disabled = true;
-        }
-        {
-          id = "zen-copy-url";
-          disabled = true;
-        }
-        {
-          id = "addBookmarkAsKb";
-          disabled = true;
-        }
-        {
-          id = "key_reload";
-          key = "r";
-          modifiers.control = true;
-        }
-        {
-          id = "key_reload_skip_cache";
-          key = "r";
-          modifiers = {
-            control = true;
-            shift = true;
-          };
-        }
-      ];
+        }) [
+          "zen-compact-mode-show-sidebar"
+          "key_savePage"
+          "key_quitApplication"
+          "zen-copy-url"
+          "addBookmarkAsKb"
+
+          # vimium c owns these: H/L, r, /, x, X, T
+          "goBackKb"
+          "goForwardKb"
+          "key_reload"
+          "key_reload_skip_cache"
+          "key_search"
+          "key_find"
+
+          "key_close"
+          "key_restoreLastClosedTabOrWindowOrSession"
+          "key_selectTab1"
+          "key_selectTab2"
+          "key_selectTab3"
+          "key_selectTab4"
+          "key_selectTab5"
+          "key_selectTab6"
+          "key_selectTab7"
+          "key_selectTab8"
+          "key_selectLastTab"
+
+          "zen-workspace-forward"
+          "zen-workspace-backward"
+          "zen-library-toggle"
+          "zen-new-unsynced-window"
+          "zen-glance-expand"
+          "zen-toggle-pin-tab"
+          "zen-copy-url-markdown"
+          "key_closeWindow"
+          "goBackKb2"
+          "goForwardKb2"
+          "key_search2"
+          "key_findAgain"
+          "key_findPrevious"
+          "key_findAgain2"
+          "key_findPrevious2"
+
+          "focusURLBar"
+          "focusURLBar2"
+          "printKb"
+          "key_toggleReaderMode"
+          "key_togglePictureInPicture"
+          "key_viewSource"
+          "key_viewInfo"
+
+          "showAllHistoryKb"
+          "manBookmarkKb"
+
+          "key_toggleMute"
+          "key_fullZoomReduce"
+          "key_fullZoomEnlarge"
+          "key_fullZoomReset"
+          "key_switchTextDirection"
+          "key_screenshot"
+
+          "key_toggleToolbox"
+          "key_browserToolbox"
+          "key_browserConsole"
+          "key_responsiveDesignMode"
+          "key_inspector"
+          "key_webconsole"
+          "key_jsdebugger"
+          "key_netmonitor"
+          "key_styleeditor"
+          "key_performance"
+          "key_storage"
+          "key_dom"
+          "key_accessibility"
+
+          "key_openDownloads"
+          "key_openAddons"
+          "key_delete"
+          "key_reload2"
+          "key_reload_skip_cache2"
+          "key_enterFullScreen"
+          "key_exitFullScreen"
+          "key_aboutProcesses"
+          "viewBookmarksSidebarKb"
+          "viewBookmarksToolbarKb"
+          "viewGenaiChatSidebarKb"
+          "toggleSidebarKb"
+          "key_showAllTabs"
+          "key_sanitize"
+          "key_wrCaptureCmd"
+          "key_wrToggleCaptureSequenceCmd"
+        ];
     };
   };
 }
