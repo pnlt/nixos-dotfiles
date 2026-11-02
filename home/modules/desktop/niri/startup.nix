@@ -3,19 +3,9 @@
   pkgs,
   lib,
   ...
-}: let
-  home = config.home.homeDirectory;
-  # optional scripts — only spawn if you still keep them
-  xclipScript = "${home}/.config/niri/scripts/xclip";
-  dynamicRules = "${home}/.config/niri/scripts/dynamic-rules";
-in ''
-  // --- startup (dms removed) ---
+}: ''
+  // --- startup ---
   spawn-at-startup "${lib.getExe config.programs.waybar.package}"
 
-  spawn-at-startup "${xclipScript}"
-  spawn-at-startup "${pkgs.udiskie}/bin/udiskie"
   spawn-at-startup "${pkgs.easyeffects}/bin/easyeffects" "--gapplication-service"
-  spawn-at-startup "zen-beta"
-  spawn-at-startup "${dynamicRules}"
-
 ''
