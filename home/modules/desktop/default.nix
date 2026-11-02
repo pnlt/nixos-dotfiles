@@ -12,6 +12,6 @@
     ./mouse.nix
     ./notifications.nix
     ./xdg.nix
-    ./wallpaper-engine.nix
+    ./phonto.nix
   ];
 }

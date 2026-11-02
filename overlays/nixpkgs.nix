@@ -1,4 +1,8 @@
-{...}: [
+{
+  inputs,
+  system,
+  ...
+}: [
   (
     _self: super: {
       waybar = super.waybar.overrideAttrs (_oldAttrs: let
@@ -41,6 +45,15 @@
         (old.patches or [])
         ++ [
           ./patches/bat/idempotent-cache-build.patch
+        ];
+    });
+  })
+  (_final: _prev: {
+    phonto = inputs.phonto.packages.${system}.default.overrideAttrs (old: {
+      patches =
+        (old.patches or [])
+        ++ [
+          ./patches/phonto/per-output-scale.patch
         ];
     });
   })

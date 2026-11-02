@@ -205,6 +205,26 @@
         "type": "github"
       }
     },
+    "flake-utils": {
+      "inputs": {
+        "systems": [
+          "systems"
+        ]
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
     "ghostty": {
       "inputs": {
         "flake-compat": [],
@@ -617,6 +637,30 @@
         "type": "github"
       }
     },
+    "phonto": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "rust-overlay": [
+          "rust-overlay"
+        ]
+      },
+      "locked": {
+        "lastModified": 1793094573,
+        "narHash": "sha256-rbtlE2mDtpyLB9GmTSpVnJ9wI/uj/AWE45+KC8evEX0=",
+        "owner": "museslabs",
+        "repo": "phonto",
+        "rev": "4d1d647d7308e83138252b1e5f543390ce54387c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "museslabs",
+        "repo": "phonto",
+        "type": "github"
+      }
+    },
     "pre-commit": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -673,6 +717,7 @@
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-extra": "nixpkgs-extra",
         "nyx-terminal": "nyx-terminal",
+        "phonto": "phonto",
         "preservation": "preservation",
         "rust-overlay": "rust-overlay",
         "sops-nix": "sops-nix",
