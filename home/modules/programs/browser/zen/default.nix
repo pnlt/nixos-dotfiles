@@ -223,6 +223,11 @@
             texture = 0.5;
           };
         };
+        "Music" = {
+          id = "7d93eccc-121c-45df-9d45-48cc001b4f64";
+          icon = "chrome://browser/skin/zen-icons/selectable/music.svg";
+          position = 1002;
+        };
       };
 
       keyboardShortcutsVersion = 21;
