@@ -2,7 +2,7 @@
   layout {
       gaps 16
       center-focused-column "never"
-      background-color "#1a1b26"
+      background-color "#0e0e0e"
 
       preset-column-widths {
           proportion 0.33333
@@ -13,10 +13,9 @@
       default-column-width { proportion 0.5; }
 
       focus-ring {
-          width 4
-          active-color "#07b5ef"
+          width 2
+          active-color "#e1e1e1cc"
           inactive-color "#ffffff00"
-          active-gradient from="#f00f" to="#0f05" angle=45 in="oklch longer hue"
       }
 
       border {
@@ -36,7 +35,7 @@
   prefer-no-csd
 
   overview {
-      backdrop-color "#1a1b26"
+      backdrop-color "#0e0e0e"
       workspace-shadow {
           softness 50
           spread 20
