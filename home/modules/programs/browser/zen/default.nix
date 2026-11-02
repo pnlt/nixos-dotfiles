@@ -190,44 +190,18 @@
             type = "gradient";
             colors = [
               {
-                red = 123;
-                green = 56;
-                blue = 58;
-                algorithm = "analogous";
+                red = 14;
+                green = 14;
+                blue = 14;
+                algorithm = "floating";
                 type = "explicit-lightness";
-                lightness = 35;
-                position.x = 301;
-                position.y = 176;
+                lightness = 6;
                 primary = true;
-                custom = false;
-              }
-              {
-                red = 123;
-                green = 110;
-                blue = 55;
-                algorithm = "analogous";
-                type = "explicit-lightness";
-                lightness = 35;
-                position.x = 260;
-                position.y = 271;
-                primary = false;
-                custom = false;
-              }
-              {
-                red = 122;
-                green = 56;
-                blue = 114;
-                algorithm = "analogous";
-                type = "explicit-lightness";
-                lightness = 35;
-                position.x = 255;
-                position.y = 84;
-                primary = false;
                 custom = false;
               }
             ];
             opacity = 0.8;
-            texture = 0.5;
+            texture = 0.0;
           };
         };
         "Research" = {
