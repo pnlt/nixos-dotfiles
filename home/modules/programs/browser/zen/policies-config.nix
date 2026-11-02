@@ -68,6 +68,7 @@ in {
     "jid1-BoFifL9Vbdl2zQ@jetpack" = "decentraleyes";
     "remove.youtube.tracking@moreo.app" = "remove-youtube-tracking";
     "sponsorBlocker@ajay.app" = "sponsorblock";
+    "vimium-c@gdh1995.cn" = "vimium-c";
   };
   "3rdparty".Extensions."uBlock0@raymondhill.net".toOverwrite = {
     filterLists = [

@@ -62,6 +62,32 @@
           statisticsStatus = true;
         };
       };
+      extensions.settings."vimium-c@gdh1995.cn" = {
+        force = true;
+        settings = {
+          vimSync = false;
+          # stop pages from stealing focus into an input on load, so keys work at once
+          grabBackFocus = true;
+          # <c-e>/<c-y> clash with zen's Ctrl+E compact mode; J/K walk the vertical tab list
+          keyMappings = ''
+            unmap <c-e>
+            unmap <c-y>
+            map J nextTab
+            map K previousTab
+          '';
+          searchEngines = ''
+            g|google: https://www.google.com/search?q=%s Google
+            d|ddg: https://duckduckgo.com/?q=%s DuckDuckGo
+            y|yt: https://www.youtube.com/results?search_query=%s YouTube
+            w|wiki: https://en.wikipedia.org/w/index.php?search=%s Wikipedia
+            gh: https://github.com/search?q=%s&type=repositories GitHub
+            np: https://search.nixos.org/packages?channel=unstable&query=%s Nix Packages
+            no: https://search.nixos.org/options?channel=unstable&query=%s Nix Options
+            hm: https://home-manager-options.extranix.com/?release=master&query=%s Home Manager
+            gm: https://www.google.com/maps?q=%s Google Maps
+          '';
+        };
+      };
       extensionButtons = {
         "nav-bar" = ["uBlock0@raymondhill.net"];
       };
