@@ -3,14 +3,19 @@
   pkgs,
   widgets,
   ...
-}: {
+}: let
+  # false restores the purple palette in waybar.css
+  monochrome = true;
+in {
   programs.waybar = {
     enable = true;
     systemd = {
       enable = false;
       targets = ["graphical-session.target"];
     };
-    style = builtins.readFile ./waybar.css;
+    style =
+      builtins.readFile ./waybar.css
+      + lib.optionalString monochrome (builtins.readFile ./waybar-mono.css);
     settings = [
       ({
           "position" = "top";
