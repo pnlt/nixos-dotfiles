@@ -16,6 +16,7 @@
   shared = {
     git = {
       enable = true;
+      policyOwners = ["pnlt"];
       user = {
         name = user.fullName;
         email = user.gitEmail;
