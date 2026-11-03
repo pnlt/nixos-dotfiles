@@ -1,0 +1,143 @@
+.LH,
+.D > .LH {
+  background: #0e0e0e;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+  color: #ebebeb;
+  font:
+    bold 11px/1 "IoskeleyMono Nerd Font Mono",
+    monospace;
+  padding: 2px 4px 1.5px;
+}
+.MC,
+.MH {
+  color: rgba(255, 255, 255, 0.3);
+}
+.BH {
+  color: #ebebeb;
+}
+.IH {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(235, 235, 235, 0.45);
+}
+.IHS {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: #ebebeb;
+}
+.Frame {
+  border: 2px solid rgba(235, 235, 235, 0.6);
+}
+.Flash {
+  box-shadow: 0 0 0 2px rgba(235, 235, 235, 0.85);
+}
+.Sel {
+  box-shadow: 0 0 0 2px rgba(235, 235, 235, 0.7);
+}
+.One {
+  border-color: #ebebeb;
+}
+.HUD,
+.HUD.D {
+  color: #ebebeb;
+  font-family: "IoskeleyMono Nerd Font Mono", monospace;
+  font-size: 13px;
+}
+.HUD:after,
+.HUD.D:after {
+  background: rgba(14, 14, 14, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px 6px 0 0;
+}
+
+* {
+  font-family: "IoskeleyMono Nerd Font Mono", monospace;
+}
+.r,
+.r.D {
+  background: #0e0e0e;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  color: #ebebeb;
+  border-radius: 6px 6px 0 0;
+}
+::selection {
+  background: #ebebeb !important;
+  color: #0e0e0e;
+}
+
+body {
+  background: #0e0e0e;
+  border-radius: 8px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.6);
+}
+body::after {
+  content: "";
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+}
+#bar,
+#bar.empty {
+  background: #0e0e0e;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+#bar.empty {
+  border: none;
+}
+#input {
+  background: #161616;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 5px;
+  box-shadow: none;
+  caret-color: #ebebeb;
+  color: #ebebeb;
+  font-family: "IoskeleyMono Nerd Font Mono", monospace;
+  font-size: 18px;
+}
+#list {
+  background: #0e0e0e;
+}
+#toolbar {
+  color: rgba(255, 255, 255, 0.35);
+}
+.button:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ebebeb;
+}
+.item,
+.p {
+  border-color: rgba(255, 255, 255, 0.04);
+}
+.item:hover {
+  background-color: rgba(255, 255, 255, 0.04);
+}
+.item.s {
+  background-color: rgba(255, 255, 255, 0.09);
+  box-shadow: inset 2px 0 #ebebeb;
+}
+.top {
+  color: rgba(235, 235, 235, 0.85);
+}
+match {
+  color: #fff;
+}
+.title > match {
+  text-decoration: none;
+}
+a,
+.mono-url a {
+  color: rgba(255, 255, 255, 0.42);
+  font-family: "IoskeleyMono Nerd Font Mono", monospace;
+}
+.label,
+.time {
+  color: rgba(255, 255, 255, 0.32);
+}
+.icon,
+.tab,
+.math {
+  --vc-c: rgba(255, 255, 255, 0.35);
+}
+.alt .alt-index::after {
+  background: rgba(235, 235, 235, 0.9);
+  color: #0e0e0e;
+}
