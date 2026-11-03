@@ -68,7 +68,7 @@
           vimSync = false;
           # stop pages from stealing focus into an input on load, so keys work at once
           grabBackFocus = true;
-          userDefinedCss = builtins.readFile ./vimium-c.css;
+          userDefinedCss = lib.concatMapStrings (s: "/* #${s} */\n" + builtins.readFile ./vimium-c/${s}.css) ["ui" "find" "omni"];
           # <c-e>/<c-y> clash with zen's Ctrl+E compact mode; J/K walk the vertical tab list
           keyMappings = ''
             unmap <c-e>
