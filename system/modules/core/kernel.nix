@@ -1,6 +1,7 @@
 {pkgs, ...}: {
   boot = {
-    kernelPackages = pkgs.linuxPackages;
+    kernelPackages = pkgs.linuxPackages_zen;
+    kernelParams = ["mitigations=off"];
     kernel.sysctl = {
       "vm.dirty_background_bytes" = 268435456;
       "vm.dirty_bytes" = 2147483648;
