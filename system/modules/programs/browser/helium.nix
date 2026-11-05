@@ -24,6 +24,7 @@
     flags = [
       "--enable-zero-copy"
       "--ignore-gpu-blocklist"
+      "--enable-wayland-ime"
       # Chromium honours only the last --enable-features, keep them in one
       "--enable-features=AcceleratedVideoDecodeLinuxGL,AcceleratedVideoDecodeLinuxZeroCopyGL,AcceleratedVideoEncoder,ParallelDownloading"
       "--extension-mime-request-handling=always-prompt-for-install"
