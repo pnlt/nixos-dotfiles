@@ -1,0 +1,12 @@
+diff --git a/qml/island/SystemGlanceLayer.qml b/qml/island/SystemGlanceLayer.qml
+index 9bb4857..fc47a35 100644
+--- a/qml/island/SystemGlanceLayer.qml
++++ b/qml/island/SystemGlanceLayer.qml
+@@ -291,6 +291,7 @@ FocusScope {
+             // Right side: Rich Battery Badge
+             Rectangle {
+                 id: batteryBadge
++                visible: SystemGlance.hasBattery
+                 anchors.right: parent.right
+                 anchors.verticalCenter: parent.verticalCenter
+                 height: 26

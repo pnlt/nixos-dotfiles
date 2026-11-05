@@ -47,6 +47,14 @@
           ./patches/bat/idempotent-cache-build.patch
         ];
     });
+    tide-island = prev.tide-island.overrideAttrs (old: {
+      patches =
+        (old.patches or [])
+        ++ [
+          ./patches/tide-island/measure-nix-store-disk.patch
+          ./patches/tide-island/hide-battery-without-battery.patch
+        ];
+    });
   })
   (_final: _prev: {
     phonto = inputs.phonto.packages.${system}.default.overrideAttrs (old: {
