@@ -332,6 +332,8 @@ in {
             (mkLuaInline ''
               function()
                 hl.exec_cmd("${pkgs.easyeffects}/bin/easyeffects --gapplication-service")
+                -- From the system PATH: the NixOS module bundles fcitx5 with its addons
+                hl.exec_cmd("fcitx5 -d --replace")
                 ${herdrDrop.startupBody}
               end
             '')

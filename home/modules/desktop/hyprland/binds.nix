@@ -145,6 +145,7 @@ in
     (b "${mainMod} + SPACE" (dspExec (toString vicinaeApps)))
     (b "${mainMod} + ALT + V" (dspExec "${vicinaeCmd} deeplink vicinae://launch/clipboard/history"))
     (b "ALT + SPACE" (dspExec "${hex} dictation toggle"))
+    (b "${mainMod} + SHIFT + SPACE" (dspExec "fcitx5-remote -t"))
 
     (b "${mainMod} + N" (dspExec (tideCall "notificationCenter" "toggle")))
     (b "${mainMod} + O" (dspExec (tideCall "overview" "toggle")))
