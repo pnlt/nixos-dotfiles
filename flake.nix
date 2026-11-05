@@ -201,6 +201,7 @@
       inputs.sops-nix.nixosModules.sops
       inputs.preservation.nixosModules.preservation
       ./pkgs/nixos-modules
+      "${inputs.luisquin-config}/pkgs/ttygate/nixos-modules"
       ./secrets
       (./system/hosts + "/${metadata.host.name}")
     ];

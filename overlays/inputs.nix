@@ -38,5 +38,6 @@ with inputs; [
   agentic-flake.overlays.default
   (final: _prev: {
     phone = final.callPackage "${luisquin-config}/pkgs/phone" {};
+    ttygate = final.callPackage "${luisquin-config}/pkgs/ttygate" {};
   })
 ]
