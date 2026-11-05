@@ -56,6 +56,7 @@
         ++ [
           ./patches/tide-island/measure-nix-store-disk.patch
           ./patches/tide-island/hide-battery-without-battery.patch
+          ./patches/tide-island/control-center-tray-only.patch
         ];
     });
     drift = prev.drift.overrideAttrs (old: {
