@@ -9,5 +9,6 @@ pkgs: {
   linear-tui = pkgs.callPackage ./linear-tui {};
   inherit (pkgs.callPackages ./pi-packages {}) pi-diff-review pi-subagents;
   px0 = pkgs.callPackage ./px0 {};
+  tide-island = pkgs.callPackage ./tide-island {};
   vimix-gtk-themes = pkgs.callPackage ./vimix-gtk-themes {};
 }
