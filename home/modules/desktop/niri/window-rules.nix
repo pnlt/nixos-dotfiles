@@ -47,6 +47,13 @@
       // optional size — niri uses different sizing APIs than hypr
   }
 
+    // Android emulator side toolbar: tile it so it scrolls beside the phone column
+    window-rule {
+        match app-id="^Emulator$" title="^Emulator$"
+        open-floating false
+        open-focused false
+    }
+
     // btop via keybind or vicinae (btop.desktop override in default.nix)
     window-rule {
         match app-id="ghostty.btop"

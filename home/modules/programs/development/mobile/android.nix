@@ -6,6 +6,12 @@
   ANDROID_HOME = "${config.home.homeDirectory}/.android/sdk";
   ANDROID_SDK_ROOT = ANDROID_HOME;
 in {
+  # React Native / Expo Gradle builds require JDK 17; also sets JAVA_HOME.
+  programs.java = {
+    enable = true;
+    package = pkgs.jdk17;
+  };
+
   systemd.user.slices.android-emulator = {
     Unit.Description = "Android emulator resource control";
     Slice = {
