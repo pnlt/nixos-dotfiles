@@ -1,8 +1,4 @@
-{
-  inputs,
-  system,
-  ...
-}: [
+[
   (
     _self: super: {
       waybar = super.waybar.overrideAttrs (_oldAttrs: let
@@ -60,15 +56,6 @@
         ++ [
           ./patches/tide-island/measure-nix-store-disk.patch
           ./patches/tide-island/hide-battery-without-battery.patch
-        ];
-    });
-  })
-  (_final: _prev: {
-    phonto = inputs.phonto.packages.${system}.default.overrideAttrs (old: {
-      patches =
-        (old.patches or [])
-        ++ [
-          ./patches/phonto/per-output-scale.patch
         ];
     });
   })

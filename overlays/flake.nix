@@ -5,9 +5,7 @@
 
   outputs = {nixpkgs, ...}: {
     overlays.default = nixpkgs.lib.composeManyExtensions (
-      import ./nixpkgs.nix {
-        host.banner = "";
-      }
+      import ./nixpkgs.nix
     );
   };
 }

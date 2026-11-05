@@ -122,15 +122,6 @@
         home-manager.follows = "home-manager";
       };
     };
-    # Upstream lock's mesa/libEGL fails EGL init against system mesa
-    phonto = {
-      url = "github:museslabs/phonto";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        rust-overlay.follows = "rust-overlay";
-        flake-utils.inputs.systems.follows = "systems";
-      };
-    };
     preservation.url = "github:nix-community/preservation";
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -168,10 +159,7 @@
           ++ [
             (final: _prev: import ./pkgs final)
           ]
-          ++ import ./overlays/nixpkgs.nix {
-            inherit inputs system;
-            inherit (metadata) host;
-          };
+          ++ import ./overlays/nixpkgs.nix;
       };
 
     pkgs = mkPkgs defaultSystem;

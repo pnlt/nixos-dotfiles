@@ -13,6 +13,5 @@
     ./mouse.nix
     ./notifications.nix
     ./xdg.nix
-    ./phonto.nix
   ];
 }
