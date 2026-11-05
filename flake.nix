@@ -127,6 +127,10 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    fcitx5-lotus = {
+      url = "github:LotusInputMethod/fcitx5-lotus";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {
@@ -187,6 +191,7 @@
       inputs.nyx-terminal.nixosModules.default
       inputs.home-manager.nixosModules.default
       inputs.sops-nix.nixosModules.sops
+      inputs.fcitx5-lotus.nixosModules.fcitx5-lotus
       inputs.preservation.nixosModules.preservation
       ./pkgs/nixos-modules
       "${inputs.luisquin-config}/pkgs/ttygate/nixos-modules"

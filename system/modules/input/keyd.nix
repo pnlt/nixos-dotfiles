@@ -4,7 +4,8 @@
 
     keyboards = {
       default = {
-        ids = ["*"];
+        # Grabbing Lotus's uinput device would reorder its backspaces against real keys
+        ids = ["*" "-1234:5678"];
 
         settings = {
           main = {
