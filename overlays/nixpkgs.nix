@@ -47,6 +47,13 @@
           ./patches/bat/idempotent-cache-build.patch
         ];
     });
+    hyprland = prev.hyprland.overrideAttrs (old: {
+      patches =
+        (old.patches or [])
+        ++ [
+          ./patches/hyprland/scrolling-fs-restore-offset.patch
+        ];
+    });
     tide-island = prev.tide-island.overrideAttrs (old: {
       patches =
         (old.patches or [])
