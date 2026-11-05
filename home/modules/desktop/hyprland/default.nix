@@ -214,6 +214,13 @@ in {
         }
       ];
 
+      workspace_rule = [
+        {
+          workspace = "name:music";
+          monitor = "HDMI-A-1";
+        }
+      ];
+
       window_rule =
         [
           {
@@ -263,6 +270,12 @@ in {
             name = "dev-terminal";
             match = {class = "^dev\\.terminal$";};
             workspace = "name:dev";
+            scrolling_width = 1.0;
+          }
+          {
+            name = "drift";
+            match = {class = "^ghostty\\.drift$";};
+            workspace = "name:music";
             scrolling_width = 1.0;
           }
           herdrDrop.windowRule

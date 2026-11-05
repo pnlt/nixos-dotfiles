@@ -76,21 +76,38 @@
       end
     '';
 
-  # niri's config/niri/scripts/dev: one terminal parked on the dev workspace.
-  devTerminal = let
-    selector = "class:^dev\\.terminal$";
-    command = "[workspace name:dev] ${ghostty} --class=dev.terminal --working-directory=${config.home.homeDirectory}/nixos-dotfiles";
+  # One ghostty window parked on a named workspace: focus it, or launch it there.
+  parkedTerminal = {
+    class,
+    workspace,
+    args,
+  }: let
+    selector = "class:^${lib.escapeRegex class}$";
+    command = "[workspace name:${workspace}] ${ghostty} --class=${class} ${args}";
   in
     mkLuaInline ''
       function()
         if hl.get_window(${toLua' selector}) ~= nil then
           hl.dispatch(hl.dsp.focus({ window = ${toLua' selector} }))
         else
-          hl.dispatch(hl.dsp.focus({ workspace = "name:dev" }))
+          hl.dispatch(hl.dsp.focus({ workspace = ${toLua' "name:${workspace}"} }))
           hl.exec_cmd(${toLua' command})
         end
       end
     '';
+
+  # niri's config/niri/scripts/dev
+  devTerminal = parkedTerminal {
+    class = "dev.terminal";
+    workspace = "dev";
+    args = "--working-directory=${config.home.homeDirectory}/nixos-dotfiles";
+  };
+
+  driftPlayer = parkedTerminal {
+    class = "ghostty.drift";
+    workspace = "music";
+    args = "-e ${lib.getExe pkgs.drift}";
+  };
 
   b = keys: dsp: {
     _args = [keys dsp];
@@ -120,6 +137,7 @@ in
   [
     (b "${mainMod} + RETURN" (dspExec ghostty))
     (b "${mainMod} + ALT + RETURN" devTerminal)
+    (b "${mainMod} + SHIFT + M" driftPlayer)
     (b "${mainMod} + A" herdrDrop.toggle)
     (b "${mainMod} + SHIFT + B" (dspExec "systemctl --user restart tide-island.service"))
     (b "CTRL + SHIFT + Escape" (dspExec "${ghostty} --class=ghostty.btop -e btop"))
