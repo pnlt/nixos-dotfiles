@@ -58,6 +58,9 @@
           ./patches/tide-island/hide-battery-without-battery.patch
         ];
     });
+    drift = prev.drift.overrideAttrs (old: {
+      patches = (old.patches or []) ++ [./patches/drift/search-videos-too.patch];
+    });
   })
   (final: _prev: {
     rtk = final.llm-agents.rtk.overrideAttrs (_oldAttrs: {

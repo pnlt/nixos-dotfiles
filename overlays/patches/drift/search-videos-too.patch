@@ -1,0 +1,37 @@
+diff --git a/src/ytmusic.rs b/src/ytmusic.rs
+index 0a1d128..7a88fc9 100644
+--- a/src/ytmusic.rs
++++ b/src/ytmusic.rs
+@@ -15,6 +15,7 @@ const PLAYLISTS_FILTER: &str = "Eg-KAQwIABAAGAAgACgBMABqChAEEAMQCRAFEAo%3D";
+ const RADIO_TARGET: usize = 50;
+ const RADIO_PAGES: usize = 4;
+ const SONGS_FILTER: &str = "EgWKAQIIAWoMEA4QChADEAQQCRAF";
++const VIDEOS_FILTER: &str = "EgWKAQIQAWoMEA4QChADEAQQCRAF";
+ const ARTISTS_FILTER: &str = "EgWKAQIgAWoMEA4QChADEAQQCRAF";
+ const UA: &str = "Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0";
+ const FALLBACK_COUNT: usize = 25;
+@@ -182,8 +183,22 @@ fn civil_from_days(z: i64) -> (i64, i64, i64) {
+ }
+ 
+ fn search_innertube(query: &str) -> Result<Page> {
+-    let v = post(ENDPOINT, json!({ "query": query, "params": SONGS_FILTER }))?;
+-    Ok(page_from(&v))
++    let (songs, videos) = std::thread::scope(|s| {
++        let videos = s.spawn(|| post(ENDPOINT, json!({ "query": query, "params": VIDEOS_FILTER })));
++        let songs = post(ENDPOINT, json!({ "query": query, "params": SONGS_FILTER }));
++        (songs, videos.join())
++    });
++    let mut page = page_from(&songs?);
++    if let Ok(Ok(v)) = videos {
++        let seen: std::collections::HashSet<String> =
++            page.tracks.iter().map(|t| t.id.clone()).collect();
++        page.tracks.extend(
++            parse_search_response(&v)
++                .into_iter()
++                .filter(|t| !seen.contains(&t.id)),
++        );
++    }
++    Ok(page)
+ }
+ 
+ fn page_from(v: &Value) -> Page {
