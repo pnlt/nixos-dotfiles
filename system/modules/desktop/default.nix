@@ -8,6 +8,7 @@
     ./clipboard.nix
     # ./niri.nix
     ./hyprland.nix
+    ./sunshine.nix
     ./fonts
   ];
 

@@ -321,6 +321,7 @@ in {
         (allowExe xdph "cursorpos")
         # Tide's overview window previews
         (allowExe "${pkgs.quickshell}/bin/.quickshell-wrapped" "screencopy")
+        (allowExe "${pkgs.sunshine}/bin/.sunshine-wrapped" "screencopy")
       ];
 
       bind = import ./binds.nix (args // {inherit herdrDrop tideCall;});
