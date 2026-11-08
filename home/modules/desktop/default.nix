@@ -10,9 +10,7 @@
 
     ./color-picker.nix
     ./gtk.nix
-    ./mako.nix
     ./mouse.nix
-    ./notifications.nix
     ./xdg.nix
   ];
 }

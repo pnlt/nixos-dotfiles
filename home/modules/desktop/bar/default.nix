@@ -1,4 +1,6 @@
-{
+{pkgs, ...}: {
+  home.packages = [pkgs.libnotify];
+
   programs.quickshell = {
     enable = true;
     configs.bar = ./.;
