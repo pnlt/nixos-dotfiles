@@ -1,6 +1,7 @@
 {
   imports = [
     # ./niri
+    ./bar
     ./hyprland
     # ./shell
     ./heft.nix

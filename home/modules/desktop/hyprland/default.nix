@@ -8,8 +8,6 @@ args @ {
 }: let
   inherit (lib.generators) mkLuaInline;
 
-  tideCall = target: fn: "${lib.getExe pkgs.quickshell} ipc -p ${pkgs.tide-island}/share/tide-island call ${target} ${fn}";
-
   herdrHub = pkgs.writeShellScript "ghostty-herdr-hub" ''
     exec ${lib.getExe config.programs.ghostty.package} --class=ghostty.herdr \
       --keybind=clear \
@@ -40,7 +38,11 @@ args @ {
     center = true;
   };
 in {
-  imports = [./tide-island.nix];
+  services.awww.enable = true;
+  systemd.user.services.awww.Service.ExecStartPost = toString (pkgs.writeShellScript "awww-wallpaper" ''
+    until ${lib.getExe pkgs.awww} query >/dev/null 2>&1; do sleep 0.1; done
+    exec ${lib.getExe pkgs.awww} img ${config.home.homeDirectory}/Pictures/wallpapers/wall1.png
+  '');
 
   home.sessionVariables.GRIMBLAST_HIDE_CURSOR = 0;
 
@@ -48,8 +50,8 @@ in {
     enable = true;
     configType = "lua";
     portalPackage = null;
-    # niri-session imports the whole login environment too; services such as
-    # tide-island launch apps that only live on the home-manager PATH.
+    # niri-session imports the whole login environment too; user services
+    # launch apps that only live on the home-manager PATH.
     systemd.variables = ["--all"];
 
     settings = {
@@ -319,12 +321,10 @@ in {
         (allowExe (lib.getExe pkgs.grim) "screencopy")
         (allowExe xdph "screencopy")
         (allowExe xdph "cursorpos")
-        # Tide's overview window previews
-        (allowExe "${pkgs.quickshell}/bin/.quickshell-wrapped" "screencopy")
         (allowExe "${pkgs.sunshine}/bin/.sunshine-wrapped" "screencopy")
       ];
 
-      bind = import ./binds.nix (args // {inherit herdrDrop tideCall;});
+      bind = import ./binds.nix (args // {inherit herdrDrop;});
 
       on = [
         {

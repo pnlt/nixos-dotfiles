@@ -5,7 +5,6 @@
   pkgs,
   lib,
   herdrDrop,
-  tideCall,
   ...
 }: let
   inherit (lib.generators) mkLuaInline;
@@ -139,22 +138,13 @@ in
     (b "${mainMod} + ALT + RETURN" devTerminal)
     (b "${mainMod} + SHIFT + M" driftPlayer)
     (b "${mainMod} + A" herdrDrop.toggle)
-    (b "${mainMod} + SHIFT + B" (dspExec "systemctl --user restart tide-island.service"))
+    (b "${mainMod} + SHIFT + B" (dspExec "systemctl --user restart quickshell.service"))
     (b "CTRL + SHIFT + Escape" (dspExec "${ghostty} --class=ghostty.btop -e btop"))
 
     (b "${mainMod} + SPACE" (dspExec (toString vicinaeApps)))
     (b "${mainMod} + ALT + V" (dspExec "${vicinaeCmd} deeplink vicinae://launch/clipboard/history"))
     (b "ALT + SPACE" (dspExec "${hex} dictation toggle"))
     (b "${mainMod} + SHIFT + SPACE" (dspExec "fcitx5-remote -t"))
-
-    (b "${mainMod} + N" (dspExec (tideCall "notificationCenter" "toggle")))
-    (b "${mainMod} + O" (dspExec (tideCall "overview" "toggle")))
-    (b "${mainMod} + G" (dspExec (tideCall "glance" "toggle")))
-    (b "${mainMod} + I" (dspExec (tideCall "controlCenter" "toggle")))
-    (b "${mainMod} + SHIFT + I" (dspExec (tideCall "tide" "toggleStyle")))
-    (b "${mainMod} + P" (dspExec (tideCall "player" "toggle")))
-    (b "${mainMod} + SHIFT + W" (dspExec (tideCall "wallpaperPicker" "toggle")))
-    (b "${mainMod} + BackSpace" (dspExec (tideCall "lock" "lock")))
 
     (b "${mainMod} + SHIFT + S" (dspExec "${grimblastCmd} --freeze --notify copy area"))
     (b "${mainMod} + Print" (dspExec "${grimblastCmd} --notify copy active"))
