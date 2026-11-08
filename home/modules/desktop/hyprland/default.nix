@@ -41,7 +41,7 @@ in {
   services.awww.enable = true;
   systemd.user.services.awww.Service.ExecStartPost = toString (pkgs.writeShellScript "awww-wallpaper" ''
     until ${lib.getExe pkgs.awww} query >/dev/null 2>&1; do sleep 0.1; done
-    exec ${lib.getExe pkgs.awww} img ${config.home.homeDirectory}/Pictures/wallpapers/japan.png
+    exec ${lib.getExe pkgs.awww} img ${config.home.homeDirectory}/Pictures/wallpapers/damn.png
   '');
 
   home.sessionVariables.GRIMBLAST_HIDE_CURSOR = 0;
