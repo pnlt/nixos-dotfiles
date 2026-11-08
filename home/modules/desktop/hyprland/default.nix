@@ -255,13 +255,6 @@ in {
             float = true;
           }
           {
-            name = "waybar-nmtui";
-            match = {class = "^waybar\\.nmtui$";};
-            float = true;
-            size = "1050 720";
-            center = true;
-          }
-          {
             name = "btop";
             match = {class = "^ghostty\\.btop$";};
             float = true;

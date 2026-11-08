@@ -26,7 +26,7 @@ Flake-based NixOS and Home Manager configuration for `nyx`.
 - **Secrets** - encrypted in-repo with [sops-nix](https://github.com/Mic92/sops-nix) and age, decrypted at activation with the host key. The login password hash lives here.
 - **Secure Boot** - signed UKIs via [lanzaboote](https://github.com/nix-community/lanzaboote).
 - **Signed commits** - GPG agent with pinentry; Git and Jujutsu sign by default.
-- **Wayland desktop** - niri, Waybar, eww, mako and vicinae, with in-house helpers for the bar and notifications.
+- **Wayland desktop** - Hyprland, a Quickshell bar with its own notification server, and vicinae.
 - **Own packages** - small tools written for this setup, exposed as flake packages.
 - **Upstream patches** - changes to upstream software live as intent-named `.patch` files under `overlays/patches/<pkg>`, not wrappers or forks.
 
@@ -34,9 +34,9 @@ Flake-based NixOS and Home Manager configuration for `nyx`.
 
 | Role            | Choice                                   |
 | --------------- | ---------------------------------------- |
-| Compositor      | niri                                     |
-| Bar / widgets   | Waybar, eww                              |
-| Notifications   | mako + hark                              |
+| Compositor      | Hyprland                                 |
+| Bar / widgets   | Quickshell                               |
+| Notifications   | Quickshell                               |
 | Launcher        | vicinae                                  |
 | Login           | ly                                       |
 | Terminal        | Ghostty                                  |
@@ -70,8 +70,6 @@ Flake-based NixOS and Home Manager configuration for `nyx`.
 
 | Package          | Description                                              |
 | ---------------- | -------------------------------------------------------- |
-| `barfeed`        | Native status helpers for Waybar                         |
-| `hark`           | Notification centre over mako's history                  |
 | `heft`           | Disk usage analysis: where the space went, what changed  |
 | `herdr-autoname` | Automatic tab names for herdr                            |
 | `herdr-recall`   | Restores what each herdr pane was running after restart  |

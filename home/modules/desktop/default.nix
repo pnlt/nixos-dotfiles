@@ -3,7 +3,6 @@
     # ./niri
     ./bar
     ./hyprland
-    # ./shell
     ./heft.nix
     ./hex.nix
     ./vicinae.nix

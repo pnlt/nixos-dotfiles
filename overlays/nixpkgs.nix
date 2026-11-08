@@ -1,40 +1,4 @@
 [
-  (
-    _self: super: {
-      waybar = super.waybar.overrideAttrs (_oldAttrs: let
-        libcavaVersion = "0.10.7";
-        libcavaSrc = super.fetchFromGitHub {
-          owner = "LukashonakV";
-          repo = "cava";
-          rev = libcavaVersion;
-          hash = "sha256-zkyj1vBzHtoypX4Bxdh1Vmwh967DKKxN751v79hzmgQ=";
-        };
-      in {
-        src = super.fetchFromGitHub {
-          owner = "Alexays";
-          repo = "Waybar";
-          rev = "05945748dccce28bf96d26d8f64a9e69a8dd49ba";
-          hash = "sha256-51R3mIt8cLNvh/X5qe9vOqeJCj0U9KRyemVE5y+OhiU=";
-        };
-
-        postUnpack = ''
-          pushd "$sourceRoot"
-          cp -R --no-preserve=mode,ownership ${libcavaSrc} subprojects/cava-${libcavaVersion}
-          patchShebangs .
-          popd
-        '';
-
-        doCheck = false;
-        mesonFlags =
-          map
-          (flag:
-            if flag == "-Dtests=enabled"
-            then "-Dtests=disabled"
-            else flag)
-          (_oldAttrs.mesonFlags or []);
-      });
-    }
-  )
   (_final: prev: {
     bat = prev.bat.overrideAttrs (old: {
       patches =
