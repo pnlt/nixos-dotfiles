@@ -30,7 +30,6 @@ in {
         inputs.preservation.nixosModules.preservation
         ../../pkgs/nixos-modules
         "${inputs.luisquin-config}/pkgs/ttygate/nixos-modules"
-        ../../secrets
         (../../system/hosts + "/${meta.host.name}")
       ]
       ++ (with config.flake.modules.nixos; [
@@ -40,6 +39,9 @@ in {
         fs
         hardware
         input
+        security
+        network
+        secrets
       ]);
     specialArgs =
       configArgs
