@@ -149,6 +149,26 @@
         "type": "github"
       }
     },
+    "disko": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1792526520,
+        "narHash": "sha256-3hSJlv8mUVnZPMWK2+CM7a9O+nR6Z4mCh27NfLCmTPc=",
+        "owner": "nix-community",
+        "repo": "disko",
+        "rev": "cedd626e11b635470fa6f9fdb8ad79b0075dd7f9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "disko",
+        "type": "github"
+      }
+    },
     "encore": {
       "inputs": {
         "nixpkgs": [
@@ -768,6 +788,7 @@
         "agentic-flake": "agentic-flake",
         "bun2nix": "bun2nix",
         "direnv-instant": "direnv-instant",
+        "disko": "disko",
         "encore": "encore",
         "fcitx5-lotus": "fcitx5-lotus",
         "flake-parts": "flake-parts",
