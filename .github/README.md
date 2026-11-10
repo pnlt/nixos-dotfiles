@@ -59,7 +59,7 @@ Flake-based NixOS and Home Manager configuration for `nyx`.
 │   ├── modules/         desktop, hardware, programs
 │   ├── options/         custom HM options
 │   └── profiles/        per-user entry point
-├── config/              raw dotfiles linked by HM (niri, ghostty, nvim)
+├── config/              raw dotfiles linked by HM (ghostty, nvim)
 ├── pkgs/                own packages, NixOS and HM modules
 ├── overlays/            nixpkgs overlays and patches
 ├── secrets/             sops-encrypted secrets

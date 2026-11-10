@@ -6,7 +6,6 @@
 }: {
   imports = [
     ./clipboard.nix
-    # ./niri.nix
     ./hyprland.nix
     ./sunshine.nix
     ./fonts
@@ -22,10 +21,6 @@
         name = "hyprland";
         command = ["${pkgs.hyprland}/bin/start-hyprland"];
       }
-      # {
-      #   name = "niri";
-      #   command = ["${pkgs.niri}/bin/niri-session"];
-      # }
       {
         name = "tty";
         command = [(lib.getExe pkgs.zsh) "-l"];

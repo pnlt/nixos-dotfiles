@@ -1,13 +1,10 @@
 {
   imports = [
     ./agents
-    # ./database
-    # ./docker
     ./editors
     ./git
     ./go
     ./mobile
-    # ./ops
     ./pwn
 
     ./burning.nix

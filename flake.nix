@@ -189,6 +189,7 @@
       inputs.nix-index-database.nixosModules.nix-index
       inputs.lanzaboote.nixosModules.lanzaboote
       inputs.nyx-terminal.nixosModules.default
+      # Declares home-manager.* options that standalone HM reads through nixosConfig
       inputs.home-manager.nixosModules.default
       inputs.sops-nix.nixosModules.sops
       inputs.fcitx5-lotus.nixosModules.fcitx5-lotus

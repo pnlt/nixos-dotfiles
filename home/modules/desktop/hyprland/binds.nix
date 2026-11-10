@@ -95,7 +95,6 @@
       end
     '';
 
-  # niri's config/niri/scripts/dev
   devTerminal = parkedTerminal {
     class = "dev.terminal";
     workspace = "dev";

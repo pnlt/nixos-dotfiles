@@ -11,7 +11,6 @@
     ./hardware-configuration.nix
     ./hostcmd.nix
   ];
-  home-manager.useGlobalPkgs = true;
 
   networking.hostName = host.name;
 

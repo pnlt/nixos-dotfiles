@@ -1,7 +1,6 @@
 {host, ...}: {
   imports = [
     ./man.nix
-    # ./nao.nix
     ./translate.nix
     ./tty.nix
   ];
