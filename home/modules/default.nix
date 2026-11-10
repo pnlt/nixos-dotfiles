@@ -1,7 +1,6 @@
 {
   imports = [
     ./desktop
-    ./hardware
     ./programs/browser
     ./programs/terminal
     ./programs/media

@@ -18,20 +18,29 @@ in {
   flake.nixosConfigurations.${meta.host.name} = inputs.nixpkgs.lib.nixosSystem {
     inherit pkgs;
 
-    modules = [
-      inputs.nix-index-database.nixosModules.nix-index
-      inputs.lanzaboote.nixosModules.lanzaboote
-      inputs.nyx-terminal.nixosModules.default
-      # Declares home-manager.* options that standalone HM reads through nixosConfig
-      inputs.home-manager.nixosModules.default
-      inputs.sops-nix.nixosModules.sops
-      inputs.fcitx5-lotus.nixosModules.fcitx5-lotus
-      inputs.preservation.nixosModules.preservation
-      ../../pkgs/nixos-modules
-      "${inputs.luisquin-config}/pkgs/ttygate/nixos-modules"
-      ../../secrets
-      (../../system/hosts + "/${meta.host.name}")
-    ];
+    modules =
+      [
+        inputs.nix-index-database.nixosModules.nix-index
+        inputs.lanzaboote.nixosModules.lanzaboote
+        inputs.nyx-terminal.nixosModules.default
+        # Declares home-manager.* options that standalone HM reads through nixosConfig
+        inputs.home-manager.nixosModules.default
+        inputs.sops-nix.nixosModules.sops
+        inputs.fcitx5-lotus.nixosModules.fcitx5-lotus
+        inputs.preservation.nixosModules.preservation
+        ../../pkgs/nixos-modules
+        "${inputs.luisquin-config}/pkgs/ttygate/nixos-modules"
+        ../../secrets
+        (../../system/hosts + "/${meta.host.name}")
+      ]
+      ++ (with config.flake.modules.nixos; [
+        nix
+        core
+        boot
+        fs
+        hardware
+        input
+      ]);
     specialArgs =
       configArgs
       // {
@@ -42,18 +51,22 @@ in {
   flake.homeConfigurations.${meta.user.alias} = inputs.home-manager.lib.homeManagerConfiguration {
     inherit pkgs;
 
-    modules = [
-      inputs.nyx-terminal.homeModules.default
-      inputs.agentic-flake.homeModules.default
-      inputs.encore.homeModules.default
-      inputs.techdebt-cli.homeModules.default
-      inputs.hex.homeManagerModules.hex
-      inputs.direnv-instant.homeModules.default
-      ../../pkgs/hm-modules
-      "${inputs.luisquin-config}/pkgs/phone/hm-modules"
-      ../../home/options
-      (../../home/profiles + "/${meta.user.alias}")
-    ];
+    modules =
+      [
+        inputs.nyx-terminal.homeModules.default
+        inputs.agentic-flake.homeModules.default
+        inputs.encore.homeModules.default
+        inputs.techdebt-cli.homeModules.default
+        inputs.hex.homeManagerModules.hex
+        inputs.direnv-instant.homeModules.default
+        ../../pkgs/hm-modules
+        "${inputs.luisquin-config}/pkgs/phone/hm-modules"
+        ../../home/options
+        (../../home/profiles + "/${meta.user.alias}")
+      ]
+      ++ (with config.flake.modules.homeManager; [
+        hardware
+      ]);
     extraSpecialArgs =
       configArgs
       // {
