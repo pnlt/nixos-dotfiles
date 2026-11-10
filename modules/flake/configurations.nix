@@ -44,6 +44,7 @@ in {
         network
         secrets
         desktop
+        mobile
       ]);
     specialArgs =
       configArgs
@@ -73,6 +74,13 @@ in {
         shell
         terminal
         desktop
+        dev
+        agents
+        editors
+        git
+        go
+        mobile
+        pwn
       ]);
     extraSpecialArgs =
       configArgs

@@ -1,0 +1,64 @@
+{...}: {
+  flake.modules.homeManager.mobile = {
+    config,
+    pkgs,
+    ...
+  }: let
+    ANDROID_HOME = "${config.home.homeDirectory}/.android/sdk";
+    ANDROID_SDK_ROOT = ANDROID_HOME;
+  in {
+    # React Native / Expo Gradle builds require JDK 17; also sets JAVA_HOME.
+    programs.java = {
+      enable = true;
+      package = pkgs.jdk17;
+    };
+
+    systemd.user.slices.android-emulator = {
+      Unit.Description = "Android emulator resource control";
+      Slice = {
+        IOWriteBandwidthMax = "/ 150M";
+        MemoryHigh = "6G";
+      };
+    };
+
+    home = {
+      packages = with pkgs; [
+        android-studio
+        android-tools
+        (import ./_android-cli.nix {inherit pkgs ANDROID_HOME ANDROID_SDK_ROOT;})
+
+        scrcpy
+
+        kotlin-language-server
+        kotlin-native
+        kotlin
+
+        sdkmanager
+      ];
+
+      file = {
+        ".android/advancedFeatures.ini" = {
+          text = ''
+            QuickbootFileBacked = off
+          '';
+          force = true;
+        };
+
+        ".gradle/gradle.properties" = {
+          text = ''
+            org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8
+            org.gradle.daemon.idletimeout=3600000
+            org.gradle.parallel=true
+            org.gradle.configureondemand=true
+            org.gradle.daemon=true
+          '';
+          force = true;
+        };
+      };
+
+      sessionVariables = {
+        inherit ANDROID_HOME ANDROID_SDK_ROOT;
+      };
+    };
+  };
+}
