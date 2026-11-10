@@ -27,6 +27,7 @@ timeZone = "Asia/Ho_Chi_Minh"
 i18nLocale = "en_US.UTF-8"
 resolution = "1920x1080"
 gui = true
+wayland = true
 
 [nix]
 stateVersion = "26.05"

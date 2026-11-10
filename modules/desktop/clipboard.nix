@@ -1,10 +1,8 @@
-{...}: {
-  flake.modules.nixos.desktop = {
-    isWayland,
-    pkgs,
-    ...
-  }:
-    if isWayland
+{config, ...}: let
+  inherit (config.meta) host;
+in {
+  flake.modules.nixos.desktop = {pkgs, ...}:
+    if host.wayland
     then {
       environment.systemPackages = with pkgs; [
         wl-clipboard

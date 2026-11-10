@@ -1,8 +1,8 @@
 {inputs, ...}: {
-  flake.modules.homeManager.terminal = {system, ...}: {
+  flake.modules.homeManager.terminal = {pkgs, ...}: {
     shared.ghostty = {
       enable = true;
-      package = inputs.ghostty.packages.${system}.default.overrideAttrs (old: {
+      package = inputs.ghostty.packages.${pkgs.stdenv.hostPlatform.system}.default.overrideAttrs (old: {
         patches =
           (old.patches or [])
           ++ [

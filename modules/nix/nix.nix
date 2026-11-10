@@ -5,11 +5,7 @@
 }: let
   inherit (config.meta) user;
 in {
-  flake.modules.nixos.nix = {
-    system,
-    pkgs,
-    ...
-  }: {
+  flake.modules.nixos.nix = {pkgs, ...}: {
     services.harmonia.gc = {
       enable = true;
       automatic = true;
@@ -83,8 +79,8 @@ in {
         nvd # package diff
         nix-update
         nix-fast-build
-        inputs.nix-diff-rs.packages.${system}.default
-        inputs.nix-tree-rs.packages.${system}.default
+        inputs.nix-diff-rs.packages.${pkgs.stdenv.hostPlatform.system}.default
+        inputs.nix-tree-rs.packages.${pkgs.stdenv.hostPlatform.system}.default
         # nixgrep
 
         nixpkgs-review

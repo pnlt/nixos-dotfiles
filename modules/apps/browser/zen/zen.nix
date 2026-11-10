@@ -1,6 +1,5 @@
 {inputs, ...}: {
   flake.modules.homeManager.browser = {
-    libx,
     pkgs,
     lib,
     ...
@@ -93,7 +92,10 @@
           "nav-bar" = ["uBlock0@raymondhill.net"];
         };
 
-        bookmarks = import ./_bookmarks-config.nix {inherit libx lib;};
+        bookmarks = import ./_bookmarks-config.nix {
+          inherit lib;
+          libx = import ../../../../lib {inherit pkgs;};
+        };
         search = import ./_search-config.nix {inherit pkgs;};
         userContent = import ./_user-content-config.nix {inherit pkgs lib;};
 

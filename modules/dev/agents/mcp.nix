@@ -4,10 +4,9 @@
     nixosConfig,
     pkgs,
     lib,
-    system,
     ...
   }: let
-    encore = inputs.encore.packages.${system}.encore;
+    encore = inputs.encore.packages.${pkgs.stdenv.hostPlatform.system}.encore;
   in {
     home.packages = [pkgs.codebase-memory-mcp];
 

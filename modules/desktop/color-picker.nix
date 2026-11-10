@@ -1,13 +1,14 @@
-{...}: {
+{config, ...}: let
+  inherit (config.meta) host;
+in {
   flake.modules.homeManager.desktop = {
-    isWayland,
     pkgs,
     lib,
     ...
   }: let
     package = let
       color-picker =
-        if isWayland
+        if host.wayland
         then {
           package = pkgs.wl-color-picker;
           extraArgs = "";

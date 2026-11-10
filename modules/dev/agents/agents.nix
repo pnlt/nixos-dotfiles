@@ -3,11 +3,13 @@
     nixosConfig,
     config,
     pkgs,
-    libx,
     lib,
     ...
   }: {
-    _module.args = import ./_lib.nix {inherit nixosConfig pkgs lib libx config;};
+    _module.args = import ./_lib.nix {
+      inherit nixosConfig pkgs lib config;
+      libx = import ../../../lib {inherit pkgs;};
+    };
 
     # luisquin also enables `services.strikedddd` here. It comes from his private
     # flake input (git+ssh://github.com/0xc000022070/striked) and cannot be

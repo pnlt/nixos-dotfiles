@@ -7,13 +7,6 @@
   inherit (config) meta;
   system = "x86_64-linux";
   pkgs = withSystem system ({pkgs, ...}: pkgs);
-
-  specialArgs = {
-    inherit inputs system;
-    libx = import ../../lib {inherit pkgs;};
-    isWayland = true;
-  };
-  configArgs = specialArgs // {inherit (meta) host user nix;};
 in {
   flake.nixosConfigurations.${meta.host.name} = inputs.nixpkgs.lib.nixosSystem {
     inherit pkgs;
@@ -50,11 +43,7 @@ in {
         hostcmd
         nyx
       ]);
-    specialArgs =
-      configArgs
-      // {
-        hmConfig = config.flake.homeConfigurations.${meta.user.alias}.config;
-      };
+    specialArgs.hmConfig = config.flake.homeConfigurations.${meta.user.alias}.config;
   };
 
   flake.homeConfigurations.${meta.user.alias} = inputs.home-manager.lib.homeManagerConfiguration {
@@ -91,10 +80,6 @@ in {
         file-manager
         pnlt
       ]);
-    extraSpecialArgs =
-      configArgs
-      // {
-        nixosConfig = config.flake.nixosConfigurations.${meta.host.name}.config;
-      };
+    extraSpecialArgs.nixosConfig = config.flake.nixosConfigurations.${meta.host.name}.config;
   };
 }
