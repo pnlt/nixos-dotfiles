@@ -67,7 +67,7 @@ All generations broken but `/persist` fine: boot the live USB (section 4, step
 ```shell
 nix-shell -p git
 git clone https://github.com/pnlt/nixos-dotfiles && cd nixos-dotfiles
-sudo ./system/hosts/nyx/install.sh repair
+sudo ./modules/hosts/nyx/install.sh repair
 ```
 
 ## 3. Secure Boot violation
@@ -93,7 +93,7 @@ Wipes the Kingston drive only. Windows stays.
    ```shell
    nix-shell -p git
    git clone https://github.com/pnlt/nixos-dotfiles && cd nixos-dotfiles
-   sudo ./system/hosts/nyx/install.sh fresh ~/SECRET
+   sudo ./modules/hosts/nyx/install.sh fresh ~/SECRET
    ```
 
    Type `WIPE` when asked. Codex compiles from source (30-60 min); cores scale

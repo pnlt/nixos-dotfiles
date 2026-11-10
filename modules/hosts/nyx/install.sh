@@ -18,7 +18,7 @@ fresh)
   read -rp "Wipe the whole Kingston drive (NixOS + /home)? Type WIPE: " ok
   [ "$ok" = WIPE ] || exit 1
   for m in destroy format; do
-    "${nixf[@]}" run github:nix-community/disko -- --yes-wipe-all-disks --mode $m "$repo/system/hosts/nyx/disko-config.nix"
+    "${nixf[@]}" run github:nix-community/disko -- --yes-wipe-all-disks --mode $m "$repo/modules/hosts/nyx/_disko-config.nix"
   done
   ;;
 *)

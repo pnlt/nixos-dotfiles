@@ -30,7 +30,6 @@ in {
         inputs.preservation.nixosModules.preservation
         ../../pkgs/nixos-modules
         "${inputs.luisquin-config}/pkgs/ttygate/nixos-modules"
-        (../../system/hosts + "/${meta.host.name}")
       ]
       ++ (with config.flake.modules.nixos; [
         nix
@@ -48,6 +47,8 @@ in {
         browser
         gaming
         compression
+        hostcmd
+        nyx
       ]);
     specialArgs =
       configArgs
@@ -69,8 +70,6 @@ in {
         inputs.direnv-instant.homeModules.default
         ../../pkgs/hm-modules
         "${inputs.luisquin-config}/pkgs/phone/hm-modules"
-        ../../home/options
-        (../../home/profiles + "/${meta.user.alias}")
       ]
       ++ (with config.flake.modules.homeManager; [
         hardware
@@ -90,6 +89,7 @@ in {
         social
         office
         file-manager
+        pnlt
       ]);
     extraSpecialArgs =
       configArgs
