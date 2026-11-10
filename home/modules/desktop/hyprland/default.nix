@@ -27,6 +27,7 @@ args @ {
   };
 
   allowExe = exe: type: {_args = [(lib.escapeRegex exe) type "allow"];};
+  allowPathRegex = regex: type: {_args = [regex type "allow"];};
 
   xdph = "${pkgs.xdg-desktop-portal-hyprland}/libexec/xdg-desktop-portal-hyprland";
 
@@ -80,7 +81,7 @@ in {
 
       config = {
         general = {
-          layout = "scrolling";
+          layout = "dwindle";
           gaps_in = 4;
           gaps_out = 20;
           border_size = 1;
@@ -128,7 +129,7 @@ in {
         cursor = {
           no_warps = true;
           hide_on_key_press = true;
-          inactive_timeout = 10;
+          inactive_timeout = 2;
         };
 
         binds = {
@@ -146,6 +147,13 @@ in {
 
         render = {
           direct_scanout = 2;
+        };
+        dwindle = {
+          preserve_split = true;
+        };
+
+        master = {
+          new_status = "master";
         };
 
         scrolling = {
@@ -220,12 +228,17 @@ in {
         }
       ];
 
-      workspace_rule = [
-        {
-          workspace = "name:music";
-          monitor = "HDMI-A-1";
-        }
-      ];
+      workspace_rule =
+        [
+          {
+            workspace = "name:music";
+            monitor = "HDMI-A-1";
+          }
+        ]
+        ++ map (workspace: {
+          inherit workspace;
+          layout = "scrolling";
+        }) ["2" "3" "10"];
 
       window_rule =
         [
@@ -316,8 +329,11 @@ in {
       # Unlisted clients get an allow/deny prompt
       permission = [
         (allowExe (lib.getExe pkgs.grim) "screencopy")
+        (allowPathRegex "/nix/store/[^/]+-zen[^/]*/bin/(zen|zen-beta|zen-twilight)" "screencopy")
+        (allowExe (lib.getExe pkgs.obs-studio) "screencopy")
         (allowExe xdph "screencopy")
         (allowExe xdph "cursorpos")
+        (allowExe (lib.getExe pkgs.discord) "screencopy")
         (allowExe "${pkgs.sunshine}/bin/.sunshine-wrapped" "screencopy")
       ];
 
