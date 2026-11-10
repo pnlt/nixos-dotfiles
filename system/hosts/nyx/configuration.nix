@@ -5,7 +5,6 @@
   ...
 }: {
   imports = [
-    ../../modules
     ../../options
 
     ./hardware-configuration.nix

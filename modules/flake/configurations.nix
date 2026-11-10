@@ -45,6 +45,9 @@ in {
         secrets
         desktop
         mobile
+        browser
+        gaming
+        compression
       ]);
     specialArgs =
       configArgs
@@ -81,6 +84,12 @@ in {
         go
         mobile
         pwn
+        browser
+        media
+        studio
+        social
+        office
+        file-manager
       ]);
     extraSpecialArgs =
       configArgs

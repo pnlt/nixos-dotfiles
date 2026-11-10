@@ -11,10 +11,6 @@
     nvim = "nvim";
   };
 in {
-  imports = [
-    ../../modules
-  ];
-
   xdg.configFile =
     builtins.mapAttrs (_name: subpath: {
       source = create_symlink "${dotfiles}/${subpath}";

@@ -1,5 +1,0 @@
-{
-  imports = [
-    ./steam-proton.nix
-  ];
-}
