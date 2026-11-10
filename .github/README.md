@@ -50,8 +50,9 @@ Flake-based NixOS and Home Manager configuration for `nyx`.
 
 ```
 .
-├── flake.nix            inputs and outputs
+├── flake.nix            inputs; outputs come from modules/ via import-tree
 ├── flake.toml           user and host metadata
+├── modules/flake/       flake-parts: systems, pkgs, meta, configurations
 ├── system/              NixOS
 │   ├── hosts/nyx/       host config, hardware, nyx CLI
 │   └── modules/         boot, core, desktop, fs, hardware, input, programs
