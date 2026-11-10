@@ -15,14 +15,9 @@
       AMD_VULKAN_ICD = "RADV";
     };
 
-    # Useful checks / tools (optional)
     environment.systemPackages = with pkgs; [
       vulkan-tools # vulkaninfo
       mesa-demos
-      # lact       # GUI fan/OC — enable service below if you use it
     ];
-
-    # Optional: AMD control panel (fans, power limit, mild OC)
-    # services.lact.enable = true;
   };
 }

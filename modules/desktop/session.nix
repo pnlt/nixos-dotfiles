@@ -7,7 +7,6 @@
   }: {
     programs.dconf.enable = true;
 
-    # Session picker shown after logging out; boot autologins hyprland
     programs.ttygate = {
       enable = true;
       sessions = [

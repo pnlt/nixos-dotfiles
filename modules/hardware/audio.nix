@@ -1,7 +1,6 @@
 {...}: {
   flake.modules.nixos.hardware = {pkgs, ...}: {
     security.rtkit.enable = true;
-    # programs.noisetorch.enable = true;
 
     services = {
       pulseaudio.enable = 0 != 0;

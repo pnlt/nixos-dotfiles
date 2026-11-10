@@ -9,10 +9,8 @@
       gofumpt # gofmt but better
       golangci-lint # linter
       gopls # Go language server
-      # gotools # useful stuff for go
       govulncheck # audit dependencies
       grpc-tools
-      # unconvert # linter to check unnecessary type conversions
     ];
   };
 }

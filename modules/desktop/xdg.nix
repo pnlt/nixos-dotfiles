@@ -1,6 +1,5 @@
 {...}: {
   flake.modules.homeManager.desktop = {config, ...}: {
-    # let me be the lesser of a beautiful man
     xdg.configFile."mimeapps.list".force = true;
 
     xdg = {
@@ -18,9 +17,6 @@
         publicShare = null;
         templates = null;
         videos = "${home}/Videos";
-        extraConfig = {
-          # WORK = "${home}/Work";
-        };
       };
 
       mimeApps = let

@@ -62,7 +62,6 @@
       enable = true;
       servers = {
         context7.url = "https://mcp.context7.com/mcp";
-        # linear.url = "https://mcp.linear.app/mcp"; # only if you use Linear
       };
     };
   };

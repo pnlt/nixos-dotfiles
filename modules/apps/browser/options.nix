@@ -148,10 +148,6 @@
 
       xdg.configFile."software.Browsers/config.json".source =
         jsonFormat.generate "browsers-config.json" (stripNulls cfg.settings);
-
-      # home.sessionVariables = mkIf cfg.setAsDefaultBrowser {
-      #   BROWSER = lib.mkForce cfg.package.meta.mainProgram;
-      # };
     };
   };
 }

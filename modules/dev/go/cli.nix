@@ -9,10 +9,6 @@
       package = pkgs.go;
 
       env = {
-        # GOPRIVATE = [
-        #   "github.com/chanchitaapp"
-        #   "github.com/0xc000022070"
-        # ];
         GOBIN = "${config.home.homeDirectory}/go/bin";
         GOPATH = "${config.home.homeDirectory}/go";
         GO111MODULE = "on";

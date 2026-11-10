@@ -4,7 +4,6 @@
     pkgs,
     ...
   }: {
-    # for fun, I guess
     programs.zig = {
       enable = true;
       package = pkgs.zig;

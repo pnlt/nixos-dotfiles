@@ -17,17 +17,9 @@ in {
         shell = pkgs.zsh;
         hashedPasswordFile = config.sops.secrets."users/${user.alias}-password-hash".path;
 
-        # description optional
-        # description = user.alias;
-
         extraGroups = [
           "networkmanager"
           "wheel"
-          # "video"
-          # "audio"
-          # "input"
-          # "dialout"   # serial devices / Arduino
-          # "wireshark" # only if you install wireshark and need capture
         ];
       };
     };

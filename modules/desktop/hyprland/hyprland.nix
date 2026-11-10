@@ -161,8 +161,6 @@
             column_width = 0.5;
             fullscreen_on_one_column = true;
             focus_fit_method = 1;
-            # wrap_focus = false;
-            # wrap_swapcol = false;
             explicit_column_widths = "0.333, 0.5, 0.667, 1.0";
             direction = "right";
           };
@@ -327,7 +325,6 @@
             "brave-keep"
           ];
 
-        # Unlisted clients get an allow/deny prompt
         permission = [
           (allowExe (lib.getExe pkgs.grim) "screencopy")
           (allowPathRegex "/nix/store/[^/]+-zen[^/]*/bin/(zen|zen-beta|zen-twilight)" "screencopy")

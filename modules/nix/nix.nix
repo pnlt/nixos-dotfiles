@@ -15,7 +15,6 @@ in {
     };
 
     nix = {
-      # Nix store
       optimise = {
         automatic = true;
         dates = ["13:00"]; # I normally lunch at this hour
@@ -29,13 +28,10 @@ in {
         experimental-features = ["nix-command" "flakes"];
         trusted-users = ["root"];
         allowed-users = ["root" "${user.alias}"];
-        # Defines the maximum number of jobs that Nix will try to build in parallel.
         max-jobs = 2;
         # Threads per build; 0 (default) lets 6 rustc builds take all 12 threads each and OOM.
         cores = 6;
-        # When free disk space in /nix/store drops below min-free during a build, Nix performs a garbage-collection.
         min-free = 10000000000; # 10GB
-        # Number of seconds between checking free disk space.
         min-free-check-interval = 30;
         # https://nix.dev/recipes/faq#what-to-do-if-a-binary-cache-is-down-or-unreachable
         fallback = true;
@@ -81,7 +77,6 @@ in {
         nix-fast-build
         inputs.nix-diff-rs.packages.${pkgs.stdenv.hostPlatform.system}.default
         inputs.nix-tree-rs.packages.${pkgs.stdenv.hostPlatform.system}.default
-        # nixgrep
 
         nixpkgs-review
         nixpkgs-lint
