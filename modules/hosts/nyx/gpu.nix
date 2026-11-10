@@ -1,7 +1,7 @@
 {...}: {
   flake.modules.nixos.nyx = {config, ...}: {
     # Raw YAML: services.lact.settings quotes the integer fan curve keys, which LACT rejects.
-    # Reference RX 6800 XT. Unstable at -175mV/2750MHz.
+    # Reference RX 6800 XT. Unstable at -175mV/2750MHz. VRAM 1075MHz flickered DP-2 on window close/hide.
     environment.etc."lact/config.yaml".text = ''
       version: 7
       daemon:
@@ -29,7 +29,7 @@
           power_cap: 293.0
           performance_level: manual
           max_core_clock: 2700
-          max_memory_clock: 1075
+          max_memory_clock: 1000
           voltage_offset: -150
       current_profile: null
       auto_switch_profiles: false
