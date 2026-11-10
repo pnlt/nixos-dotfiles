@@ -1,6 +1,6 @@
 {...}: {
   flake.modules.homeManager.go = {pkgs, ...}: {
-    # sessionPath managed by home/modules/path.nix
+    # sessionPath managed by modules/shell/path.nix
     # home.sessionPath = ["$GORROT" "$GOPATH/bin"];
 
     programs.zsh = {

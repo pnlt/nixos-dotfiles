@@ -15,7 +15,7 @@
         pnpm
       ];
 
-      # sessionPath managed by home/modules/path.nix
+      # sessionPath managed by modules/shell/path.nix
       # sessionPath = ["${NPM_GLOBAL_DIR}/bin" "${BUN_GLOBAL_DIR}/bin"];
 
       activation.init = lib.hm.dag.entryAfter ["writeBoundary"] ''

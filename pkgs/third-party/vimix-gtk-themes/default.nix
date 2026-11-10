@@ -10,7 +10,7 @@
 # vimix went with it, along with `gtk_engines` and `gtk-engine-murrine`. Those
 # only ever fed the GTK2 assets, which nothing here reads, so the derivation
 # is upstream's minus the engine inputs. Only the doder family is built —
-# `home/modules/desktop/gtk.nix` asks for `Vimix-light-doder`.
+# `modules/desktop/gtk.nix` asks for `Vimix-light-doder`.
 stdenvNoCC.mkDerivation rec {
   pname = "vimix-gtk-themes";
   version = "2025-06-20";

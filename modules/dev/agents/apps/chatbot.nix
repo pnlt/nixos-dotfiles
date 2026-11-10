@@ -6,7 +6,7 @@
       # desktop environment; on niri (like Hyprland) it falls through to
       # basic_text, leaving Electron's safeStorage unavailable so the app drops
       # the session right after signing in. gnome-keyring is enabled system-wide
-      # in system/modules/programs/security/keyring.nix, so point it there.
+      # in modules/security/keyring.nix, so point it there.
       (pkgs.symlinkJoin {
         name = "claude-desktop-gnome-libsecret";
         paths = [pkgs.llm-agents.claude-desktop];

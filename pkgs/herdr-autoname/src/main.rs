@@ -81,7 +81,7 @@ const PROJECT_ICONS: &[(&str, &str, &str)] = &[
 ];
 
 /// Nerd Fonts draws neither brand, so `claude` and `codex` are private-use
-/// glyphs patched into the system font by `system/modules/desktop/fonts`.
+/// glyphs patched into the system font by `modules/desktop/fonts`.
 const AGENT_ICONS: &[(&str, &str)] = &[
     ("claude", "\u{e9fb}"),
     ("codex", "\u{e9fa}"),

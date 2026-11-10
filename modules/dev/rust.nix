@@ -19,7 +19,7 @@
         ]
         ++ cargo-plugins;
 
-      # sessionPath managed by home/modules/path.nix
+      # sessionPath managed by modules/shell/path.nix
       # sessionPath = ["$HOME/.cargo/bin"];
     };
 

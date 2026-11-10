@@ -52,14 +52,11 @@ Flake-based NixOS and Home Manager configuration for `nyx`.
 .
 ├── flake.nix            inputs; outputs come from modules/ via import-tree
 ├── flake.toml           user and host metadata
-├── modules/flake/       flake-parts: systems, pkgs, meta, configurations
-├── system/              NixOS
-│   ├── hosts/nyx/       host config, hardware, nyx CLI
-│   └── modules/         boot, core, desktop, fs, hardware, input, programs
-├── home/                Home Manager (standalone)
-│   ├── modules/         desktop, hardware, programs
-│   ├── options/         custom HM options
-│   └── profiles/        per-user entry point
+├── modules/             dendritic flake-parts modules, one feature per dir
+│   ├── flake/           systems, pkgs, meta, configurations (feature lists)
+│   ├── hosts/nyx/       host config, hardware, nyx CLI, install script
+│   ├── users/pnlt/      Home Manager (standalone) user entry
+│   └── ...              boot, core, desktop, dev, apps, shell, terminal, ...
 ├── config/              raw dotfiles linked by HM (ghostty, nvim)
 ├── pkgs/                own packages, NixOS and HM modules
 ├── overlays/            nixpkgs overlays and patches
