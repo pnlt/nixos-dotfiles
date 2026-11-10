@@ -39,9 +39,10 @@ args @ {
   };
 in {
   services.awww.enable = true;
+  services.awww.extraArgs = ["--no-cache"];
   systemd.user.services.awww.Service.ExecStartPost = toString (pkgs.writeShellScript "awww-wallpaper" ''
     until ${lib.getExe pkgs.awww} query >/dev/null 2>&1; do sleep 0.1; done
-    exec ${lib.getExe pkgs.awww} img ${config.home.homeDirectory}/Pictures/wallpapers/damn.png
+    exec ${lib.getExe pkgs.awww} img ${config.home.homeDirectory}/Pictures/wallpapers/tokyonight.png
   '');
 
   home.sessionVariables.GRIMBLAST_HIDE_CURSOR = 0;
@@ -151,6 +152,8 @@ in {
           column_width = 0.5;
           fullscreen_on_one_column = true;
           focus_fit_method = 1;
+          # wrap_focus = false;
+          # wrap_swapcol = false;
           explicit_column_widths = "0.333, 0.5, 0.667, 1.0";
           direction = "right";
         };
@@ -158,6 +161,7 @@ in {
         ecosystem = {
           no_update_news = true;
           enforce_permissions = true;
+          no_donation_nag = true;
         };
       };
 
