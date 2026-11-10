@@ -1,0 +1,47 @@
+{config, ...}: let
+  inherit (config.meta) host;
+in {
+  flake.modules.homeManager.shell = {...}: {
+    programs.zsh.initContent = builtins.readFile ./.zshrc;
+
+    programs.direnv-instant.enable = true;
+
+    programs.atuin = {
+      enable = true;
+      flags = ["--disable-up-arrow"];
+      settings.update_check = false;
+    };
+    programs.fzf.historyWidget.command = "";
+
+    shared = {
+      bat.enable = true;
+      btop.enable = true;
+      direnv.enable = true;
+      eza.enable = true;
+      fzf.enable = true;
+      less.enable = true;
+      macchina = {
+        enable = true;
+        ascii = host.banner;
+      };
+      magic-wormhole.enable = true;
+      starship.enable = true;
+      tmux = {
+        enable = true;
+        # Replaced by the attach-or-create launcher in programs/terminal.
+        autoStart = false;
+        status = {
+          ssh.enable = true;
+          gpg.enable = true;
+          lsyncd = {
+            enable = true;
+            hideOnRemoteSsh = true;
+          };
+          git.enable = true;
+        };
+      };
+      zoxide.enable = true;
+      zsh.enable = true;
+    };
+  };
+}

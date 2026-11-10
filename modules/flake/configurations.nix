@@ -39,6 +39,7 @@ in {
         fs
         hardware
         input
+        shell
         security
         network
         secrets
@@ -68,6 +69,8 @@ in {
       ]
       ++ (with config.flake.modules.homeManager; [
         hardware
+        shell
+        terminal
       ]);
     extraSpecialArgs =
       configArgs

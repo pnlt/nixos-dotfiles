@@ -5,6 +5,5 @@
     ./programs/compression.nix
     ./programs/development
     ./programs/gaming
-    ./programs/shell
   ];
 }

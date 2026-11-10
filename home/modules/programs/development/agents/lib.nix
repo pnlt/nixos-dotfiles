@@ -183,7 +183,7 @@
 
     agentTerminalStatus = pkgs.writeShellApplication {
       name = "agent-terminal-status";
-      text = builtins.readFile ../../terminal/scripts/agent-terminal-status.sh;
+      text = builtins.readFile ../../../../../modules/terminal/scripts/agent-terminal-status.sh;
     };
 
     # The scripts shell out to python3, which a hook's inherited PATH does not
