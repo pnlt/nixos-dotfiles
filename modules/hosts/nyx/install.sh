@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
-# Live USB, as root: repair | fresh <dir with key_host.txt, ssh_host_ed25519_key.pub, keys.txt, sbctl/>
+# Live USB, as root, from the repo root: nix run .#install-nyx -- repair | fresh <dir with key_host.txt, ssh_host_ed25519_key.pub, keys.txt, sbctl/>
 set -euo pipefail
 
 mode=${1:-}
 secrets=${2:-}
-repo=$(cd "$(dirname "$0")/../../.." && pwd)
-nixf=(nix --extra-experimental-features "nix-command flakes")
+repo=$PWD
 
 [ "$(id -u)" = 0 ] || { echo "run as root"; exit 1; }
+[ -f "$repo/modules/hosts/nyx/_disko-config.nix" ] || { echo "run from the repo root"; exit 1; }
 
 case $mode in
 repair) ;;
@@ -18,11 +18,11 @@ fresh)
   read -rp "Wipe the whole Kingston drive (NixOS + /home)? Type WIPE: " ok
   [ "$ok" = WIPE ] || exit 1
   for m in destroy format; do
-    "${nixf[@]}" run github:nix-community/disko -- --yes-wipe-all-disks --mode $m "$repo/modules/hosts/nyx/_disko-config.nix"
+    disko --yes-wipe-all-disks --mode $m "$repo/modules/hosts/nyx/_disko-config.nix"
   done
   ;;
 *)
-  echo "usage: $0 repair | fresh <secrets-dir>"
+  echo "usage: install-nyx repair | fresh <secrets-dir>"
   exit 1
   ;;
 esac
