@@ -8,7 +8,14 @@
     hardware.amdgpu = {
       # Load amdgpu early for cleaner modeset (optional but nice on discrete AMD)
       initrd.enable = true;
+      # Kernel default mask (0xfff7bfff) plus the overdrive bit (0x4000)
+      overdrive = {
+        enable = true;
+        ppfeaturemask = "0xfff7ffff";
+      };
     };
+
+    services.lact.enable = true;
 
     environment.variables = {
       # Prefer Mesa RADV (best default for gaming on AMD)
