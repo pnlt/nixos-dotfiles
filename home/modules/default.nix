@@ -1,6 +1,5 @@
 {
   imports = [
-    ./desktop
     ./programs/browser
     ./programs/media
     ./programs/social

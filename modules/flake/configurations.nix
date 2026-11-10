@@ -43,6 +43,7 @@ in {
         security
         network
         secrets
+        desktop
       ]);
     specialArgs =
       configArgs
@@ -71,6 +72,7 @@ in {
         hardware
         shell
         terminal
+        desktop
       ]);
     extraSpecialArgs =
       configArgs
