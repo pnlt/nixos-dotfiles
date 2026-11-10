@@ -96,6 +96,16 @@ nyx clean           # collect garbage, prune docker and build dirs
 nyx style           # format with alejandra
 ```
 
+## Adding a host
+
+`meta` holds one user and one host, so a new machine replaces `nyx` rather than sitting beside it.
+
+1. `cp -r modules/hosts/_template modules/hosts/<name>` and replace `HOST` with `<name>`.
+2. Add `[hosts.<name>]` to `flake.toml` and point `mkMetadata` in `modules/flake/meta.nix` at `<user>@<name>`.
+3. In `modules/flake/configurations.nix`, swap `nyx` in the NixOS feature list for `<name>`.
+4. On the target, fill the kernel modules from `nixos-generate-config --show-hardware-config` and set the disk from `ls /dev/disk/by-id` in `_disko-config.nix`.
+5. Copy `install.sh` and `install.nix` from `modules/hosts/nyx`, renaming the `nyx` paths and the app.
+
 ## Credits
 
 Built on ideas and code from [luisnquin/nixos-config](https://github.com/luisnquin/nixos-config). Shared terminal modules come from [pnlt/nyx-terminal](https://github.com/pnlt/nyx-terminal).
