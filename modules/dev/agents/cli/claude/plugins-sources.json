@@ -20,8 +20,8 @@
   "claude-blindfold": {
     "owner": "luisnquin",
     "repo": "claude-blindfold",
-    "rev": "a487d90dbaba4947c135a9a1f3e6a2561889db1a",
-    "hash": "sha256-P0JC6kMRjcMUG0qxaQGKqWRBcEq5hIccIaI4RVb48xU="
+    "rev": "6658c23b4385bd37ecf47266e08653135f61bd3b",
+    "hash": "sha256-AOKPwxtJTUuHOWsSHlzdI3Fq2SgX8I7TgP+gRnziDrs="
   },
   "better-claude": {
     "owner": "midudev",

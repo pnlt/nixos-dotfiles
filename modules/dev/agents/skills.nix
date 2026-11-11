@@ -60,8 +60,9 @@
             src = pkgs.fetchFromGitHub {
               owner = "cursor";
               repo = "plugins";
-              rev = "ecc249f1e306fc64ddf83c7bed16cacf7c2239db";
-              hash = "sha256-okjUS0AVmgoQfCO3nzzqjL1PnZ8X3r8wjtz5SwrFse0=";
+              rev = "8ecfb19f844b67a4bc7af7f66c366d57bc7b6d2b";
+              hash = "sha256-/ubdPfVeNY1RxHIzH/+n3M15SFQZvyt0uR8md3bXNxA=";
+              rootDir = "pstack/skills";
             };
           } {
             plugins = [
@@ -77,7 +78,7 @@
             src = pkgs.fetchFromGitHub {
               owner = "mattpocock";
               repo = "skills";
-              rev = "a496f5513d4a4cf889bc48e189e579f4b0bdf6aa";
+              rev = "4ae2317ddb22b046e26455e4f9c9b3aaaf62212d";
               hash = "sha256-nxTjN6ePfumLCJ77zw4kdMwPeOHU2TztFZPOiMr3zGw=";
               rootDir = "skills/engineering";
             };
@@ -92,7 +93,7 @@
             src = pkgs.fetchFromGitHub {
               owner = "mattpocock";
               repo = "skills";
-              rev = "a496f5513d4a4cf889bc48e189e579f4b0bdf6aa";
+              rev = "4ae2317ddb22b046e26455e4f9c9b3aaaf62212d";
               hash = "sha256-8xDSNA3dk6AyfiKg8XAwmb9uQMqaCI4m8ERi4TBVQ28=";
               rootDir = "skills/productivity";
             };
@@ -132,10 +133,21 @@
           })
         (mkSkill {
             src = pkgs.fetchFromGitHub {
+              owner = "caldoai";
+              repo = "skills";
+              rev = "f3cf47774975a7d9fca45730babf4ff7ad765ada";
+              hash = "sha256-Q8r94n44dEE4BYGbnJBAl6Qtw/Pq8wSWjCfTGtzdICI=";
+              rootDir = "skills";
+            };
+          } {
+            plugins = ["untangle-codebase"];
+          })
+        (mkSkill {
+            src = pkgs.fetchFromGitHub {
               owner = "0xc000022070";
               repo = "skills";
-              rev = "02e5581607a674584b6510677ec3562a7af5a34e";
-              sha256 = "sha256-xg+a9DqDtNRts9X4+yYvT5RKsYbTV9Y7quT1WbLIZfg=";
+              rev = "f4feaf5020c5e5c159c36e13134dec63481ee1d1";
+              sha256 = "sha256-OsqGJyF2AD2KotpzXvqnlBsmyfZd40UrqyIPfkAbrK4=";
             };
           } {
             plugins = [
@@ -149,8 +161,8 @@
             src = pkgs.fetchFromGitHub {
               owner = "leonxlnx";
               repo = "taste-skill";
-              rev = "6010f91a9935f1c167dfc500fb1a475681892e6b";
-              hash = "sha256-25Hc9DiKiDSq+Ae3bTwv9nnk7KziP0cp3Q8srpXE47U=";
+              rev = "9b4bf937a1f69348126959c15d2f99a73e65699b";
+              hash = "sha256-BASbXznKYEcCUOEd0rm+ajcaGNhZ3wjONJP6tkpGEww=";
             };
           } {
             plugins = ["taste-skill"];
@@ -159,8 +171,8 @@
             src = pkgs.fetchFromGitHub {
               owner = "hyperb1iss";
               repo = "hyperskills";
-              rev = "a0e30e791c5a9ef65f438a24b6ea7bffb912ac70";
-              hash = "sha256-Rl0BBK/Hnf7xOwWvNMqkmm64sRnMEtl0+walbkq79P8=";
+              rev = "e7bcf524095c0a7d78df92e720eb1bb9944fa4de";
+              hash = "sha256-AQkAT4LxS/qufe5BzEGuZ1X2RVI/yS1E8SC3cV3M+SQ=";
               rootDir = "skills";
             };
           } {
@@ -172,8 +184,8 @@
               src = pkgs.fetchFromGitHub {
                 owner = "nextlevelbuilder";
                 repo = "ui-ux-pro-max-skill";
-                rev = "076a2b3a31394ad788afaa71f55d0bf789e7b3ec";
-                hash = "sha256-oUr1p0GuTH5nXegrf+3Q4qOWUCDOhEEEEpcGaRBvepE=";
+                rev = "6ae86f61f520d6ca229d2f40e070410638c908c5";
+                hash = "sha256-e/FyuIeBDFUnw9ofEyAPJZm0dV7eOhjmCya627TXKDk=";
                 rootDir = ".claude/skills";
               };
               postPatch = ''
