@@ -51,7 +51,8 @@
             domainBlocking = false;
             eTagFiltering = true;
             hashURL = "https://rules2.clearurls.xyz/rules.minify.hash";
-            historyListenerEnabled = true;
+            # replaceState-rewrites Google OAuth consent URLs mid-flow, consent then 400s
+            historyListenerEnabled = false;
             localHostsSkipping = true;
             logLimit = 250;
             loggingStatus = true;
