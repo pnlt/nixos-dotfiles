@@ -50,6 +50,14 @@
       fi
     '';
 
+  powerMenu = pkgs.writeShellScript "power-menu" ''
+    case "$(printf '%s\n' Poweroff Reboot Logout | ${vicinaeCmd} dmenu -n Power --no-section --no-footer)" in
+      Poweroff) systemctl poweroff ;;
+      Reboot) systemctl reboot ;;
+      Logout) ${hyprctlCmd} dispatch 'hl.dsp.exit()' ;;
+    esac
+  '';
+
   dspExec = cmd: mkLuaInline ("hl.dsp.exec_cmd(" + toLua' cmd + ")");
 
   layoutMsg = msg: mkLuaInline ("hl.dsp.layout(" + toLua' msg + ")");
@@ -142,6 +150,7 @@ in
     (b "CTRL + SHIFT + Escape" (dspExec "${ghostty} --class=ghostty.btop -e btop"))
 
     (b "${mainMod} + SPACE" (dspExec (toString vicinaeApps)))
+    (b "${mainMod} + Escape" (dspExec (toString powerMenu)))
     (b "${mainMod} + ALT + V" (dspExec "${vicinaeCmd} deeplink vicinae://launch/clipboard/history"))
     (b "ALT + SPACE" (dspExec "${hex} dictation toggle"))
     (b "${mainMod} + SHIFT + SPACE" (dspExec "fcitx5-remote -t"))
