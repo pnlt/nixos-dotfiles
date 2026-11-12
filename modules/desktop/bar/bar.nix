@@ -12,6 +12,8 @@
       };
     };
 
+    # Stop with the session; otherwise it crash-loops on logout and hits the start limit.
+    systemd.user.services.quickshell.Unit.PartOf = ["hyprland-session.target"];
     systemd.user.services.quickshell.Service.Environment = [
       # Tray icons fail to resolve without an explicit theme
       "QS_ICON_THEME=Adwaita"
