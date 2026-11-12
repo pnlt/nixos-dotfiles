@@ -537,7 +537,7 @@ ShellRoot {
     }
 
     Variants {
-        model: Quickshell.screens
+        model: Quickshell.screens.filter(s => s.name === "DP-2")
 
         PanelWindow {
             id: bar
