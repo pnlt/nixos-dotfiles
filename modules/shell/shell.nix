@@ -1,6 +1,4 @@
-{config, ...}: let
-  inherit (config.meta) host;
-in {
+{
   flake.modules.homeManager.shell = {...}: {
     programs.zsh.initContent = builtins.readFile ./.zshrc;
 
@@ -20,10 +18,7 @@ in {
       eza.enable = true;
       fzf.enable = true;
       less.enable = true;
-      macchina = {
-        enable = true;
-        ascii = host.banner;
-      };
+      fastfetch.enable = true;
       magic-wormhole.enable = true;
       starship.enable = true;
       tmux = {
