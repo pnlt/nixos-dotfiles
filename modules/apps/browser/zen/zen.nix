@@ -268,6 +268,13 @@
               key = "e";
               modifiers.control = true;
             }
+            # Undeclared ids keep their old state, and declared ones get their binding replaced
+            # wholesale, so a once-disabled key needs its full binding here.
+            {
+              id = "key_find";
+              key = "f";
+              modifiers.accel = true;
+            }
           ]
           ++ map (n: {
             id = "zen-workspace-switch-${n}";
@@ -284,13 +291,12 @@
             "zen-copy-url"
             "addBookmarkAsKb"
 
-            # vimium c owns these: H/L, r, /, x, X, T
+            # vimium c owns these: H/L, r, x, X, T
             "goBackKb"
             "goForwardKb"
             "key_reload"
             "key_reload_skip_cache"
             "key_search"
-            "key_find"
 
             "key_close"
             "key_restoreLastClosedTabOrWindowOrSession"
