@@ -53,6 +53,31 @@
       enable = true;
       configType = "lua";
       portalPackage = null;
+
+      # Directional focus stops at the last tiled window like niri. At the edge Hyprland's
+      # own focus bounces back to the neighbour, and the scrolling layout's wraps around.
+      extraConfig = ''
+        function focus_dir(dir)
+          local w = hl.get_active_window()
+          if w and not w.floating then
+            local axis = (dir == "left" or dir == "right") and "x" or "y"
+            local before = dir == "left" or dir == "up"
+            local found = false
+            for _, o in ipairs(hl.get_workspace_windows(w.workspace)) do
+              if o.address ~= w.address and not o.floating and not o.hidden then
+                if before and o.at[axis] + o.size[axis] <= w.at[axis]
+                  or not before and o.at[axis] >= w.at[axis] + w.size[axis] then
+                  found = true
+                end
+              end
+            end
+            if not found then
+              return
+            end
+          end
+          hl.dispatch(hl.dsp.focus({ direction = dir }))
+        end
+      '';
       # niri-session imports the whole login environment too; user services
       # launch apps that only live on the home-manager PATH.
       systemd.variables = ["--all"];
@@ -135,6 +160,7 @@
 
           binds = {
             workspace_back_and_forth = true;
+            window_direction_monitor_fallback = false;
           };
 
           misc = {

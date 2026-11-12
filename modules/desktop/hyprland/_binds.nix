@@ -66,7 +66,7 @@
 
   moveWs = ws: mkLuaInline "hl.dsp.window.move({ workspace = ${toLua' ws} })";
 
-  focusDir = direction: mkLuaInline "hl.dsp.focus({ direction = ${toLua' direction} })";
+  focusDir = direction: mkLuaInline "function() focus_dir(${toLua' direction}) end";
 
   moveDir = direction: mkLuaInline "hl.dsp.window.move({ direction = ${toLua' direction} })";
 
@@ -102,28 +102,16 @@
     args = "-e ${lib.getExe pkgs.drift}";
   };
 
-  b = keys: dsp: {
-    _args = [keys dsp];
+  bind = opts: keys: dsp: {
+    _args = [keys dsp ({submap_universal = true;} // opts)];
   };
-
-  bl = keys: dsp: {
-    _args = [keys dsp {locked = true;}];
+  b = bind {};
+  bl = bind {locked = true;};
+  blr = bind {
+    locked = true;
+    repeating = true;
   };
-
-  blr = keys: dsp: {
-    _args = [
-      keys
-      dsp
-      {
-        locked = true;
-        repeating = true;
-      }
-    ];
-  };
-
-  bm = keys: dsp: {
-    _args = [keys dsp {mouse = true;}];
-  };
+  bm = bind {mouse = true;};
 
   wsKeys = ["1" "2" "3" "4" "5" "6" "7" "8" "9"];
 in

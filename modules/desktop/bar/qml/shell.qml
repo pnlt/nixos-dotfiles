@@ -239,6 +239,8 @@ ShellRoot {
         function clear(): void { root.history = []; }
     }
 
+    Overview {}
+
     component Label: Text {
         color: root.fg
         font.family: root.font
