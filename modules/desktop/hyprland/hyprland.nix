@@ -59,7 +59,10 @@
       extraConfig = ''
         function focus_dir(dir)
           local w = hl.get_active_window()
-          if w and not w.floating then
+          if not w then
+            return false
+          end
+          if not w.floating then
             local axis = (dir == "left" or dir == "right") and "x" or "y"
             local before = dir == "left" or dir == "up"
             local found = false
@@ -72,10 +75,11 @@
               end
             end
             if not found then
-              return
+              return false
             end
           end
           hl.dispatch(hl.dsp.focus({ direction = dir }))
+          return true
         end
       '';
       # niri-session imports the whole login environment too; user services

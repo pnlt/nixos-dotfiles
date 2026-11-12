@@ -68,6 +68,10 @@
 
   focusDir = direction: mkLuaInline "function() focus_dir(${toLua' direction}) end";
 
+  # niri's focus-window-or-workspace-down/up
+  focusDirOrWs = direction: ws:
+    mkLuaInline "function() if not focus_dir(${toLua' direction}) then hl.dispatch(hl.dsp.focus({ workspace = ${toLua' ws} })) end end";
+
   moveDir = direction: mkLuaInline "hl.dsp.window.move({ direction = ${toLua' direction} })";
 
   # One ghostty window parked on a named workspace: focus it, or launch it there.
@@ -150,8 +154,8 @@ in
     (b "${mainMod} + Q" (mkLuaInline "hl.dsp.window.close()"))
 
     (b "${mainMod} + H" (focusDir "left"))
-    (b "${mainMod} + J" (focusWs "r+1"))
-    (b "${mainMod} + K" (focusWs "r-1"))
+    (b "${mainMod} + J" (focusDirOrWs "down" "r+1"))
+    (b "${mainMod} + K" (focusDirOrWs "up" "r-1"))
     (b "${mainMod} + L" (focusDir "right"))
 
     (b "${mainMod} + ALT + H" (layoutMsg "swapcol l"))
