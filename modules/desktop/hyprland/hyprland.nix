@@ -234,7 +234,17 @@
               workspace = "name:music";
               monitor = "HDMI-A-1";
             }
+            {
+              workspace = "10";
+              monitor = "HDMI-A-1";
+              default = true;
+            }
           ]
+          # Keep 1-9 on the main monitor so the side one never claims one at startup.
+          ++ map (n: {
+            workspace = toString n;
+            monitor = "DP-2";
+          }) (lib.range 1 9)
           ++ map (workspace: {
             inherit workspace;
             layout = "scrolling";
