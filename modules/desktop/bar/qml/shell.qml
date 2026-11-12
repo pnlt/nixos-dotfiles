@@ -253,7 +253,7 @@ ShellRoot {
         implicitWidth: row.implicitWidth + 20
         implicitHeight: 24
         radius: height / 2
-        color: Qt.rgba(1, 1, 1, hover.hovered ? 0.2 : 0.12)
+        color: Qt.rgba(22 / 255, 38 / 255, 51 / 255, hover.hovered ? 0.95 : 0.75)
         Behavior on color { ColorAnimation { duration: root.anim } }
 
         HoverHandler { id: hover }
@@ -547,7 +547,7 @@ ShellRoot {
             screen: modelData
             anchors { top: true; left: true; right: true }
             implicitHeight: 32
-            color: Qt.rgba(30 / 255, 32 / 255, 48 / 255, 0.5)
+            color: "transparent"
 
             Row {
                 anchors { left: parent.left; leftMargin: 6; verticalCenter: parent.verticalCenter }
