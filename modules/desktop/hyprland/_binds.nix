@@ -70,19 +70,6 @@
 
   moveDir = direction: mkLuaInline "hl.dsp.window.move({ direction = ${toLua' direction} })";
 
-  # niri's focus-window-or-workspace-{up,down}: past the column edge, change workspace.
-  focusOrWs = direction: ws:
-    mkLuaInline ''
-      function()
-        local before = hl.get_active_window()
-        hl.dispatch(hl.dsp.focus({ direction = ${toLua' direction} }))
-        local after = hl.get_active_window()
-        if before == nil or (after ~= nil and after.address == before.address) then
-          hl.dispatch(hl.dsp.focus({ workspace = ${toLua' ws} }))
-        end
-      end
-    '';
-
   # One ghostty window parked on a named workspace: focus it, or launch it there.
   parkedTerminal = {
     class,
@@ -175,8 +162,8 @@ in
     (b "${mainMod} + Q" (mkLuaInline "hl.dsp.window.close()"))
 
     (b "${mainMod} + H" (focusDir "left"))
-    (b "${mainMod} + J" (focusOrWs "down" "r+1"))
-    (b "${mainMod} + K" (focusOrWs "up" "r-1"))
+    (b "${mainMod} + J" (focusWs "r+1"))
+    (b "${mainMod} + K" (focusWs "r-1"))
     (b "${mainMod} + L" (focusDir "right"))
 
     (b "${mainMod} + ALT + H" (layoutMsg "swapcol l"))
