@@ -23,6 +23,9 @@
 
       fixjson
 
+      yaml-language-server # compose, GitHub Actions, k8s schemas via SchemaStore
+      dockerfile-language-server
+
       revive
 
       tree-sitter
