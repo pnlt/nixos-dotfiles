@@ -37,6 +37,7 @@ in {
         secrets
         desktop
         mobile
+        containers
         browser
         gaming
         compression
