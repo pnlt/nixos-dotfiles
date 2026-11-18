@@ -8,16 +8,22 @@
 
     headlessUp = pkgs.writeShellScript "sunshine-headless-up" ''
       set -eu
-      ${hyprctl} eval 'hl.monitor({ output = "HDMI-A-1", disabled = true })'
       ${hyprctl} output remove SUNSHINE >/dev/null 2>&1 || true
       ${hyprctl} output create headless SUNSHINE
-      ${hyprctl} eval "hl.monitor({ output = \"SUNSHINE\", mode = \"''${SUNSHINE_CLIENT_WIDTH}x''${SUNSHINE_CLIENT_HEIGHT}@''${SUNSHINE_CLIENT_FPS}\", position = \"auto-right\", scale = 1 })"
+      # Physical outputs go off only after SUNSHINE exists, so workspaces migrate instead of orphaning
+      ${hyprctl} eval 'hl.monitor({ output = "HDMI-A-1", disabled = true })'
+      ${hyprctl} eval 'hl.monitor({ output = "DP-2", disabled = true })'
+      # Sunshine maps absolute mouse input using the offset it reads once at stream start
+      ${hyprctl} eval "hl.monitor({ output = \"SUNSHINE\", mode = \"''${SUNSHINE_CLIENT_WIDTH}x''${SUNSHINE_CLIENT_HEIGHT}@''${SUNSHINE_CLIENT_FPS}\", position = \"0x0\", scale = 1 })"
       ${hyprctl} dispatch 'hl.dsp.focus({ monitor = "SUNSHINE" })'
+      # awww runs with --no-cache, so a new output starts without a wallpaper
+      ${pkgs.awww}/bin/awww img -o SUNSHINE "$HOME/Pictures/wallpapers/nixos-muted.png" || true
     '';
 
     headlessDown = pkgs.writeShellScript "sunshine-headless-down" ''
       ${hyprctl} output remove SUNSHINE
       ${hyprctl} reload
+      ${pkgs.awww}/bin/awww img "$HOME/Pictures/wallpapers/nixos-muted.png" || true
     '';
 
     inherit (config.services.sunshine.settings) port;
@@ -47,6 +53,21 @@
           auto-detach = "true";
         }
       ];
+    };
+
+    # A dropped or killed client leaves the app running, so the undo never fires and the
+    # physical monitors stay off. Restarting Sunshine terminates the app, which runs the undo.
+    systemd.user.services.sunshine-reset = {
+      description = "Restart Sunshine when a client disconnects";
+      after = ["sunshine.service"];
+      partOf = ["graphical-session.target"];
+      wantedBy = ["graphical-session.target"];
+      path = [pkgs.systemd pkgs.gnugrep];
+      script = ''
+        journalctl --user -u sunshine -f -n 0 -o cat \
+          | grep --line-buffered 'CLIENT DISCONNECTED' \
+          | while read -r _; do systemctl --user restart sunshine; done
+      '';
     };
 
     # Reached over the tailnet only; Sunshine treats 100.64.0.0/10 as LAN for the web UI
