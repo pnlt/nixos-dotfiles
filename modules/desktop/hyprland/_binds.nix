@@ -5,6 +5,7 @@
   pkgs,
   lib,
   herdrDrop,
+  tmuxDrop,
   ...
 }: let
   inherit (lib.generators) mkLuaInline;
@@ -124,6 +125,7 @@ in
     (b "${mainMod} + ALT + RETURN" devTerminal)
     (b "${mainMod} + SHIFT + M" driftPlayer)
     (b "${mainMod} + A" herdrDrop.toggle)
+    (b "${mainMod} + S" tmuxDrop.toggle)
     (b "${mainMod} + SHIFT + B" (dspExec "systemctl --user restart quickshell.service"))
     (b "${mainMod} + N" (dspExec "${lib.getExe config.programs.quickshell.package} ipc -c ${config.programs.quickshell.activeConfig} call notifications toggle"))
     (b "CTRL + SHIFT + Escape" (dspExec "${ghostty} --class=ghostty.btop -e btop"))

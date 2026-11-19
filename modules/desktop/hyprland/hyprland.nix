@@ -27,6 +27,15 @@
       height = 1000;
     };
 
+    tmuxDrop = import ./_drop.nix {inherit pkgs lib;} {
+      name = "ghostty-tmux";
+      class = "ghostty.tmux";
+      command = "${lib.getExe config.programs.ghostty.package} --class=ghostty.tmux -e ${pkgs.writeShellScript "tmux-drop-session" ''
+        export TMUX_TMPDIR="$XDG_RUNTIME_DIR"
+        exec ${lib.getExe pkgs.tmux} new-session -A -s drop
+      ''}";
+    };
+
     allowExe = exe: type: {_args = [(lib.escapeRegex exe) type "allow"];};
     allowPathRegex = regex: type: {_args = [regex type "allow"];};
 
@@ -331,6 +340,7 @@
               scrolling_width = 1.0;
             }
             herdrDrop.windowRule
+            tmuxDrop.windowRule
             {
               name = "steam-xwayland-fake-fullscreen";
               match = {
@@ -376,7 +386,7 @@
           (allowExe "${pkgs.sunshine}/bin/.sunshine-wrapped" "screencopy")
         ];
 
-        bind = import ./_binds.nix (args // {inherit herdrDrop;});
+        bind = import ./_binds.nix (args // {inherit herdrDrop tmuxDrop;});
 
         on = [
           {
@@ -388,6 +398,7 @@
                   -- From the system PATH: the NixOS module bundles fcitx5 with its addons
                   hl.exec_cmd("fcitx5 -d --replace")
                   ${herdrDrop.startupBody}
+                  ${tmuxDrop.startupBody}
                 end
               '')
             ];
