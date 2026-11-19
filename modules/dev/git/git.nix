@@ -20,6 +20,8 @@ in {
       lazygit.enable = true;
     };
 
+    programs.git.lfs.enable = true;
+
     # mergiraf falls back to line-based merging for languages it does not parse
     programs.git.attributes = ["* merge=mergiraf"];
     programs.git.settings.merge.mergiraf = {
