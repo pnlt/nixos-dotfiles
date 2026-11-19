@@ -45,11 +45,7 @@
         })
         (anthropics.skills {
           prefix = "anthropics-";
-          plugins = [
-            "pdf"
-            "pptx"
-            "frontend-design"
-          ];
+          plugins = ["frontend-design"];
         })
         (daffy0208.ai-dev-standards {
           plugins = [
@@ -69,57 +65,10 @@
               "unslop"
             ];
           })
-        (vercel-labs.skills {
-          plugins = [
-            "find-skills"
-          ];
-        })
-        (mkSkill {
-            src = pkgs.fetchFromGitHub {
-              owner = "mattpocock";
-              repo = "skills";
-              rev = "4ae2317ddb22b046e26455e4f9c9b3aaaf62212d";
-              hash = "sha256-nxTjN6ePfumLCJ77zw4kdMwPeOHU2TztFZPOiMr3zGw=";
-              rootDir = "skills/engineering";
-            };
-          } {
-            plugins = [
-              "improve-codebase-architecture"
-              "codebase-design"
-              "domain-modeling"
-            ];
-          })
-        (mkSkill {
-            src = pkgs.fetchFromGitHub {
-              owner = "mattpocock";
-              repo = "skills";
-              rev = "4ae2317ddb22b046e26455e4f9c9b3aaaf62212d";
-              hash = "sha256-8xDSNA3dk6AyfiKg8XAwmb9uQMqaCI4m8ERi4TBVQ28=";
-              rootDir = "skills/productivity";
-            };
-          } {
-            plugins = ["grilling"];
-          })
-        (wshobson.agents {
-          plugins = [
-            "typescript-advanced-types"
-            "e2e-testing-patterns"
-          ];
-        })
         # Teaches the agent herdr's CLI (panes, tabs, waiting on other agents).
         (mkSkill {src = pkgs.llm-agents.herdr.src;} {
           plugins = ["herdr"];
         })
-        (mkSkill {
-            src = pkgs.fetchFromGitHub {
-              owner = "aia-11-hn-mib";
-              repo = "mib-mockinterviewaibot";
-              rev = "50ccfb29063bb6d64d049fc982ca53424d0ca3b1";
-              sha256 = "sha256-FdlbFVFSEtiFMiuisSLmgibFCro17jo3TjS9Oibx8F0=";
-            };
-          } {
-            plugins = ["imagemagick"];
-          })
         # Required: the diff-review PostToolUse hook tells claude to load it.
         (mkSkill {
             src = pkgs.fetchFromGitHub {
@@ -133,27 +82,14 @@
           })
         (mkSkill {
             src = pkgs.fetchFromGitHub {
-              owner = "caldoai";
-              repo = "skills";
-              rev = "f3cf47774975a7d9fca45730babf4ff7ad765ada";
-              hash = "sha256-Q8r94n44dEE4BYGbnJBAl6Qtw/Pq8wSWjCfTGtzdICI=";
-              rootDir = "skills";
-            };
-          } {
-            plugins = ["untangle-codebase"];
-          })
-        (mkSkill {
-            src = pkgs.fetchFromGitHub {
               owner = "0xc000022070";
               repo = "skills";
-              rev = "f4feaf5020c5e5c159c36e13134dec63481ee1d1";
-              sha256 = "sha256-OsqGJyF2AD2KotpzXvqnlBsmyfZd40UrqyIPfkAbrK4=";
+              rev = "95c377d33d72cce933ebbf61d82ddcda1446956b";
+              sha256 = "sha256-Jzwkcfv2lwQAYwiR3Mkwo2VsIknRRIjOsvfUIt+ZptI=";
             };
           } {
             plugins = [
               "commit"
-              "socratic-debate"
-              "counter-attack"
               "qa-fleet"
             ];
           })
@@ -161,22 +97,11 @@
             src = pkgs.fetchFromGitHub {
               owner = "leonxlnx";
               repo = "taste-skill";
-              rev = "9b4bf937a1f69348126959c15d2f99a73e65699b";
-              hash = "sha256-BASbXznKYEcCUOEd0rm+ajcaGNhZ3wjONJP6tkpGEww=";
+              rev = "f6b76575f949707b4e3c37cd86cb44b0b98643e8";
+              hash = "sha256-7w2pcrS5g3ACXiAoJL3oe+hiVy+aDmUnx3PxeRZ9rVg=";
             };
           } {
             plugins = ["taste-skill"];
-          })
-        (mkSkill {
-            src = pkgs.fetchFromGitHub {
-              owner = "hyperb1iss";
-              repo = "hyperskills";
-              rev = "e7bcf524095c0a7d78df92e720eb1bb9944fa4de";
-              hash = "sha256-AQkAT4LxS/qufe5BzEGuZ1X2RVI/yS1E8SC3cV3M+SQ=";
-              rootDir = "skills";
-            };
-          } {
-            plugins = ["tui-design"];
           })
         (mkSkill {
             src = pkgs.applyPatches {
