@@ -157,4 +157,4 @@ agent-picker() {
 }
 
 zle -N agent-picker
-bindkey '^A' agent-picker
+bindkey '^P' agent-picker
