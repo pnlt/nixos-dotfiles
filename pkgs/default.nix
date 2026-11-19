@@ -5,7 +5,6 @@ pkgs:
   herdr-recall = pkgs.callPackage ./herdr-recall {};
   mcp-gateway = pkgs.callPackage ./mcp-gateway {};
   redact-secrets = pkgs.callPackage ./redact-secrets {};
-  tripwire = pkgs.callPackage ./tripwire {};
   winnow = pkgs.callPackage ./winnow {};
 }
 // import ./third-party pkgs
