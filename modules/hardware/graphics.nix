@@ -15,6 +15,9 @@
       };
     };
 
+    # ROCm OpenCL ICD; Unity's GPU lightmapper (RadeonRays) needs OpenCL
+    hardware.amdgpu.opencl.enable = true;
+
     services.lact.enable = true;
 
     environment.variables = {
