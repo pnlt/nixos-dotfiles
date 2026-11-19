@@ -77,4 +77,20 @@
       allowedUDPPorts = map (o: port + o) [9 10 11 13 21];
     };
   };
+
+  # A config reload mid-stream (home-manager switch) re-applies the monitor rules, waking the
+  # physical outputs and pushing SUNSHINE off 0x0, where Sunshine's mouse mapping expects it.
+  flake.modules.homeManager.desktop.wayland.windowManager.hyprland.extraConfig = ''
+    local sunshine = hl.get_monitor("SUNSHINE")
+    if sunshine then
+      hl.monitor({ output = "HDMI-A-1", disabled = true })
+      hl.monitor({ output = "DP-2", disabled = true })
+      hl.monitor({
+        output = "SUNSHINE",
+        mode = string.format("%dx%d@%g", sunshine.width, sunshine.height, sunshine.refresh_rate),
+        position = "0x0",
+        scale = 1,
+      })
+    end
+  '';
 }
