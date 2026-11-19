@@ -30,6 +30,7 @@
           "inode/directory" = nautilus;
           "application/pdf" = zathura;
           "x-scheme-handler/claude" = claude;
+          "x-scheme-handler/unityhub" = ["unityhub.desktop"];
 
           "video/mp4" = vlc;
           "video/x-matroska" = vlc;

@@ -339,6 +339,16 @@
               workspace = "name:music";
               scrolling_width = 1.0;
             }
+            {
+              # Only the main editor window title has " - Unity <version>"; undocked tabs, pickers
+              # and dropdowns would otherwise become scrolling columns
+              name = "unity-aux-float";
+              match = {
+                class = "^Unity(-.*)?$";
+                title = "negative:^.* - Unity .*$";
+              };
+              float = true;
+            }
             herdrDrop.windowRule
             tmuxDrop.windowRule
             {
