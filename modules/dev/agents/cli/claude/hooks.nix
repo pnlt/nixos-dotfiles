@@ -16,6 +16,11 @@
       runtimeInputs = [pkgs.git pkgs.jq pkgs.coreutils pkgs.gawk pkgs.gnugrep];
       text = builtins.readFile ../../hooks/diff-review.sh;
     };
+    rmGuard = pkgs.writeShellApplication {
+      name = "agent-rm-guard";
+      runtimeInputs = [pkgs.jq pkgs.gnugrep];
+      text = builtins.readFile ../../hooks/rm-guard.sh;
+    };
     # Not ported from luisquin:
     # - `strikedddd hook claude` on every event (private `striked` input)
   in {
@@ -110,6 +115,10 @@
         })
       ];
       PreToolUse = [
+        (kit.mkCmdEntry {
+          matcher = "Bash";
+          commands = [(lib.getExe rmGuard)];
+        })
         (kit.mkCmdEntry {
           matcher = "Bash";
           commands = [config.programs.claude-code.hooks."rtk-rewrite.sh"];
