@@ -9,6 +9,8 @@
     kit = mkAgentKit {};
     permissions = kit.mkAgentPermissions "codex" {};
   in {
+    home.packages = [pkgs.llm-agents.codex-acp];
+
     home.sessionVariables.CODEX_OUTPUT_REDACTOR = lib.getExe pkgs.redact-secrets;
 
     programs.codex = {

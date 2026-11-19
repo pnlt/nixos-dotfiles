@@ -127,6 +127,6 @@
       };
     };
 
-    home.packages = [pkgs.jq];
+    home.packages = [pkgs.jq pkgs.llm-agents.claude-agent-acp];
   };
 }
