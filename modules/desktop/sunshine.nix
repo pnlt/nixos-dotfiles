@@ -61,7 +61,9 @@
       description = "Restart Sunshine when a client disconnects";
       after = ["sunshine.service"];
       partOf = ["graphical-session.target"];
-      wantedBy = ["graphical-session.target"];
+      # Not graphical-session.target: the target orders after what it wants, and sunshine
+      # orders after the target, which forms a cycle that systemd breaks by dropping this unit
+      wantedBy = ["sunshine.service"];
       path = [pkgs.systemd pkgs.gnugrep];
       script = ''
         journalctl --user -u sunshine -f -n 0 -o cat \
