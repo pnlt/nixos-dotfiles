@@ -52,9 +52,10 @@
     '';
 
   powerMenu = pkgs.writeShellScript "power-menu" ''
-    case "$(printf '%s\n' Poweroff Reboot Logout | ${vicinaeCmd} dmenu -n Power --no-section --no-footer)" in
+    case "$(printf '%s\n' Poweroff Reboot BIOS Logout | ${vicinaeCmd} dmenu -n Power --no-section --no-footer)" in
       Poweroff) systemctl poweroff ;;
       Reboot) systemctl reboot ;;
+      BIOS) systemctl reboot --firmware-setup ;;
       Logout) ${hyprctlCmd} dispatch 'hl.dsp.exit()' ;;
     esac
   '';
