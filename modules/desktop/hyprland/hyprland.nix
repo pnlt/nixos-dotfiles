@@ -188,6 +188,9 @@
           render = {
             direct_scanout = 2;
           };
+
+          # Upscaled XWayland windows (Unity) blur at 1.25; apps scale their own UI instead
+          xwayland.force_zero_scaling = true;
           dwindle = {
             preserve_split = true;
           };
