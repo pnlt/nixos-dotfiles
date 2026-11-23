@@ -396,7 +396,8 @@
           (allowExe xdph "screencopy")
           (allowExe xdph "cursorpos")
           (allowExe (lib.getExe pkgs.discord) "screencopy")
-          (allowExe "${pkgs.sunshine}/bin/.sunshine-wrapped" "screencopy")
+          # Hyprland loads permissions only at startup, so an exact path breaks on every Sunshine rebuild
+          (allowPathRegex "/nix/store/[^/]+-sunshine-[^/]*/bin/\\.sunshine-wrapped" "screencopy")
         ];
 
         bind = import ./_binds.nix (args // {inherit herdrDrop tmuxDrop;});
