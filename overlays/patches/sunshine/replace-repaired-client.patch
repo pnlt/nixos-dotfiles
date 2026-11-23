@@ -1,0 +1,15 @@
+diff --git a/src/nvhttp.cpp b/src/nvhttp.cpp
+index 8e33cad..7de6c4d 100644
+--- a/src/nvhttp.cpp
++++ b/src/nvhttp.cpp
+@@ -450,6 +450,10 @@ namespace nvhttp {
+     named_cert.uuid = uuid_util::uuid_t::generate().string();
+ 
+     std::lock_guard lock {client_auth_mutex()};
++    // Re-pairing the same client would otherwise leave duplicates, which is_client_enabled rejects
++    std::erase_if(client_root.named_devices, [&](const named_cert_t &existing) {
++      return existing.cert == named_cert.cert;
++    });
+     client_root.named_devices.emplace_back(std::move(named_cert));
+     rebuild_client_cert_chain();
+ 

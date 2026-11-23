@@ -17,6 +17,9 @@
     drift = prev.drift.overrideAttrs (old: {
       patches = (old.patches or []) ++ [./patches/drift/search-videos-too.patch];
     });
+    sunshine = prev.sunshine.overrideAttrs (old: {
+      patches = (old.patches or []) ++ [./patches/sunshine/replace-repaired-client.patch];
+    });
   })
   (final: _prev: {
     rtk = final.llm-agents.rtk.overrideAttrs (_oldAttrs: {
