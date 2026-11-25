@@ -21,6 +21,8 @@
 
       ruff
 
+      jdt-language-server
+
       fixjson
 
       yaml-language-server # compose, GitHub Actions, k8s schemas via SchemaStore
