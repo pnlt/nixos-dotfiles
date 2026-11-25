@@ -149,7 +149,6 @@
           ./patches/herdr/larger-sidebar-toggle-hit-area.patch
           ./patches/herdr/freebuff-agent-session.patch
           ./patches/herdr/stage-agent-resume-command.patch
-          ./patches/herdr/claude-resume-skip-permissions.patch
           ./patches/herdr/default-bg-follows-child-ownership.patch
           ./patches/herdr/drop-kitty-images-in-erased-history.patch
         ];
