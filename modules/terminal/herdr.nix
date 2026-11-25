@@ -151,6 +151,14 @@
               description = "what each pane was running";
             }
             {
+              key = "prefix+p";
+              type = "popup";
+              width = "80%";
+              height = "80%";
+              command = "${lib.getExe pkgs.herdr-recall} park";
+              description = "pause every agent, then pick what to start";
+            }
+            {
               key = "prefix+e";
               type = "shell";
               command = "${herdr} pane list | ${lib.getExe pkgs.jq} -r --arg t \"$HERDR_ACTIVE_TAB_ID\" --arg p \"$HERDR_ACTIVE_PANE_ID\" '.result.panes[] | select(.tab_id == $t and .pane_id != $p) | .pane_id' | ${pkgs.findutils}/bin/xargs -r -n1 ${herdr} pane close";
