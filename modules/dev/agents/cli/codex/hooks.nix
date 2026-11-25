@@ -29,6 +29,7 @@
                 matcher = "Bash";
                 commands = [
                   (kit.mkAudioCmd [kit.sounds.ifrtho])
+                  (lib.getExe (import ../../hooks/_command-rules.nix {inherit pkgs;}).codex)
                   "${phone} hook --harness codex"
                   "${rtk} hook codex"
                 ];

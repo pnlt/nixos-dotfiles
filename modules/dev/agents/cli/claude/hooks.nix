@@ -21,6 +21,17 @@
       runtimeInputs = [pkgs.jq pkgs.gnugrep];
       text = builtins.readFile ../../hooks/rm-guard.sh;
     };
+    searchScopeGuard = pkgs.writeShellApplication {
+      name = "agent-search-scope-guard";
+      runtimeInputs = [pkgs.jq pkgs.coreutils];
+      text = builtins.readFile ../../hooks/search-scope-guard.sh;
+    };
+    commandRules = (import ../../hooks/_command-rules.nix {inherit pkgs;}).claude;
+    interruptLog = pkgs.writeShellApplication {
+      name = "agent-interrupt-log";
+      runtimeInputs = [pkgs.jq pkgs.coreutils pkgs.gnugrep];
+      text = builtins.readFile ../../hooks/interrupt-log.sh;
+    };
     # Not ported from luisquin:
     # - `strikedddd hook claude` on every event (private `striked` input)
   in {
@@ -84,6 +95,7 @@
             (kit.mkTerminalStatusCmd "working" "claude · working")
             (kit.mkCancelNotificationCmd {sequenceId = "claude-awaiting-input";})
             (kit.mkAudioCmd [kit.sounds.ifrsig])
+            "${lib.getExe interruptLog} || true"
           ];
         })
       ];
@@ -118,6 +130,14 @@
         (kit.mkCmdEntry {
           matcher = "Bash";
           commands = [(lib.getExe rmGuard)];
+        })
+        (kit.mkCmdEntry {
+          matcher = "Bash";
+          commands = [(lib.getExe commandRules)];
+        })
+        (kit.mkCmdEntry {
+          matcher = "Bash|Grep";
+          commands = [(lib.getExe searchScopeGuard)];
         })
         (kit.mkCmdEntry {
           matcher = "Bash";
