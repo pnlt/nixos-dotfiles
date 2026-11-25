@@ -10,7 +10,10 @@
   in {
     home.packages = [pkgs.codebase-memory-mcp];
 
-    programs.techdebt.enable = true;
+    programs.techdebt = {
+      enable = true;
+      package = pkgs.techdebt-cli;
+    };
 
     # One shared process per server (or per workspace), multiplexed to every
     # agent session by pkgs/mcp-gateway. The gateway module also registers each
