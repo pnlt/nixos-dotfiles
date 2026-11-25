@@ -1,6 +1,7 @@
 {...}: {
   flake.modules.nixos.network = {pkgs, ...}: {
     networking.interfaces."enp8s0".wakeOnLan.enable = true;
+    networking.networkmanager.wifi.powersave = false;
 
     # quic-go/wireguard want larger UDP buffers than the kernel defaults
     boot.kernel.sysctl = {
