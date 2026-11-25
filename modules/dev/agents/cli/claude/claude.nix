@@ -101,6 +101,11 @@
         tui = "fullscreen";
         showThinkingSummaries = true;
         autoCompactWindow = 200000;
+        voiceEnabled = true;
+        voice = {
+          enabled = true;
+          mode = "hold";
+        };
 
         env = {
           # Masks secrets out of every Bash tool call's stdout/stderr.
