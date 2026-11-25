@@ -1,3 +1,4 @@
 pkgs/** linguist-vendored
 pkgs/**/*.nix -linguist-vendored
 modules/desktop/fonts/patch-custom-glyphs.py -banned-languages
+modules/dev/agents/shell.zsh -comment-budget
