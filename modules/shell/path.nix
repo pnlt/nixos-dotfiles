@@ -1,12 +1,20 @@
 {...}: {
-  flake.modules.homeManager.shell = {config, ...}: {
-    home.sessionPath = [
-      "${config.home.homeDirectory}/.cargo/bin"
-      "${config.home.homeDirectory}/.npm-global/bin"
-      "${config.home.homeDirectory}/.bun-global/bin"
-      "${config.home.homeDirectory}/go/bin"
-
-      "${config.home.homeDirectory}/.local/share/flatpak/exports/bin"
-    ];
+  flake.modules.homeManager.shell = {
+    config,
+    lib,
+    ...
+  }: {
+    # Appended, not prepended like home.sessionPath, so stray binaries here
+    # never shadow the nix profiles.
+    home.sessionVariablesExtra = ''
+      export PATH="$PATH:${lib.concatMapStringsSep ":" (dir: "${config.home.homeDirectory}/${dir}") [
+        ".cargo/bin"
+        ".npm-global/bin"
+        ".bun-global/bin"
+        "go/bin"
+        ".local/bin"
+        ".local/share/flatpak/exports/bin"
+      ]}"
+    '';
   };
 }
