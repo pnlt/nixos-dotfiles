@@ -6,7 +6,7 @@ in {
     pkgs,
     ...
   }: {
-    home.packages = with pkgs; [knots git-absorb mergiraf];
+    home.packages = with pkgs; [knots git-absorb];
 
     shared = {
       git = {
@@ -23,11 +23,13 @@ in {
     programs.git.lfs.enable = true;
 
     # mergiraf falls back to line-based merging for languages it does not parse
-    programs.git.attributes = ["* merge=mergiraf"];
-    programs.git.settings.merge.mergiraf = {
-      name = "mergiraf";
-      driver = "${lib.getExe pkgs.mergiraf} merge --git %O %A %B -s %S -x %X -y %Y -p %P -l %L";
+    programs.mergiraf = {
+      enable = true;
+      enableGitIntegration = true;
     };
+
+    # the mergiraf module sets diff3
+    programs.git.settings.merge.conflictStyle = lib.mkForce "zdiff3";
 
     programs.git.settings.hook.knots = {
       event = "pre-commit";
