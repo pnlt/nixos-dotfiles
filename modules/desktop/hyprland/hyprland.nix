@@ -49,6 +49,8 @@
       center = true;
     };
   in {
+    services.hyprpolkitagent.enable = true;
+
     services.awww.enable = true;
     services.awww.extraArgs = ["--no-cache"];
     systemd.user.services.awww.Service.ExecStartPost = toString (pkgs.writeShellScript "awww-wallpaper" ''
