@@ -40,13 +40,4 @@ with inputs; [
     phone = final.callPackage "${luisquin-config}/pkgs/phone" {};
     ttygate = final.callPackage "${luisquin-config}/pkgs/ttygate" {};
   })
-  techdebt-cli.overlays.default
-  # nixpkgs' cargo setup hook exports LIBSQLITE3_SYS_USE_PKG_CONFIG=1, which
-  # overrides rusqlite's `bundled` feature and links the system sqlite.
-  (final: prev: {
-    techdebt-cli = prev.techdebt-cli.overrideAttrs (old: {
-      nativeBuildInputs = (old.nativeBuildInputs or []) ++ [final.pkg-config];
-      buildInputs = (old.buildInputs or []) ++ [final.sqlite];
-    });
-  })
 ]

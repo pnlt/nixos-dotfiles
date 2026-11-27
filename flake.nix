@@ -109,10 +109,6 @@
         treefmt-nix.follows = "bun2nix/treefmt-nix";
       };
     };
-    techdebt-cli = {
-      url = "github:0xc000022070/techdebt-cli";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nyx-terminal = {
       url = "github:pnlt/nyx-terminal";
     };

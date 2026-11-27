@@ -55,7 +55,6 @@ in {
         inputs.nyx-terminal.homeModules.default
         inputs.agentic-flake.homeModules.default
         inputs.encore.homeModules.default
-        inputs.techdebt-cli.homeModules.default
         inputs.hex.homeManagerModules.hex
         inputs.direnv-instant.homeModules.default
         ../../pkgs/hm-modules

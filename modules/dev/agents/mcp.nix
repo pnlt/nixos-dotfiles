@@ -1,6 +1,5 @@
 {inputs, ...}: {
   flake.modules.homeManager.agents = {
-    config,
     nixosConfig,
     pkgs,
     lib,
@@ -10,11 +9,6 @@
   in {
     home.packages = [pkgs.codebase-memory-mcp];
 
-    programs.techdebt = {
-      enable = true;
-      package = pkgs.techdebt-cli;
-    };
-
     # One shared process per server (or per workspace), multiplexed to every
     # agent session by pkgs/mcp-gateway. The gateway module also registers each
     # entry in programs.mcp.servers, which claude picks up through
@@ -22,12 +16,6 @@
     services.mcp-gateway = {
       enable = true;
       servers = [
-        {
-          name = "techdebt-mcp";
-          package = config.programs.techdebt.package;
-          args = ["mcp"];
-          scope = "workspace";
-        }
         {
           name = "encore";
           package = encore;
