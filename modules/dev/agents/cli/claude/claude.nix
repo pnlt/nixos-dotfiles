@@ -113,6 +113,7 @@
           # Agent teams run several Claude sessions at once and drain Pro quota
           # fast. Set to "1" to match luisquin.
           "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS" = "0";
+          "CLAUDE_CODE_EXPERIMENTAL_CODE_MODE" = "on";
           # Updates come from `nix flake update llm-agents`, not the CLI.
           "DISABLE_AUTOUPDATER" = "1";
         };
