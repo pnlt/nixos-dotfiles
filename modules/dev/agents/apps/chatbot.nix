@@ -1,7 +1,7 @@
 {...}: {
   flake.modules.homeManager.agents = {pkgs, ...}: {
     home.packages = [
-      # Claude Desktop (your xdg.nix already maps claude-desktop.desktop and the
+      # Claude Desktop (xdg.nix maps com.anthropic.Claude.desktop and the
       # claude:// scheme to it). Chromium derives the password store from the
       # desktop environment; on niri (like Hyprland) it falls through to
       # basic_text, leaving Electron's safeStorage unavailable so the app drops

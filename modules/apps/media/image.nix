@@ -15,7 +15,7 @@
           })
         ];
       });
-      desktopFile = "${desktopName}.desktop";
+      desktopFile = "${name}.desktop";
     };
 
     feh = mkWithDesktopItemWrapper {
@@ -27,8 +27,8 @@
 
     sxiv = mkWithDesktopItemWrapper {
       package = pkgs.sxiv;
-      desktopName = "svix";
-      name = "sxiv (gif)";
+      desktopName = "sxiv (gif)";
+      name = "sxiv-gif";
       exec = "sxiv -a %f";
       genericName = "Gif Viewer";
     };
