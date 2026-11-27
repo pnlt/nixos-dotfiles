@@ -32,10 +32,7 @@
       config = mkIf cfg.enable {
         home = {
           packages =
-            [
-              pkgs.hub
-            ]
-            ++ (
+            (
               if cfg.act
               then [pkgs.act]
               else []
@@ -50,10 +47,6 @@
               then [pkgs.gh]
               else []
             );
-
-          shellAliases = {
-            git = "hub";
-          };
         };
       };
     };
