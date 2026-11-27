@@ -15,6 +15,8 @@ in {
     };
 
     nix = {
+      buildLogRetention = "30d";
+
       optimise = {
         automatic = true;
         dates = ["13:00"]; # I normally lunch at this hour
