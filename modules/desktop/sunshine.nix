@@ -17,13 +17,13 @@
       ${hyprctl} eval "hl.monitor({ output = \"SUNSHINE\", mode = \"''${SUNSHINE_CLIENT_WIDTH}x''${SUNSHINE_CLIENT_HEIGHT}@''${SUNSHINE_CLIENT_FPS}\", position = \"0x0\", scale = 1 })"
       ${hyprctl} dispatch 'hl.dsp.focus({ monitor = "SUNSHINE" })'
       # awww runs with --no-cache, so a new output starts without a wallpaper
-      ${pkgs.awww}/bin/awww img -o SUNSHINE "$HOME/Pictures/wallpapers/indigo-rain-2560x1440.png" || true
+      ${pkgs.awww}/bin/awww img -o SUNSHINE "$HOME/Pictures/wallpapers/do-ye-eun-original-panel-2560x1440.jpg" || true
     '';
 
     headlessDown = pkgs.writeShellScript "sunshine-headless-down" ''
       ${hyprctl} output remove SUNSHINE
       ${hyprctl} reload
-      ${pkgs.awww}/bin/awww img "$HOME/Pictures/wallpapers/indigo-rain-2560x1440.png" || true
+      ${pkgs.awww}/bin/awww img "$HOME/Pictures/wallpapers/do-ye-eun-original-panel-2560x1440.jpg" || true
     '';
 
     inherit (config.services.sunshine.settings) port;

@@ -55,7 +55,7 @@
     services.awww.extraArgs = ["--no-cache"];
     systemd.user.services.awww.Service.ExecStartPost = toString (pkgs.writeShellScript "awww-wallpaper" ''
       until ${lib.getExe pkgs.awww} query >/dev/null 2>&1; do sleep 0.1; done
-      exec ${lib.getExe pkgs.awww} img ${config.home.homeDirectory}/Pictures/wallpapers/indigo-rain-2560x1440.png
+      exec ${lib.getExe pkgs.awww} img ${config.home.homeDirectory}/Pictures/wallpapers/do-ye-eun-original-panel-2560x1440.jpg
     '');
 
     home.sessionVariables.GRIMBLAST_HIDE_CURSOR = 0;

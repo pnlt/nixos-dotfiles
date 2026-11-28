@@ -7,6 +7,9 @@
           ./patches/bat/idempotent-cache-build.patch
         ];
     });
+    fastfetch-unwrapped = prev.fastfetch-unwrapped.overrideAttrs (old: {
+      patches = (old.patches or []) ++ [./patches/fastfetch/keep-kitty-direct-cursor-aligned-in-tmux.patch];
+    });
     hyprland = prev.hyprland.overrideAttrs (old: {
       patches =
         (old.patches or [])

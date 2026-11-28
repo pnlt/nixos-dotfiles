@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.shell = {...}: {
+  flake.modules.homeManager.shell = {lib, ...}: {
     programs.zsh.initContent = builtins.readFile ./.zshrc;
 
     programs.direnv-instant.enable = true;
@@ -10,6 +10,17 @@
       settings.update_check = false;
     };
     programs.fzf.historyWidget.command = "";
+
+    programs.fastfetch.settings.logo = lib.mkForce {
+      type = "kitty-direct";
+      source = "${./ye-eun-fastfetch.png}";
+      width = 19;
+      height = 14;
+      padding = {
+        left = 2;
+        right = 4;
+      };
+    };
 
     shared = {
       bat.enable = true;
