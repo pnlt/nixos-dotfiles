@@ -15,7 +15,8 @@ ShellRoot {
     readonly property color fg: "#ffffff"
     readonly property color dim: Qt.rgba(1, 1, 1, 0.45)
     readonly property color cyan: "#07aee5"
-    readonly property color blue: "#1792d0"
+    readonly property color barAccent: "#83aaff"
+    readonly property color barMuted: "#adbad5"
     readonly property color green: "#00d787"
     readonly property color red: "#f7768e"
     readonly property int anim: 110
@@ -253,9 +254,10 @@ ShellRoot {
         default property alias content: row.data
         property alias spacing: row.spacing
         implicitWidth: row.implicitWidth + 20
-        implicitHeight: 24
+        implicitHeight: 28
         radius: height / 2
-        color: Qt.rgba(22 / 255, 38 / 255, 51 / 255, hover.hovered ? 0.95 : 0.75)
+        color: hover.hovered ? "#2b3957" : "#f21b243a"
+        border.color: "#405174"
         Behavior on color { ColorAnimation { duration: root.anim } }
 
         HoverHandler { id: hover }
@@ -548,45 +550,51 @@ ShellRoot {
 
             screen: modelData
             anchors { top: true; left: true; right: true }
-            implicitHeight: 32
+            implicitHeight: 40
             color: "transparent"
 
             Row {
-                anchors { left: parent.left; leftMargin: 6; verticalCenter: parent.verticalCenter }
-                spacing: 6
-
-                Pill {
-                    implicitWidth: implicitHeight + 6
-                    Label { text: ""; color: root.blue; font.pixelSize: 18 }
-                }
+                anchors { left: parent.left; leftMargin: 12; verticalCenter: parent.verticalCenter }
+                spacing: 8
 
                 Pill {
                     id: workspaces
-                    spacing: 6
+                    spacing: 0
                     readonly property var all: Hyprland.workspaces.values.filter(w => w.id > 0)
                     readonly property int activeId: bar.monitor?.activeWorkspace?.id ?? -1
 
                     Repeater {
                         model: Math.max(5, ...workspaces.all.map(w => w.id))
 
-                        Rectangle {
+                        MouseArea {
+                            id: slot
                             required property int index
                             readonly property var ws: workspaces.all.find(w => w.id === index + 1)
                             readonly property bool active: index + 1 === workspaces.activeId
-                            anchors.verticalCenter: parent.verticalCenter
-                            width: active ? 26 : 10
-                            height: 10
-                            radius: 5
-                            color: active ? root.cyan
-                                 : ws?.urgent ? root.red
-                                 : ws?.toplevels.values.length > 0 ? root.fg
-                                 : Qt.rgba(1, 1, 1, 0.22)
-                            Behavior on width { NumberAnimation { duration: root.anim; easing.type: Easing.OutCubic } }
-                            Behavior on color { ColorAnimation { duration: root.anim } }
+                            readonly property bool occupied: ws?.toplevels.values.length > 0 || ws?.urgent === true
+                            width: 23
+                            height: workspaces.height
+                            onClicked: Hyprland.dispatch(`hl.dsp.focus({ workspace = ${index + 1} })`)
 
-                            MouseArea {
-                                anchors { fill: parent; margins: -4 }
-                                onClicked: Hyprland.dispatch(`hl.dsp.focus({ workspace = ${parent.index + 1} })`)
+                            Rectangle {
+                                anchors.centerIn: parent
+                                width: slot.active ? 22 : slot.occupied ? 8 : 6
+                                height: width
+                                radius: slot.occupied && !slot.active ? 2 : width / 2
+                                color: slot.active ? "#253b63"
+                                     : slot.ws?.urgent ? root.red
+                                     : slot.occupied ? "#d4dff6"
+                                     : "#65728e"
+                                border.width: slot.active ? 2 : 0
+                                border.color: root.barAccent
+                            }
+
+                            Label {
+                                anchors.centerIn: parent
+                                visible: slot.active
+                                text: ""
+                                color: root.barAccent
+                                font.pixelSize: 12
                             }
                         }
                     }
@@ -635,19 +643,19 @@ ShellRoot {
 
             Pill {
                 anchors.centerIn: parent
-                Label { text: ""; color: root.cyan }
-                Label { text: Qt.formatDateTime(clock.date, "ddd dd  HH:mm") }
+                Label { text: Qt.formatTime(clock.date, "HH:mm") }
+                Label { text: Qt.formatDate(clock.date, "ddd dd"); color: root.barMuted }
             }
 
             Row {
-                anchors { right: parent.right; rightMargin: 6; verticalCenter: parent.verticalCenter }
+                anchors { right: parent.right; rightMargin: 12; verticalCenter: parent.verticalCenter }
                 spacing: 6
 
                 Pill {
                     spacing: 6
                     Label {
                         text: root.dnd ? "\u{f009b}" : "\u{f009a}"
-                        color: root.flash ? root.red : root.unread > 0 ? root.cyan : root.dim
+                        color: root.flash ? root.red : root.unread > 0 ? root.barAccent : root.barMuted
                         Behavior on color { ColorAnimation { duration: root.anim } }
                     }
                     Label {
@@ -666,10 +674,10 @@ ShellRoot {
                 Pill {
                     id: tsPill
                     spacing: 6
-                    Label { text: ""; color: root.tsUp ? root.cyan : root.dim }
+                    Label { text: ""; color: root.tsUp ? root.barAccent : root.barMuted }
                     Label {
                         text: root.tsUp ? `${root.tsOnline}/${root.tsDevices.length - 1}` : "off"
-                        color: root.tsUp ? root.fg : root.dim
+                        color: root.tsUp ? root.fg : root.barMuted
                     }
 
                     TapHandler {
@@ -685,10 +693,10 @@ ShellRoot {
 
                 Pill {
                     spacing: 6
-                    Label { text: ""; color: root.cpu >= 90 ? root.red : root.green }
+                    Label { text: ""; color: root.cpu >= 90 ? root.red : root.barAccent }
                     Label { text: `${root.cpu}%` }
                     Item { width: 4; height: 1 }
-                    Label { text: "\u{f035b}"; color: root.ram >= 90 ? root.red : root.blue }
+                    Label { text: "\u{f035b}"; color: root.ram >= 90 ? root.red : root.barMuted }
                     Label { text: `${root.ram}%` }
                 }
             }
