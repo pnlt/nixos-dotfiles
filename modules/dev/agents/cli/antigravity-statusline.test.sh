@@ -16,3 +16,13 @@ JSON
 )" == "Claude Sonnet · 5h 0% left · week 75% left · sandbox" ]]
 
 [[ "$(render <<< '{}')" == "" ]]
+
+render_title() {
+  jq -r -f "$(dirname "$0")/antigravity-title.jq"
+}
+
+[[ "$(render_title <<< '{"cwd":"/tmp/repo","agent_state":"working"}')" == "agy · working · repo" ]]
+[[ "$(render_title <<< '{"cwd":"/tmp/repo","agent_state":"idle","conversation_title":"Audit config"}')" == "agy · ready · Audit config" ]]
+[[ "$(render_title <<< '{"cwd":"/tmp/repo","agent_state":"tool_use","tool_confirmation_pending":true}')" == "agy · permission · repo" ]]
+[[ "$(render_title <<< '{"cwd":"/","agent_state":"error"}')" == "agy · error" ]]
+[[ "$(render_title <<< '{}')" == "agy" ]]

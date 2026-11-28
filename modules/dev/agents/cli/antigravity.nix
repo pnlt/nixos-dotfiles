@@ -8,14 +8,38 @@
   }: let
     kit = mkAgentKit {};
     json = pkgs.formats.json {};
+    mcpServers = kit.mkMcpServers {};
     statusLine = pkgs.writeShellScript "agy-statusline" ''
       exec ${lib.getExe pkgs.jq} -r -f ${./antigravity-statusline.jq}
     '';
+    titleLine = pkgs.writeShellScript "agy-title" ''
+      exec ${lib.getExe pkgs.jq} -r -f ${./antigravity-title.jq}
+    '';
     settings = json.generate "agy-settings" {
-      agentMode = "accept-edits";
+      agentMode = "auto";
       altScreenMode = "always";
       notifications = true;
+      permissions = {
+        allow =
+          map (name: "mcp(${name}/*)") (builtins.attrNames mcpServers)
+          ++ map (domain: "read_url(${domain})") kit.allowedDomains;
+        deny = [
+          "command(rm -rf /)"
+          "command(regex:mkfs.*)"
+          "command(pkill)"
+          "command(killall)"
+          "command(herdr server stop)"
+          "command(tmux kill-server)"
+          "command(cargo publish)"
+          "command(npm publish)"
+          "command(encore secret delete)"
+          "command(npx prisma migrate reset)"
+          "read_file(${config.home.homeDirectory}/.ssh)"
+          "read_file(${config.home.homeDirectory}/nixos-dotfiles/secrets/secrets.yaml)"
+        ];
+      };
       pickerGrouping = "grouped";
+      runningLightSpeed = "fast";
       showFeedbackSurvey = false;
       showTips = false;
       statusLine = {
@@ -23,7 +47,12 @@
         command = toString statusLine;
         enabled = true;
       };
-      toolPermission = "always-proceed";
+      title = {
+        type = "command";
+        command = toString titleLine;
+        enabled = true;
+      };
+      toolPermission = "request-review";
       useG1Credits = false;
     };
   in {
@@ -55,14 +84,10 @@
         ${builtins.readFile "${pkgs.rtk}/share/rtk/hooks/rtk-awareness-high.md"}
       '';
 
-      ".gemini/config/skills.json".source = json.generate "agy-skills" {
-        entries = [{path = "${config.home.homeDirectory}/.agents/skills";}];
-      };
-
       ".gemini/config/mcp_config.json".source = json.generate "agy-mcp" {
         mcpServers = lib.mapAttrs (_: server:
           builtins.removeAttrs server ["type" "disabled_tools" "startup_timeout_sec"])
-        (kit.mkMcpServers {});
+        mcpServers;
       };
 
       ".gemini/config/hooks.json".source = json.generate "agy-hooks" {
