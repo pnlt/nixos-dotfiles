@@ -29,6 +29,7 @@
       settings = {
         model = "gpt-6.2-sol";
         model_reasoning_effort = "medium";
+        service_tier = "fast";
         project_doc_fallback_filenames = ["CLAUDE.md"];
 
         analytics.enabled = false;
@@ -99,6 +100,7 @@
             "current-dir"
             "model"
             "reasoning"
+            "fast-mode"
             "branch-changes"
             "context-used"
             "five-hour-limit"
