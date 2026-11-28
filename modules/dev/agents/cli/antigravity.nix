@@ -10,7 +10,22 @@
     json = pkgs.formats.json {};
     mcpServers = kit.mkMcpServers {};
     statusLine = pkgs.writeShellScript "agy-statusline" ''
-      exec ${lib.getExe pkgs.jq} -r -f ${./antigravity-statusline.jq}
+      input=$(cat)
+      cwd=$(${lib.getExe pkgs.jq} -r '.workspace.current_dir // .cwd // empty' <<<"$input")
+      branch=""
+      ins=""
+      del=""
+      if [[ -n "$cwd" && -d "$cwd" ]]; then
+        branch=$(${lib.getExe pkgs.git} -C "$cwd" symbolic-ref --short HEAD 2>/dev/null || ${lib.getExe pkgs.git} -C "$cwd" rev-parse --short HEAD 2>/dev/null || true)
+        if [[ -n "$branch" ]]; then
+          read -r ins del < <(${lib.getExe pkgs.git} -C "$cwd" diff HEAD --numstat 2>/dev/null | ${lib.getExe pkgs.gawk} '{a+=$1; d+=$2} END {printf "%d %d\n", a, d}') || true
+        fi
+      fi
+      exec ${lib.getExe pkgs.jq} -r \
+        --arg branch "$branch" \
+        --arg ins "$ins" \
+        --arg del "$del" \
+        -f ${./antigravity-statusline.jq} <<<"$input"
     '';
     titleLine = pkgs.writeShellScript "agy-title" ''
       exec ${lib.getExe pkgs.jq} -r -f ${./antigravity-title.jq}
@@ -18,6 +33,7 @@
     settings = json.generate "agy-settings" {
       agentMode = "auto";
       altScreenMode = "always";
+      colorScheme = "tokyo night";
       notifications = true;
       permissions = {
         allow =
@@ -60,6 +76,7 @@
       };
       toolPermission = "request-review";
       useG1Credits = false;
+      useTerminalCursor = true;
     };
   in {
     home.packages = [pkgs.llm-agents.antigravity-cli];
