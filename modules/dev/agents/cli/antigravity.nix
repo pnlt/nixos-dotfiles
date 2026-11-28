@@ -21,7 +21,13 @@
       notifications = true;
       permissions = {
         allow =
-          map (name: "mcp(${name}/*)") (builtins.attrNames mcpServers)
+          [
+            "read_file(/nix/store)"
+            "read_file(/nix/var/nix/profiles)"
+            "read_file(/run/current-system)"
+            "read_file(${config.home.homeDirectory}/.local/state/nix/profiles)"
+          ]
+          ++ map (name: "mcp(${name}/*)") (builtins.attrNames mcpServers)
           ++ map (domain: "read_url(${domain})") kit.allowedDomains;
         deny = [
           "command(rm -rf /)"
