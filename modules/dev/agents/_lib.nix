@@ -212,6 +212,7 @@
     # order instead of overlapping, and drops one that waited too long to matter.
     mkAudioCmd = files:
       lib.concatStringsSep " " [
+        "test ! -f \"\${XDG_CONFIG_HOME:-$HOME/.config}/agent-sounds.enabled\" ||"
         "${pkgs.util-linux}/bin/setsid -f"
         "${pkgs.util-linux}/bin/flock -w 3 \"\${XDG_RUNTIME_DIR:-/tmp}/agent-sound.lock\""
         "${pkgs.runtimeShell} -c"
