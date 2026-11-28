@@ -141,7 +141,7 @@ in
     (b "${mainMod} + Print" (dspExec "${grimblastCmd} --notify copy active"))
     (b "Print" (dspExec (toString hyprPrintScreen)))
 
-    (b "${mainMod} + E" (dspExec "${lib.getExe pkgs.nautilus} --new-window"))
+    (b "${mainMod} + E" (dspExec (lib.getExe config.programs.luciole.package)))
     (b "${mainMod} + Z" (dspExec "zen-beta"))
 
     (b "XF86Launch3" (dspExec "${playerctl} play-pause"))

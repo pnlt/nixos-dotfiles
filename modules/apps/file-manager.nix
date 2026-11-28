@@ -1,4 +1,6 @@
-{...}: {
+{inputs, ...}: {
+  flake.modules.nixos.desktop.services.gvfs.enable = true;
+
   flake.modules.homeManager.file-manager = {
     config,
     pkgs,
@@ -14,9 +16,8 @@
     f3d = lib.getExe' pkgs.f3d "f3d";
     meshCameraFile = "${config.xdg.cacheHome}/ranger/mesh-camera";
   in {
-    home.packages = [
-      pkgs.nautilus
-    ];
+    imports = [inputs.luciole.homeModules.default];
+    programs.luciole.enable = true;
 
     programs.ranger = {
       enable = true;

@@ -20,14 +20,13 @@
       };
 
       mimeApps = let
-        nautilus = ["org.gnome.Nautilus.desktop"];
         vlc = ["vlc.desktop"];
         zathura = ["zathura.desktop"];
         zed = ["dev.zed.Zed.desktop"];
         claude = ["com.anthropic.Claude.desktop"];
 
         associations = {
-          "inode/directory" = nautilus;
+          "inode/directory" = ["dev.noctalia.luciole.desktop"];
           "application/pdf" = zathura;
           "x-scheme-handler/claude" = claude;
           "x-scheme-handler/unityhub" = ["unityhub.desktop"];
