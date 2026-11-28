@@ -3,6 +3,7 @@
 typeset -gA _agent_dir_flag=(
   claude --add-dir
   codex --add-dir
+  agy --add-dir
   agent --add-dir
   grok --add-dir
 )
@@ -69,6 +70,7 @@ agent-picker() {
   local -a candidates=(
     'claude'
     'codex'
+    'agy'
     'freebuff'
     'agent'
     'opencode'

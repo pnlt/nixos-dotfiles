@@ -96,6 +96,7 @@
               }) [
                 "claude"
                 "codex"
+                "agy"
                 "opencode"
                 "pi"
               ]

@@ -126,6 +126,7 @@ impl Entry {
         let argv = match (agent, kind.as_str()) {
             ("claude", "id") => format!("claude --resume {value}"),
             ("codex", "id") => format!("codex resume {value}"),
+            ("antigravity_cli", "id") => format!("agy --conversation {value}"),
             ("copilot", "id") => format!("copilot --resume={value}"),
             ("droid" | "devin" | "hermes" | "qwen", "id") => format!("{agent} --resume {value}"),
             ("opencode", "id") => format!("opencode --session {value}"),
@@ -718,6 +719,10 @@ mod tests {
         assert_eq!(
             agent_entry("herdr:codex", "id", "abc").resume().as_deref(),
             Some("codex resume abc")
+        );
+        assert_eq!(
+            agent_entry("herdr:antigravity_cli", "id", "abc").resume().as_deref(),
+            Some("agy --conversation abc")
         );
         assert_eq!(
             agent_entry("herdr:pi", "path", "/tmp/s").resume().as_deref(),
